@@ -1,0 +1,146 @@
+/* Barra superior: fecha, ticker de Última hora y redes (TEMA-019). Solo variables --sic-*. */
+
+.sic-barra {
+	background: var(--sic-cabecera);
+	color: var(--sic-cabecera-texto);
+	border-bottom: 1px solid var(--sic-cabecera-borde);
+	font-size: var(--sic-fs-sm);
+}
+
+.sic-barra__fila {
+	display: flex;
+	align-items: center;
+	gap: var(--sic-sp-4);
+	max-width: var(--sic-ancho-contenedor);
+	margin: 0 auto;
+	padding: var(--sic-sp-1) var(--sic-sp-4);
+}
+
+.sic-barra__fecha {
+	flex: none;
+	margin: 0;
+	color: var(--sic-cabecera-suave);
+	text-transform: capitalize;
+}
+
+.sic-ticker {
+	display: flex;
+	flex: 1 1 auto;
+	align-items: center;
+	gap: var(--sic-sp-3);
+	min-width: 0;
+}
+
+.sic-ticker__rotulo {
+	flex: none;
+	padding: var(--sic-sp-1) var(--sic-sp-2);
+	border-radius: var(--sic-radio-sm);
+	background: var(--sic-urgente);
+	color: var(--sic-urgente-texto);
+	font-size: var(--sic-fs-xs);
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.sic-ticker__lista {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.sic-ticker__item {
+	display: none;
+	min-width: 0;
+}
+
+.sic-ticker__item.is-activo {
+	display: block;
+}
+
+.sic-ticker__item a {
+	display: block;
+	padding: var(--sic-sp-2) 0;
+	overflow: hidden;
+	color: var(--sic-cabecera-texto);
+	text-decoration: none;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.sic-ticker__item a:hover {
+	text-decoration: underline;
+}
+
+.sic-ticker__item a:focus-visible,
+.sic-ticker__pausa:focus-visible {
+	outline: 2px solid var(--sic-foco-oscuro);
+	outline-offset: 2px;
+}
+
+/* El botón solo existe si el JS corre y el lector no pidió reducir el movimiento. */
+.sic-ticker__pausa {
+	display: none;
+	flex: none;
+	min-height: 44px;
+	padding: 0 var(--sic-sp-3);
+	border: 1px solid var(--sic-campo-borde-oscuro);
+	border-radius: var(--sic-radio-sm);
+	background: transparent;
+	color: var(--sic-cabecera-texto);
+	font: inherit;
+	font-size: var(--sic-fs-xs);
+	cursor: pointer;
+}
+
+.sic-barra[data-js] .sic-ticker__pausa {
+	display: inline-flex;
+	align-items: center;
+}
+
+.sic-ticker__pausa[aria-pressed="true"] {
+	border-color: var(--sic-cabecera-texto);
+}
+
+.sic-barra__redes {
+	flex: none;
+}
+
+/* Movimiento reducido: titular fijo, sin botón que pausar. */
+@media (prefers-reduced-motion: reduce) {
+	.sic-barra[data-js] .sic-ticker__pausa {
+		display: none;
+	}
+}
+
+/* Móvil: solo el ticker; las redes siguen en el pie. */
+@media (max-width: 900px) {
+	.sic-barra__fecha,
+	.sic-barra__redes {
+		display: none;
+	}
+
+	.sic-barra__fila {
+		padding-inline: var(--sic-sp-3);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.sic-ticker__item.is-activo {
+		animation: sic-ticker-entra var(--sic-dur-media) var(--sic-curva-salida);
+	}
+}
+
+@keyframes sic-ticker-entra {
+	from {
+		opacity: 0;
+		transform: translateY(0.5em);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}

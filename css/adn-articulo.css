@@ -1,0 +1,287 @@
+/* =====================================================================
+ * ADN Empresarial — Página de lectura (Ideas para mover tu negocio)
+ * Columna de lectura de ~760 px, IBM Plex Sans para el texto y Space
+ * Grotesk para titulares, marfil sobre verde profundo, lima como acento.
+ * Sin titulares gigantes ni efectos decorativos: prioridad, la lectura.
+ * ================================================================== */
+.adn-articulo {
+	color: var(--pia-marfil);
+}
+
+.adn-articulo__envoltorio {
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 32px var(--sic-sp-4, 1rem) 64px;
+}
+
+/* ---------- Migas ---------- */
+.adn-articulo__migas {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 28px;
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.8125rem;
+}
+
+.adn-articulo a {
+	border-left: 0;
+}
+
+.adn-articulo__migas a {
+	color: var(--pia-tech-texto-suave);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.adn-articulo__migas a:hover,
+.adn-articulo__migas a:focus-visible {
+	color: var(--pia-cian);
+}
+
+/* ---------- Cabecera de la nota ---------- */
+.adn-articulo__rotulo {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 16px;
+	font-family: var(--pia-font-titular);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.adn-articulo__categoria {
+	color: var(--pia-cian);
+}
+
+.adn-articulo__tipo {
+	padding: 3px 9px;
+	border: 1px solid var(--pia-cian-suave);
+	border-radius: 999px;
+	color: var(--pia-marfil);
+}
+
+.adn-articulo__titulo {
+	margin: 0 0 16px;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+	font-weight: 600;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+.adn-articulo__bajada {
+	margin: 0 0 24px;
+	color: var(--pia-tech-texto-suave);
+	font-family: var(--pia-font-cuerpo);
+	font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+	line-height: 1.55;
+}
+
+.adn-articulo__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px 24px;
+	padding: 16px 0;
+	border-top: 1px solid var(--pia-gris-borde);
+	border-bottom: 1px solid var(--pia-gris-borde);
+}
+
+.adn-articulo__firma {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin: 0;
+}
+
+.adn-articulo__autor {
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.adn-articulo__datos {
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.8125rem;
+}
+
+.adn-articulo__compartir {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 36px;
+	padding: 0 16px;
+	border: 1px solid var(--pia-cian-suave);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.adn-articulo__compartir:hover,
+.adn-articulo__compartir:focus-visible {
+	border-color: var(--pia-cian);
+	color: var(--pia-cian);
+}
+
+.adn-articulo__aviso {
+	flex-basis: 100%;
+	margin: 0;
+	color: var(--pia-cian);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.8125rem;
+	overflow-wrap: anywhere;
+}
+
+.adn-articulo__aviso:empty {
+	display: none;
+}
+
+/* ---------- Imagen principal ---------- */
+.adn-articulo__figura {
+	margin: 32px 0 36px;
+}
+
+.adn-articulo__figura img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	border: 1px solid var(--pia-gris-borde);
+	border-radius: 14px;
+}
+
+.adn-articulo__figura figcaption {
+	margin-top: 10px;
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.8125rem;
+	line-height: 1.5;
+}
+
+/* ---------- Cuerpo ---------- */
+.adn-articulo__cuerpo {
+	font-family: var(--pia-font-cuerpo);
+	font-size: 1.0625rem;
+	line-height: 1.75;
+}
+
+.adn-articulo__cuerpo p {
+	margin: 0 0 1.25em;
+	color: rgba(242, 241, 231, 0.9);
+}
+
+.adn-articulo__cuerpo h2 {
+	margin: 2.2em 0 0.7em;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+	font-weight: 600;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+}
+
+/* Filete lima corto sobre cada subtítulo. */
+.adn-articulo__cuerpo h2::before {
+	content: '';
+	display: block;
+	width: 32px;
+	height: 2px;
+	margin-bottom: 14px;
+	border-radius: 2px;
+	background: var(--pia-cian);
+}
+
+.adn-articulo__cuerpo ul {
+	margin: 0 0 1.4em;
+	padding-left: 1.25em;
+	color: rgba(242, 241, 231, 0.9);
+}
+
+.adn-articulo__cuerpo li {
+	margin-bottom: 0.5em;
+	padding-left: 0.25em;
+}
+
+.adn-articulo__cuerpo li::marker {
+	color: var(--pia-cian);
+}
+
+/* ---------- Nota editorial y volver ---------- */
+.adn-articulo__nota-editorial {
+	margin-top: 40px;
+	padding: 18px 20px;
+	border: 1px solid var(--pia-gris-borde);
+	border-left: 2px solid var(--pia-cian);
+	border-radius: 12px;
+	background: var(--pia-superficie);
+}
+
+.adn-articulo__nota-editorial p {
+	margin: 0;
+	color: var(--pia-tech-texto-suave);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.875rem;
+	line-height: 1.6;
+}
+
+.adn-articulo__volver {
+	margin: 32px 0 0;
+	font-family: var(--pia-font-titular);
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+.adn-articulo__volver a {
+	color: var(--pia-tech-texto-suave);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.adn-articulo__volver a:hover,
+.adn-articulo__volver a:focus-visible {
+	color: var(--pia-cian);
+}
+
+/* ---------- Celular ---------- */
+@media (max-width: 599px) {
+	.adn-articulo__envoltorio {
+		padding-top: 24px;
+		padding-bottom: 48px;
+	}
+
+	.adn-articulo__cuerpo {
+		font-size: 1rem;
+		line-height: 1.7;
+	}
+
+	.adn-articulo__meta {
+		align-items: flex-start;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.adn-articulo a,
+	.adn-articulo__compartir {
+		transition: none;
+	}
+}

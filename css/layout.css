@@ -1,0 +1,129 @@
+/*
+ * Barra lateral y pie con widgets (opt-in, ver inc/layout.php).
+ * Solo variables --sic-*: ningún color escrito aquí.
+ */
+
+/* Rejilla contenido + lateral: 1200 de contenedor, ~800 de columna, ~370 de lateral. */
+.sic-con-lateral {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--sic-sp-6);
+	align-items: start;
+}
+
+.sic-con-lateral__principal {
+	min-width: 0;
+}
+
+@media (min-width: 992px) {
+	.sic-con-lateral {
+		grid-template-columns: minmax(0, 1fr) var(--sic-lateral-ancho, 370px);
+		gap: var(--sic-sp-6) 30px;
+	}
+}
+
+/* Barra lateral */
+.sic-lateral {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sic-sp-5);
+	min-width: 0;
+}
+
+.sic-widget {
+	padding: var(--sic-sp-4);
+	background: var(--sic-lienzo-superficie);
+	border: 1px solid var(--sic-lienzo-borde);
+	border-radius: var(--sic-radio);
+	color: var(--sic-lienzo-texto);
+}
+
+.sic-widget__titulo {
+	position: relative;
+	margin: 0 0 var(--sic-sp-4);
+	padding-bottom: var(--sic-sp-2);
+	font-family: var(--sic-font-titular);
+	font-size: var(--sic-fs-md);
+	line-height: var(--sic-lh-titular);
+	color: var(--sic-lienzo-texto);
+}
+
+.sic-widget__titulo::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 48px;
+	height: 2px;
+	background: var(--sic-filete);
+}
+
+.sic-widget ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.sic-widget li + li {
+	margin-top: var(--sic-sp-3);
+}
+
+.sic-widget a {
+	color: var(--sic-lienzo-texto);
+}
+
+.sic-widget a:hover,
+.sic-widget a:focus-visible {
+	color: var(--sic-acento-enlace);
+}
+
+/* Los huecos publicitarios no llevan caja de widget. */
+.sic-widget:has(.sic-ads),
+.sic-widget:has(.pia-casa) {
+	padding: 0;
+	background: transparent;
+	border: 0;
+}
+
+/* Pie con widgets: 4 columnas sobre la franja legal. */
+.sic-pie__columnas {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--sic-sp-6);
+	max-width: var(--sic-ancho-contenedor);
+	margin: 0 auto;
+	padding: var(--sic-sp-6) var(--sic-sp-4) var(--sic-sp-5);
+	border-bottom: 1px solid var(--sic-pie-borde);
+}
+
+@media (min-width: 600px) {
+	.sic-pie__columnas {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 992px) {
+	.sic-pie__columnas {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.sic-pie__columna .sic-widget {
+	padding: 0;
+	background: transparent;
+	border: 0;
+	color: var(--sic-pie-texto);
+}
+
+.sic-pie__columna .sic-widget__titulo {
+	color: var(--sic-pie-texto);
+}
+
+.sic-pie__columna .sic-widget a {
+	color: var(--sic-pie-suave);
+}
+
+.sic-pie__columna .sic-widget a:hover,
+.sic-pie__columna .sic-widget a:focus-visible {
+	color: var(--sic-pie-texto);
+}

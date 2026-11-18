@@ -1,0 +1,430 @@
+/*
+Theme Name: sic-prensa
+Description: Tema padre para medios de prensa. No conoce ninguna marca: lee solo variables --sic-* que declara cada tema hijo.
+Author: SICOMMER INT LLC
+Version: 0.4.6
+Requires at least: 6.5
+Requires PHP: 8.1
+License: GPL-2.0-or-later
+Text Domain: sic-prensa
+*/
+
+/* Contrato de tokens (masterplan/DESIGN.md). Único lugar con colores escritos (TEMA-003). */
+:root {
+	--sic-lienzo: #F5F5F5;
+	--sic-lienzo-superficie: #FFFFFF;
+	--sic-lienzo-superficie-alta: var(--sic-lienzo-superficie);
+	--sic-lienzo-texto: #111111;
+	--sic-lienzo-suave: #595959;
+	--sic-lienzo-rotulo: var(--sic-lienzo-texto);
+	--sic-lienzo-borde: #DDDDDD;
+	--sic-lectura: #FFFFFF;
+	--sic-lectura-superficie: #F5F5F5;
+	--sic-lectura-texto: #111111;
+	--sic-lectura-suave: #595959;
+	--sic-lectura-borde: #DDDDDD;
+	--sic-cabecera: #111111;
+	--sic-cabecera-texto: #FFFFFF;
+	--sic-cabecera-suave: #BFBFBF;
+	--sic-cabecera-borde: #BFBFBF;
+	--sic-nav: #111111;
+	--sic-nav-texto: #FFFFFF;
+	--sic-nav-hover: #FFFFFF;
+	--sic-nav-activo: #FFFFFF;
+	--sic-nav-activo-texto: #111111;
+	--sic-nav-borde: #BFBFBF;
+	--sic-nav-superficie: #111111;
+	--sic-nav-superficie-texto: #FFFFFF;
+	--sic-pie: #111111;
+	--sic-pie-texto: #FFFFFF;
+	--sic-pie-suave: #BFBFBF;
+	--sic-pie-borde: #BFBFBF;
+	--sic-acento: #1F2937;
+	--sic-acento-texto: #FFFFFF;
+	--sic-acento-enlace: var(--sic-acento);
+	--sic-acento-luz: #E5E5E5;
+	--sic-acento-luz-suave: transparent;
+	--sic-acento-luz-tenue: transparent;
+	--sic-filete: none;
+	--sic-halo: none;
+	--sic-reticula: none;
+	--sic-reticula-tam: 32px;
+	--sic-urgente: #B42318;
+	--sic-urgente-texto: #FFFFFF;
+	--sic-exito: #166534;
+	--sic-error: #B42318;
+	--sic-foco: #111111;
+	--sic-foco-oscuro: #FFFFFF;
+	--sic-campo-borde: #595959;
+	--sic-campo-borde-oscuro: #BFBFBF;
+	--sic-pub-fondo: #111111;
+	--sic-pub-luz: #E5E5E5;
+
+	--sic-font-titular: 'Helvetica Neue', Arial, sans-serif;
+	--sic-font-cuerpo: 'Helvetica Neue', Arial, sans-serif;
+	--sic-font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+	--sic-h1-peso: 700;
+	--sic-h2-peso: 700;
+	--sic-nav-peso: 600;
+	--sic-etiqueta-peso: 700;
+	--sic-titular-tracking: 0;
+	--sic-fs-xs: 0.75rem;
+	--sic-fs-sm: 0.875rem;
+	--sic-fs-base: 1rem;
+	--sic-fs-md: 1.25rem;
+	--sic-fs-lg: 1.5625rem;
+	--sic-fs-xl: 1.953rem;
+	--sic-fs-2xl: 2.441rem;
+	--sic-fs-3xl: 3.052rem;
+	--sic-lh-titular: 1.15;
+	--sic-lh-texto: 1.55;
+	--sic-medida: 68ch;
+
+	--sic-sp-0: 0;
+	--sic-sp-1: 0.25rem;
+	--sic-sp-2: 0.5rem;
+	--sic-sp-3: 0.75rem;
+	--sic-sp-4: 1rem;
+	--sic-sp-5: 1.5rem;
+	--sic-sp-6: 2rem;
+	--sic-sp-7: 3rem;
+	--sic-sp-8: 4rem;
+	--sic-radio: 12px;
+	--sic-radio-sm: 6px;
+	--sic-radio-boton: 999px;
+	--sic-radio-pildora: 999px;
+	--sic-sombra-tarjeta: 0 6px 24px rgb(0 0 0 / 0.07);
+	--sic-sombra-flotante: 0 16px 40px rgb(0 0 0 / 0.35);
+	--sic-dur-instantanea: 80ms;
+	--sic-dur-rapida: 150ms;
+	--sic-dur-media: 240ms;
+	--sic-dur-lenta: 400ms;
+	--sic-curva-salida: cubic-bezier(0.2, 0, 0, 1);
+	--sic-curva-entrada: cubic-bezier(0.4, 0, 1, 1);
+	--sic-curva-estandar: cubic-bezier(0.2, 0, 0.2, 1);
+	--sic-ancho-contenedor: 1200px;
+	--sic-ancho-lateral: 300px;
+}
+
+/* Base */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-padding-top: var(--sic-sp-8);
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--sic-lienzo);
+	color: var(--sic-lienzo-texto);
+	font-family: var(--sic-font-cuerpo);
+	font-size: var(--sic-fs-base);
+	line-height: var(--sic-lh-texto);
+}
+
+body.sic-zona-lectura {
+	background: var(--sic-lectura);
+	color: var(--sic-lectura-texto);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+a {
+	color: inherit;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--sic-font-titular);
+	font-weight: var(--sic-h2-peso);
+	line-height: var(--sic-lh-titular);
+	letter-spacing: var(--sic-titular-tracking);
+}
+
+/* Foco visible: claro u oscuro según la zona (TEMA-011) */
+:focus-visible {
+	outline: 2px solid var(--sic-foco);
+	outline-offset: 2px;
+}
+
+[data-tono="oscuro"] :focus-visible,
+[data-tono="oscuro"]:focus-visible {
+	outline-color: var(--sic-foco-oscuro);
+}
+
+/* Saltar al contenido */
+.sic-saltar {
+	position: absolute;
+	left: var(--sic-sp-2);
+	top: -100px;
+	z-index: 1000;
+	padding: var(--sic-sp-2) var(--sic-sp-4);
+	background: var(--sic-acento);
+	color: var(--sic-acento-texto);
+	border-radius: var(--sic-radio-sm);
+	text-decoration: none;
+}
+
+.sic-saltar:focus {
+	top: var(--sic-sp-2);
+	outline-color: var(--sic-foco-oscuro);
+}
+
+/* Cabecera oscura */
+.sic-cabecera {
+	background: var(--sic-cabecera);
+	background-image: var(--sic-reticula);
+	background-size: var(--sic-reticula-tam) var(--sic-reticula-tam);
+	color: var(--sic-cabecera-texto);
+	border-bottom: 1px solid var(--sic-cabecera-borde);
+}
+
+.sic-cabecera__fila {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sic-sp-4);
+	max-width: var(--sic-ancho-contenedor);
+	margin: 0 auto;
+	padding: var(--sic-sp-3) var(--sic-sp-4);
+}
+
+.sic-logo {
+	display: flex;
+	align-items: center;
+	gap: var(--sic-sp-4);
+	min-width: 0;
+}
+
+.sic-logo a {
+	display: inline-block;
+	color: var(--sic-cabecera-texto);
+	text-decoration: none;
+}
+
+.sic-logo img {
+	display: block;
+	width: auto;
+	max-height: 48px;
+}
+
+.logo-text {
+	font-family: var(--sic-font-titular);
+	font-size: var(--sic-fs-lg);
+	font-weight: var(--sic-h1-peso);
+	line-height: var(--sic-lh-titular);
+}
+
+/* Navegación principal */
+.sic-nav {
+	color: var(--sic-nav-texto);
+	font-weight: var(--sic-nav-peso);
+}
+
+.sic-nav ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sic-sp-1) var(--sic-sp-4);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.sic-nav a {
+	display: inline-block;
+	padding: var(--sic-sp-2) 0;
+	color: var(--sic-nav-texto);
+	text-decoration: none;
+}
+
+.sic-nav a:hover,
+.sic-nav .current-menu-item > a {
+	color: var(--sic-nav-hover);
+	text-decoration: underline;
+	text-decoration-color: var(--sic-acento-luz);
+	text-underline-offset: 6px;
+}
+
+.sic-nav .sub-menu {
+	display: none;
+}
+
+/* Contenido */
+.sic-contenido:focus {
+	outline: none;
+}
+
+.sic-envoltorio {
+	max-width: var(--sic-ancho-contenedor);
+	margin: 0 auto;
+	padding: var(--sic-sp-6) var(--sic-sp-4);
+}
+
+.sic-tarjeta {
+	padding: var(--sic-sp-4) 0;
+	border-bottom: 1px solid var(--sic-lienzo-borde);
+}
+
+.sic-tarjeta__titulo {
+	margin: 0 0 var(--sic-sp-2);
+	font-size: var(--sic-fs-lg);
+}
+
+.sic-tarjeta__titulo a {
+	text-decoration: none;
+}
+
+.sic-tarjeta__titulo a:hover {
+	text-decoration: underline;
+}
+
+.sic-tarjeta__sumario {
+	max-width: var(--sic-medida);
+	color: var(--sic-lienzo-suave);
+}
+
+/* Pie */
+.sic-pie {
+	background: var(--sic-pie);
+	background-image: var(--sic-reticula);
+	background-size: var(--sic-reticula-tam) var(--sic-reticula-tam);
+	color: var(--sic-pie-texto);
+	border-top: 1px solid var(--sic-pie-borde);
+}
+
+.sic-pie__fila {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sic-sp-4);
+	max-width: var(--sic-ancho-contenedor);
+	margin: 0 auto;
+	padding: var(--sic-sp-5) var(--sic-sp-4);
+}
+
+.sic-pie__lista {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sic-sp-2) var(--sic-sp-4);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.sic-pie a {
+	color: var(--sic-pie-texto);
+}
+
+.sic-pie__copy {
+	margin: 0;
+	color: var(--sic-pie-suave);
+	font-size: var(--sic-fs-sm);
+}
+
+/* Comentarios de la nota: sobre la zona de lectura clara */
+.sic-comentarios {
+	max-width: var(--sic-medida);
+	margin: var(--sic-sp-6) auto;
+	padding: var(--sic-sp-5);
+	background: var(--sic-lectura);
+	color: var(--sic-lectura-texto);
+	border: 1px solid var(--sic-lectura-borde);
+	border-radius: var(--sic-radio);
+}
+
+.sic-comentarios__titulo,
+.sic-comentarios__responder {
+	margin: 0 0 var(--sic-sp-4);
+	font-size: var(--sic-fs-md);
+}
+
+.sic-comentarios__lista,
+.sic-comentarios__lista .children {
+	margin: 0 0 var(--sic-sp-5);
+	padding: 0;
+	list-style: none;
+}
+
+.sic-comentarios__lista .children {
+	margin: var(--sic-sp-4) 0 0 var(--sic-sp-5);
+}
+
+.sic-comentarios .comment-body {
+	padding: var(--sic-sp-4) 0;
+	border-top: 1px solid var(--sic-lectura-borde);
+}
+
+.sic-comentarios .comment-meta,
+.sic-comentarios__cerrados,
+.sic-comentarios .comment-notes {
+	color: var(--sic-lectura-suave);
+	font-size: var(--sic-fs-sm);
+}
+
+.sic-comentarios .avatar {
+	float: left;
+	margin-right: var(--sic-sp-3);
+	border-radius: 50%;
+}
+
+.sic-comentarios label {
+	display: block;
+	margin-bottom: var(--sic-sp-1);
+	font-weight: 600;
+}
+
+.sic-comentarios input[type="text"],
+.sic-comentarios input[type="email"],
+.sic-comentarios input[type="url"],
+.sic-comentarios textarea {
+	box-sizing: border-box;
+	width: 100%;
+	padding: var(--sic-sp-2) var(--sic-sp-3);
+	border: 1px solid var(--sic-lectura-borde);
+	border-radius: var(--sic-radio-sm);
+	background: var(--sic-lectura);
+	color: var(--sic-lectura-texto);
+	font: inherit;
+}
+
+.sic-comentarios :focus-visible {
+	outline: 2px solid var(--sic-foco);
+	outline-offset: 2px;
+}
+
+.sic-comentarios .comment-form-cookies-consent label {
+	display: inline;
+	font-weight: 400;
+}
+
+/* Botón de acción del padre (formulario de comentarios, 404) */
+.sic-boton {
+	display: inline-block;
+	padding: var(--sic-sp-2) var(--sic-sp-5);
+	border: 0;
+	border-radius: var(--sic-radio-sm);
+	background: var(--sic-acento);
+	color: var(--sic-acento-texto);
+	font: inherit;
+	font-weight: 600;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* Movimiento solo si el lector no pidió reducirlo */
+@media (prefers-reduced-motion: no-preference) {
+	.sic-nav a {
+		transition: color var(--sic-dur-rapida) var(--sic-curva-estandar);
+	}
+}

@@ -1,0 +1,188 @@
+/* =====================================================================
+ * ADN Empresarial — «Ideas para mover tu negocio» (portada)
+ * Microsección de profundidad bajo Visión empresarial: misma cabecera
+ * (filete lima + título en mayúsculas), tres tarjetas horizontales
+ * (imagen a la izquierda, texto a la derecha) separadas por filetes.
+ * Contenido: js/adn-ideas.js. Sin JS queda oculta.
+ * ================================================================== */
+.adn-ideas[hidden] {
+	display: none;
+}
+
+.adn-ideas {
+	padding-top: var(--adn-ritmo, 32px);
+	border-top: 1px solid var(--pia-gris-borde);
+	color: var(--pia-marfil);
+}
+
+.adn-ideas__cabeza {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--pia-sp-4);
+}
+
+.adn-ideas__titulo-seccion {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	margin: 0;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+.adn-ideas__titulo-seccion::before {
+	content: '';
+	flex: none;
+	width: 4px;
+	height: 1.1em;
+	border-radius: 2px;
+	background: var(--pia-cian);
+}
+
+.adn-ideas__bajada {
+	margin: 8px 0 22px;
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.9375rem;
+	line-height: 1.5;
+}
+
+/* ---------- Tarjetas horizontales ---------- */
+.adn-ideas__lista {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.adn-ideas__item + .adn-ideas__item {
+	margin-top: 18px;
+	padding-top: 18px;
+	border-top: 1px solid var(--pia-gris-borde);
+}
+
+.adn-ideas__tarjeta {
+	display: grid;
+	grid-template-columns: 220px minmax(0, 1fr);
+	gap: 20px;
+	align-items: center;
+}
+
+.adn-ideas__imagen {
+	display: block;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	border: 1px solid var(--pia-gris-borde);
+	border-radius: 12px;
+	background: var(--pia-superficie);
+}
+
+.adn-ideas__imagen img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.adn-ideas__tarjeta:hover .adn-ideas__imagen img {
+	transform: scale(1.03);
+}
+
+.adn-ideas__cuerpo {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.adn-ideas__rotulo {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+	font-family: var(--pia-font-titular);
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.adn-ideas__categoria {
+	color: var(--pia-cian);
+}
+
+.adn-ideas__tipo {
+	padding: 2px 8px;
+	border: 1px solid var(--pia-cian-suave);
+	border-radius: 999px;
+	color: var(--pia-marfil);
+}
+
+.adn-ideas__titulo {
+	margin: 2px 0 0;
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.0625rem, 0.95rem + 0.3vw, 1.25rem);
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: -0.015em;
+	text-wrap: pretty;
+}
+
+.adn-ideas .adn-ideas__titulo a {
+	border-left: 0;
+	color: var(--pia-marfil);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.adn-ideas .adn-ideas__titulo a:hover,
+.adn-ideas .adn-ideas__titulo a:focus-visible {
+	color: var(--pia-cian);
+}
+
+.adn-ideas__descripcion {
+	margin: 0;
+	color: var(--pia-tech-texto-suave);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.9375rem;
+	line-height: 1.5;
+}
+
+.adn-ideas__lectura {
+	margin: 2px 0 0;
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.6875rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+/* ---------- Celular: imagen arriba, texto debajo ---------- */
+@media (max-width: 599px) {
+	.adn-ideas__tarjeta {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
+	}
+
+	.adn-ideas__descripcion {
+		font-size: 0.875rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.adn-ideas__imagen img,
+	.adn-ideas .adn-ideas__titulo a {
+		transition: none;
+	}
+
+	.adn-ideas__tarjeta:hover .adn-ideas__imagen img {
+		transform: none;
+	}
+}

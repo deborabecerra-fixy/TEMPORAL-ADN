@@ -1,0 +1,333 @@
+/* Menú principal: submenús, mega menú y menú móvil (TEMA-005, TEMA-006). Solo variables --sic-*. */
+
+.sic-nav__lista > li {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+/* Botón disclosure: aparece solo si el JS corre (sin JS el enlace sigue funcionando). */
+.sic-nav__subtoggle,
+.sic-nav__toggle {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	min-height: 44px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--sic-nav-texto);
+	font: inherit;
+	cursor: pointer;
+}
+
+.sic-nav[data-js] .sic-nav__subtoggle {
+	display: inline-flex;
+}
+
+.sic-nav__chevron {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-right: 2px solid currentcolor;
+	border-bottom: 2px solid currentcolor;
+	transform: translateY(-2px) rotate(45deg);
+}
+
+.is-abierto > .sic-nav__subtoggle .sic-nav__chevron {
+	transform: translateY(2px) rotate(-135deg);
+}
+
+/* Foco visible: anillo de 2 px y offset de 2 px (zona oscura por defecto). */
+.sic-nav a:focus-visible,
+.sic-nav button:focus-visible {
+	outline: 2px solid var(--sic-foco-oscuro);
+	outline-offset: 2px;
+}
+
+.sic-nav[data-tono="claro"] a:focus-visible,
+.sic-nav[data-tono="claro"] button:focus-visible {
+	outline-color: var(--sic-foco);
+}
+
+/* Paneles: submenú simple y mega menú. */
+.sic-nav .sic-mega,
+.sic-nav .sub-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 50;
+	min-width: 16rem;
+	padding: var(--sic-sp-4);
+	border: 1px solid var(--sic-nav-borde);
+	background: var(--sic-nav-superficie);
+	color: var(--sic-nav-superficie-texto);
+	box-shadow: var(--sic-sombra-flotante);
+}
+
+.sic-nav .sub-menu {
+	flex-direction: column;
+	gap: var(--sic-sp-1);
+	list-style: none;
+}
+
+.sic-nav .sic-mega {
+	display: none;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--sic-sp-5);
+	width: min(64rem, 92vw);
+}
+
+.sic-nav .sic-mega[data-columnas="2"] {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sic-nav .sic-mega[data-columnas="4"] {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sic-nav .sic-mega ul {
+	display: block;
+}
+
+.sic-nav .sic-mega li {
+	margin: 0;
+}
+
+.sic-nav .sic-mega a,
+.sic-nav .sub-menu a {
+	display: block;
+	min-height: 44px;
+	padding: var(--sic-sp-2) 0;
+	color: var(--sic-nav-superficie-texto);
+}
+
+.sic-nav .sic-mega__notas {
+	grid-column: span 2;
+}
+
+.sic-nav .sic-mega__subcats:only-child,
+.sic-nav .sic-mega__notas:only-child {
+	grid-column: 1 / -1;
+}
+
+/* Abierto con el botón (teclado y tacto) o con hover real. */
+.sic-nav li.is-abierto > .sic-mega {
+	display: grid;
+}
+
+.sic-nav li.is-abierto > .sub-menu {
+	display: flex;
+}
+
+@media (hover: hover) and (min-width: 901px) {
+	.sic-nav li.sic-tiene-panel:not(.sic-descartado):hover > .sic-mega {
+		display: grid;
+	}
+
+	.sic-nav li.sic-tiene-panel:not(.sic-descartado):hover > .sub-menu {
+		display: flex;
+	}
+}
+
+/* Menú móvil: el nav es un diálogo a pantalla completa cuando está abierto. */
+.sic-nav__barras,
+.sic-nav__barras::before,
+.sic-nav__barras::after {
+	display: block;
+	width: 1.5rem;
+	height: 2px;
+	background: currentcolor;
+	content: "";
+}
+
+.sic-nav__barras {
+	position: relative;
+}
+
+.sic-nav__barras::before {
+	position: absolute;
+	top: -7px;
+}
+
+.sic-nav__barras::after {
+	position: absolute;
+	top: 7px;
+}
+
+html.sic-menu-abierto {
+	overflow: hidden;
+}
+
+@media (max-width: 900px) {
+	.sic-nav[data-js] .sic-nav__toggle {
+		display: inline-flex;
+	}
+
+	.sic-nav[data-js] .sic-nav__lista {
+		display: none;
+	}
+
+	.sic-nav__dialogo.is-abierto {
+		position: fixed;
+		inset: 0;
+		z-index: 100;
+		overflow-y: auto;
+		padding: var(--sic-sp-8) var(--sic-sp-4) var(--sic-sp-6);
+		background: var(--sic-nav);
+	}
+
+	.sic-nav__dialogo.is-abierto .sic-nav__toggle {
+		position: fixed;
+		top: var(--sic-sp-3);
+		right: var(--sic-sp-3);
+		z-index: 101;
+	}
+
+	.sic-nav__dialogo.is-abierto .sic-nav__lista {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		gap: 0;
+	}
+
+	.sic-nav__lista > li {
+		flex-wrap: wrap;
+		justify-content: space-between;
+		border-bottom: 1px solid var(--sic-nav-borde);
+	}
+
+	.sic-nav__lista > li > a {
+		flex: 1;
+		min-height: 44px;
+	}
+
+	.sic-nav .sic-mega,
+	.sic-nav .sub-menu {
+		position: static;
+		flex-basis: 100%;
+		width: auto;
+		min-width: 0;
+		box-shadow: none;
+		border: 0;
+		padding: var(--sic-sp-2) 0 var(--sic-sp-4);
+	}
+
+	.sic-nav .sic-mega,
+	.sic-nav .sic-mega[data-columnas] {
+		grid-template-columns: 1fr;
+	}
+
+	.sic-nav .sic-mega__notas {
+		grid-column: auto;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.sic-nav .sic-mega,
+	.sic-nav .sub-menu {
+		animation: sic-nav-entrada var(--sic-dur-media) var(--sic-curva-salida);
+	}
+
+	.sic-nav__chevron {
+		transition: transform var(--sic-dur-rapida) var(--sic-curva-estandar);
+	}
+}
+
+@keyframes sic-nav-entrada {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+/*
+ * TEMA-024: con el menú móvil abierto, el diálogo (position: fixed) debe cubrir la pantalla.
+ * backdrop-filter, filter y transform en un ancestro lo convertirían en bloque contenedor del
+ * fijo y el último ítem quedaría recortado. El selector con #theme-header gana a un hijo que
+ * estile la cabecera por id sin recurrir a !important.
+ */
+html.sic-menu-abierto .sic-cabecera,
+html.sic-menu-abierto #theme-header.sic-cabecera {
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+	filter: none;
+	transform: none;
+	z-index: 100;
+}
+
+/* Iconos del sprite (inc/iconos.php): heredan color y tamaño del texto. */
+.sic-icono {
+	width: 1em;
+	height: 1em;
+	flex: none;
+	fill: none;
+	stroke: currentcolor;
+	stroke-width: 1.5;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	vertical-align: -0.125em;
+}
+
+/* Enlace «Ver todo en…» al pie del panel (menu_abre_panel). Ocupa toda la fila. */
+.sic-nav .sic-mega__todo {
+	grid-column: 1 / -1;
+	margin: var(--sic-sp-2) 0 0;
+	padding-top: var(--sic-sp-3);
+	border-top: 1px solid var(--sic-nav-borde);
+}
+
+.sic-nav .sic-mega__todo a {
+	font-weight: var(--sic-etiqueta-peso);
+	color: var(--sic-acento-enlace);
+}
+
+.sic-nav .sic-mega__todo a::after {
+	content: " \2192";
+}
+
+/* Notas del panel como tarjetas completas (tarjeta_imagen): rejilla de 4 con imagen arriba y titular abajo. */
+.sic-nav .sic-mega__notas:has(.sic-mega__nota--tarjeta) {
+	display: grid;
+	grid-column: 1 / -1;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--sic-sp-4);
+}
+
+.sic-nav .sic-mega__nota--tarjeta .sic-tarjeta--media {
+	display: block;
+	padding: 0;
+	border: 0;
+}
+
+.sic-nav .sic-mega__nota--tarjeta .sic-tarjeta__media {
+	min-height: 0;
+	margin-bottom: var(--sic-sp-2);
+	padding: 0;
+}
+
+.sic-nav .sic-mega__nota--tarjeta .sic-tarjeta__titulo {
+	margin: 0;
+	font-size: var(--sic-fs-sm);
+	line-height: var(--sic-lh-titular);
+}
+
+.sic-nav .sic-mega__nota--tarjeta .sic-tarjeta__titulo a {
+	min-height: 0;
+	padding: 0;
+}
+
+.sic-nav .sic-mega__nota--tarjeta .sic-tarjeta__sello {
+	top: var(--sic-sp-2);
+	left: var(--sic-sp-2);
+}
+
+@media (max-width: 900px) {
+	.sic-nav .sic-mega__notas:has(.sic-mega__nota--tarjeta) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}

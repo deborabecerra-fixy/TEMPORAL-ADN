@@ -1,0 +1,291 @@
+/* =====================================================================
+ * ADN Empresarial — Grilla editorial de la portada
+ *
+ * Antes: dos grillas apiladas. Arriba .sic-con-lateral (noticias | lateral);
+ * debajo, Visión empresarial con su propia grilla (Visión | Pulso). La de
+ * abajo no podía empezar hasta que terminara la columna más alta de la de
+ * arriba (la lateral), y eso dejaba ~200 px vacíos bajo el primer banner.
+ * Además cada bloque traía su margen propio (24, 32, 56, 40 px…), así que
+ * los espacios entre noticias y banners eran irregulares.
+ *
+ * Ahora: una sola grilla de dos columnas (la de .sic-con-lateral, 1fr +
+ * 370 px, ~67/33) en la que cada columna es una pila vertical:
+ *   editorial → noticias destacadas · banner 1 · Visión empresarial · banner 2
+ *   lateral   → anuncio 300×600 · Pulso de los negocios · Secciones
+ * Los espacios los da un único ritmo (gap), no márgenes sueltos: ninguna
+ * altura fija, ninguna posición absoluta. Cada columna mide lo que mide su
+ * contenido y las dos arrancan alineadas arriba.
+ * ================================================================== */
+:root {
+	--adn-ritmo: 32px;
+}
+
+@media (max-width: 699px) {
+	:root {
+		--adn-ritmo: 24px;
+	}
+}
+
+/* ---------- Contenedor ---------- */
+/* El billboard y el banner de pie ya traen su margen: sin relleno extra
+ * el aire hasta el contenido queda en el mismo ritmo de 32 px. */
+html body.home #contenido > .sic-envoltorio {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+html body.home #contenido .sic-con-lateral {
+	align-items: start;
+	row-gap: var(--adn-ritmo);
+}
+
+/* ---------- Columna editorial ---------- */
+html body.home #contenido .sic-con-lateral__principal,
+html body.home #contenido .sic-con-lateral__principal .sic-nota__cuerpo {
+	display: flex;
+	flex-direction: column;
+	gap: var(--adn-ritmo);
+	min-width: 0;
+}
+
+/* En celular el <article> de la portada agregaba 16 px a los lados: las
+ * noticias y el banner 1 quedaban más angostos que Visión y el banner 2.
+ * Sin ese relleno, todos los bloques de la columna comparten bordes. */
+html body.home #contenido .sic-con-lateral__principal > .sic-pagina {
+	padding-inline: 0;
+}
+
+/* Los bloques ya no ponen su propio margen: lo pone el gap. */
+html body.home #contenido .sic-con-lateral__principal > *,
+html body.home #contenido .sic-con-lateral__principal .sic-nota__cuerpo > * {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+/* Banners horizontales: borde con borde con las noticias, sin aire extra
+ * propio (la pieza conserva su tamaño y proporción). */
+html body.home #contenido .pia-franja-publicitaria[class] {
+	margin-inline: 0;
+	padding-block: 0;
+}
+
+html body.home #contenido .pia-franja-publicitaria .sic-ads {
+	margin-block: 0;
+}
+
+/* ---------- Bloque destacado: secundarias | principal ----------
+ * La fila es un wp-block-columns con flex-basis en línea (33/66): como
+ * grilla, el reparto lo deciden las columnas (2fr | 3fr ≈ 294 | 442 px) sin
+ * pelear con el estilo en línea. El orden (secundarias a la izquierda) lo
+ * pone adn-sobre-efectos.css.
+ * La columna de secundarias toma el alto de la principal y cada nota ocupa
+ * la mitad (filas 1fr): el aire queda repartido entre las dos, no acumulado
+ * abajo. Sin alturas fijas: lo define el contenido de la nota principal.
+ * Entre 992 y 1199 px la columna editorial mide ~560 px y las secundarias
+ * quedarían comprimidas: el bloque se apila (principal arriba, secundarias
+ * en lista debajo). Debajo de 782 px WordPress ya lo apila igual. */
+@media (min-width: 782px) and (max-width: 991px), (min-width: 1200px) {
+	html body.home #contenido .pia-fila-apertura {
+		display: grid;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+		gap: var(--adn-ritmo);
+		align-items: stretch;
+	}
+
+	html body.home #contenido .pia-fila-apertura .pia-secundarias,
+	html body.home #contenido .pia-fila-apertura .pia-secundarias .wp-block-post-template {
+		height: 100%;
+	}
+
+	html body.home #contenido .pia-fila-apertura .pia-secundarias .wp-block-post-template {
+		grid-auto-rows: 1fr;
+	}
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+	html body.home #contenido .pia-fila-apertura {
+		display: flex;
+		flex-direction: column;
+		gap: var(--adn-ritmo);
+	}
+
+	html body.home #contenido .pia-fila-apertura > .wp-block-column:first-child {
+		order: 0;
+	}
+
+	/* Apiladas debajo de la principal, las dos secundarias van lado a lado:
+	 * sin el filete ni el margen que las separan cuando están una sobre otra. */
+	html body.home #contenido .pia-fila-apertura .pia-secundarias .wp-block-post-template {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: var(--adn-ritmo);
+	}
+
+	html body.home #contenido .pia-fila-apertura .pia-secundarias .wp-block-post + .wp-block-post::before {
+		content: none;
+	}
+}
+
+/* La nota principal sin relleno superior: su borde de arriba coincide con
+ * el de las secundarias. */
+html body.home #contenido .pia-apertura .wp-block-post {
+	padding-top: 0;
+}
+
+/* Secundarias: lista de dos notas horizontales, cada una en una tarjeta
+ * discreta (sin fondo en reposo) separadas por un filete fino. La imagen ocupa exactamente las filas del
+ * texto: arranca donde empieza la categoría y termina donde termina la
+ * fecha, así su alto es el del bloque de texto real. Las filas vacías de
+ * 1fr arriba y abajo centran el conjunto dentro de la mitad de columna. */
+html body.home #contenido .pia-secundarias .wp-block-post-template {
+	--adn-sec-relleno: 10px;
+	gap: 18px;
+	width: auto;
+	max-width: none;
+	margin-inline: calc(-1 * (var(--adn-sec-relleno) + 1px));
+}
+
+html body.home #contenido .pia-secundarias .wp-block-post {
+	display: grid;
+	grid-template-columns: 112px minmax(0, 1fr);
+	grid-template-rows: 1fr auto auto auto 1fr;
+	grid-template-areas:
+		'. .'
+		'imagen categoria'
+		'imagen titulo'
+		'imagen fecha'
+		'. .';
+	column-gap: 16px;
+	row-gap: 0;
+	position: relative;
+	padding: var(--adn-sec-relleno);
+	border: 1px solid transparent;
+	border-radius: 14px;
+	background: transparent;
+	box-shadow: none;
+	overflow: visible;
+	transform: none;
+	transition:
+		background-color 200ms ease,
+		border-color 200ms ease;
+}
+
+/* Hover sutil: fondo apenas más claro y contorno lima muy tenue. Sin
+ * desplazamiento ni halo (anula el gesto genérico de pia-senal.css). */
+html body.home #contenido .pia-secundarias .wp-block-post:hover,
+html body.home #contenido .pia-secundarias .wp-block-post:focus-within {
+	background: rgba(242, 241, 231, 0.035);
+	border: 1px solid color-mix(in srgb, var(--pia-cian) 18%, transparent);
+	box-shadow: none;
+	transform: none;
+}
+
+/* Filete entre las dos notas: vive en el hueco que las separa, fuera del
+ * fondo de cada tarjeta, así el hover nunca lo corta. */
+html body.home #contenido .pia-secundarias .wp-block-post + .wp-block-post::before {
+	content: '';
+	position: absolute;
+	left: calc(var(--adn-sec-relleno) + 1px);
+	right: calc(var(--adn-sec-relleno) + 1px);
+	top: -10px;
+	height: 1px;
+	background: var(--pia-gris-borde);
+	pointer-events: none;
+}
+
+/* Mismo alto que el bloque de texto, de la categoría a la fecha. */
+html body.home #contenido .pia-secundarias .wp-block-post-featured-image {
+	grid-area: imagen;
+	align-self: stretch;
+	width: 112px;
+	margin: 0;
+}
+
+html body.home #contenido .pia-secundarias .wp-block-post-featured-image a {
+	display: block;
+	height: 100%;
+}
+
+/* La imagen trae aspect-ratio 16/9 en línea: con alto explícito manda el
+ * contenedor y object-fit recorta sin deformar. */
+html body.home #contenido .pia-secundarias .wp-block-post-featured-image img {
+	height: 100%;
+	opacity: 1;
+	box-shadow: none;
+	transform: none;
+	transition: transform 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Radio de la imagen concéntrico con el de la tarjeta (14 − relleno). */
+html body.home #contenido .pia-secundarias :is(.wp-block-post-featured-image, .wp-block-post-featured-image a, .wp-block-post-featured-image img) {
+	border-radius: 8px;
+}
+
+html body.home #contenido .pia-secundarias .wp-block-post:hover .wp-block-post-featured-image img {
+	transform: scale(1.03);
+}
+
+html body.home #contenido .pia-secundarias .wp-block-post-terms {
+	grid-area: categoria;
+	margin-bottom: 8px;
+}
+
+html body.home #contenido .pia-secundarias .wp-block-post-title {
+	grid-area: titulo;
+}
+
+html body.home #contenido .pia-secundarias .wp-block-post-date {
+	grid-area: fecha;
+	margin-top: 8px;
+}
+
+@media (max-width: 599px) {
+	html body.home #contenido .pia-secundarias .wp-block-post {
+		grid-template-columns: 96px minmax(0, 1fr);
+		column-gap: 14px;
+	}
+
+	html body.home #contenido .pia-secundarias .wp-block-post-featured-image {
+		width: 96px;
+	}
+}
+
+/* ---------- Columna lateral ---------- */
+html body.home #contenido .sic-lateral {
+	gap: var(--adn-ritmo);
+}
+
+html body.home #contenido .sic-lateral > * {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+/* Secciones va pegado al Pulso: 28 px entre ambos (el gap general es otro). */
+html body.home #contenido .sic-lateral > .adn-pulso + .adn-secciones {
+	margin-top: calc(28px - var(--adn-ritmo));
+}
+
+/* El anuncio 300×600 arranca a la misma altura que las noticias. */
+html body.home #contenido .sic-lateral #pia-ad-sidebar {
+	margin: 0;
+}
+
+/* ---------- Tablet y celular: una sola columna ----------
+ * Orden: noticias · banner 1 · Visión · Ideas · banner 2 · Pulso · Secciones · anuncio.
+ * El Pulso sube al principio de la lateral para quedar junto a Visión y para
+ * que el banner 2 y el anuncio vertical no queden pegados. */
+@media (max-width: 991px) {
+	html body.home #contenido .sic-lateral :is(.adn-pulso, .adn-secciones) {
+		order: -1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html body.home #contenido .pia-secundarias .wp-block-post,
+	html body.home #contenido .pia-secundarias .wp-block-post-featured-image img {
+		transition: none;
+	}
+
+	html body.home #contenido .pia-secundarias .wp-block-post:hover .wp-block-post-featured-image img {
+		transform: none;
+	}
+}

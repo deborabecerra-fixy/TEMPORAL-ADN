@@ -1,0 +1,209 @@
+/*
+ * ADN Empresarial — Tokens de marca (1.7.0: manual de marca Fixy + estética «Edición cero»)
+ * =========================================
+ * Misma arquitectura y misma personalidad que PrimixIA (capa oscura, señal
+ * de luz, lienzo vivo, tarjetas con relieve), con la identidad de ADN
+ * (brief Fixy 2026-11: verde profundo, lima eléctrico, marfil, oliva):
+ *
+ *   verde profundo como lienzo   (donde PrimixIA usa negro neural)
+ *   lima eléctrico como señal    (donde PrimixIA usa cian)
+ *   marfil como papel de lectura (donde PrimixIA usa blanco)
+ *   oliva para bordes y matices  (nunca texto: 4,1:1 sobre marfil)
+ *   coral SOLO para Última hora  (donde PrimixIA usa ámbar)
+ *
+ * Desde 1.7.0, hex del manual: verde #121b15, lima #cceb53, marfil #f2f1e7, oliva #4c5841.
+ * Tipografía del manual: Space Grotesk (titulares) + IBM Plex Sans (cuerpo). Esquinas rectas, sin brillos.
+ *
+ * Los nombres --pia-* se conservan a propósito: las hojas compartidas con
+ * PrimixIA (pia-components, pia-bloques, pia-senal, pix-*) funcionan sin
+ * tocarse. REGLA: ningún hexadecimal fuera de este archivo (y de las 4
+ * constantes de assets/js/adn-fondo.js, porque un canvas no lee CSS).
+ */
+
+:root {
+	/* ---- Colores de marca ---- */
+	--pia-negro: #121B15;        /* Verde profundo: lienzo, cabecera, pie, titulares sobre claro */
+	--pia-cian: #CCEB53;         /* Lima eléctrico: la señal. Filetes, categorías, cifras, brillo */
+	--pia-ambar: #E2774E;        /* Coral: EXCLUSIVO Última hora / urgente */
+	--pia-blanco: #FFFFFF;
+	--pia-gris: #4C5841;         /* oliva: bordes, iconos (no texto) */
+	--pia-gris-texto: rgba(242, 241, 231, 0.74); /* 1.8: secundario sobre el verde (la lectura ya no es clara) */
+
+	/* ---- Neutros ---- */
+	--pia-gris-superficie: #1A241C;   /* 1.8: superficie oscura (antes marfil hundido) */
+	--pia-marfil: #F2F1E7;            /* papel de lectura */
+	--pia-gris-borde: rgba(242, 241, 231, 0.10);
+	--pia-superficie: #1A241C;        /* tarjeta y desplegable sobre el verde profundo */
+	--pia-superficie-alta: #243027;   /* segundo nivel: hover, tabla */
+
+	/* ---- Señal (la lima llevada a luz) ----
+	 * Sobre verde la lima brilla (11,7:1); sobre marfil no tiene contraste
+	 * para texto, así que ahí el enlace va en oliva oscuro (cian-oscuro). */
+	--pia-cian-vivo: #D9F07A;
+	--pia-cian-oscuro: #3F4A16;                  /* oliva oscuro: enlaces sobre marfil (8,5:1) */
+	--pia-cian-suave: rgba(204, 235, 83, 0.30);   /* la lima pesa más que el latón: brillo más bajo */
+	--pia-cian-tenue: rgba(204, 235, 83, 0.08);
+	--pia-cian-fondo-claro: #1D2A19;   /* 1.8: caja «Por qué importa» en verde con tinte lima */
+
+	--pia-tech-linea: rgba(255, 255, 255, 0.06);
+	--pia-tech-linea-clara: rgba(18, 27, 21, 0.05);
+	--pia-tech-texto-suave: rgba(242, 241, 231, 0.74);
+	--pia-tech-hover: rgba(255, 255, 255, 0.08);
+
+	--pia-glow: none;
+	--pia-glow-fuerte: none;
+	--pia-filete: linear-gradient(var(--pia-cian), var(--pia-cian));
+	--pia-reticula: none;
+	--pia-reticula-tam: 28px 28px;
+	--pia-halo: none;
+
+	--pia-borde-senal: 1px solid var(--pia-cian-suave);
+	--pia-borde-senal-vivo: 1px solid var(--pia-cian);
+
+	/* ---- Coral: solo urgencia ---- */
+	--pia-ambar-suave: rgba(226, 119, 78, 0.45);
+	--pia-ambar-tenue: rgba(226, 119, 78, 0.14);
+	--pia-ambar-glow: none;
+	--pia-ambar-texto: var(--pia-negro);
+
+	--pia-sombra-tarjeta: none;
+	--pia-sombra-flotante: 0 16px 40px rgba(18, 27, 21, 0.38);
+
+	/* ---- Semánticos de dato ---- */
+	--pia-exito: #1E7A3C;
+	--pia-error: #B3412E;
+	--pia-variacion-positiva: #7FD6A2;
+	--pia-variacion-negativa: #F0A08F;
+	--pia-dato-neutro: var(--pia-tech-texto-suave);
+
+	/* ---- Tipografía: Space Grotesk (titulares, cifras) + IBM Plex Sans (cuerpo, menú) ---- */
+	--pia-font-titular: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+	--pia-font-cuerpo: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+	--pia-font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+	--pia-titular-wght: 500;
+	--pia-cifra-wght: 500;
+	--pia-titular-tracking: -0.04em;
+
+	--pia-fs-xs: 0.8125rem;
+	--pia-fs-sm: 0.875rem;
+	--pia-fs-base: 1.0625rem;
+	--pia-fs-md: 1.25rem;
+	--pia-fs-lg: 1.5625rem;
+	--pia-fs-xl: 2rem;
+	--pia-fs-2xl: 2.5rem;
+	--pia-fs-3xl: 3.25rem;
+
+	--pia-sp-1: 0.25rem;
+	--pia-sp-2: 0.5rem;
+	--pia-sp-3: 0.75rem;
+	--pia-sp-4: 1rem;
+	--pia-sp-5: 1.5rem;
+	--pia-sp-6: 2rem;
+	--pia-sp-7: 3rem;
+
+	/* ---- Radios: suaves (1.8.0: lo recto se veía duro) ---- */
+	--pia-radio-borde: 14px;
+	--pia-radio-borde-sm: 8px;
+	--pia-radio-pildora: 999px;
+	--pia-ancho-linea-dato: 3px;
+	--pia-borde-dato-dia: 2px;
+
+	/* ---- Contrato del padre sic-prensa: zonas oscuras + lectura clara ---- */
+	--sic-lienzo: var(--pia-negro);
+	--sic-lienzo-superficie: var(--pia-superficie);
+	--sic-lienzo-superficie-alta: var(--pia-superficie-alta);
+	--sic-lienzo-texto: var(--pia-marfil);
+	--sic-lienzo-suave: var(--pia-tech-texto-suave);
+	--sic-lienzo-rotulo: var(--pia-cian);
+	--sic-lienzo-borde: var(--pia-tech-linea);
+	--sic-lectura: var(--pia-negro);   /* 1.8: notas y páginas en la misma estética oscura de la portada */
+	--sic-lectura-superficie: var(--pia-superficie);
+	--sic-lectura-texto: var(--pia-marfil);
+	--sic-lectura-suave: var(--pia-tech-texto-suave);
+	--sic-lectura-borde: var(--pia-tech-linea);
+	--sic-cabecera: var(--pia-negro);
+	--sic-cabecera-texto: var(--pia-blanco);
+	--sic-cabecera-suave: var(--pia-tech-texto-suave);
+	--sic-cabecera-borde: var(--pia-tech-linea);
+	--sic-nav: var(--pia-negro);
+	--sic-nav-texto: var(--pia-blanco);
+	--sic-nav-hover: var(--pia-tech-hover);
+	--sic-nav-activo: var(--pia-cian);
+	--sic-nav-activo-texto: var(--pia-negro);
+	--sic-nav-superficie: var(--pia-superficie);
+	--sic-nav-superficie-texto: var(--pia-blanco);
+	--sic-nav-borde: var(--pia-cian-suave);
+	--sic-pie: var(--pia-negro);
+	--sic-pie-texto: var(--pia-blanco);
+	--sic-pie-suave: var(--pia-tech-texto-suave);
+	--sic-pie-borde: var(--pia-tech-linea);
+
+	--sic-acento: var(--pia-cian);
+	--sic-acento-texto: var(--pia-negro);
+	--sic-acento-enlace: var(--pia-cian);
+	--sic-acento-luz: var(--pia-cian);
+	--sic-acento-luz-suave: var(--pia-cian-suave);
+	--sic-acento-luz-tenue: var(--pia-cian-tenue);
+	--sic-filete: var(--pia-filete);
+	--sic-halo: var(--pia-glow);
+	--sic-reticula: var(--pia-reticula);
+	--sic-reticula-tam: 28px;
+	--sic-urgente: var(--pia-ambar);
+	--sic-urgente-texto: var(--pia-ambar-texto);
+	--sic-exito: var(--pia-exito);
+	--sic-error: var(--pia-error);
+	--sic-dato-sube: var(--pia-variacion-positiva);
+	--sic-dato-baja: var(--pia-variacion-negativa);
+
+	--sic-foco: var(--pia-cian-vivo);
+	--sic-foco-oscuro: var(--pia-cian-vivo);
+	--sic-campo-borde: var(--pia-gris);
+	--sic-campo-borde-oscuro: var(--pia-cian);
+	--sic-pub-fondo: var(--pia-superficie);
+	--sic-pub-luz: var(--pia-cian);
+
+	--sic-font-titular: var(--pia-font-titular);
+	--sic-font-cuerpo: var(--pia-font-cuerpo);
+	--sic-font-mono: var(--pia-font-mono);
+	--sic-h1-peso: 500;
+	--sic-h2-peso: 500;
+	--sic-nav-peso: 500;
+	--sic-titular-tracking: var(--pia-titular-tracking);
+	--sic-radio: var(--pia-radio-borde);
+	--sic-radio-sm: var(--pia-radio-borde-sm);
+	--sic-radio-boton: var(--pia-radio-pildora);
+	--sic-sombra-tarjeta: var(--pia-sombra-tarjeta);
+	--sic-sombra-flotante: var(--pia-sombra-flotante);
+
+	/* ---- Plugins compartidos sic-* ---- */
+	--sic-media-acento: var(--pia-cian);
+	--sic-media-acento-vivo: var(--pia-cian-vivo);
+	--sic-media-acento-texto: var(--pia-negro);
+	--sic-media-lienzo: var(--pia-negro);
+	--sic-media-superficie: var(--pia-superficie);
+	--sic-media-superficie-texto: var(--pia-blanco);
+	--sic-media-superficie-tenue: var(--pia-tech-texto-suave);
+	--sic-media-borde: var(--pia-cian-suave);
+	--sic-media-halo: var(--pia-glow);
+	--sic-media-pista: rgba(255, 255, 255, 0.16);
+	--sic-media-muted: var(--pia-gris);
+	--sic-media-radio: var(--pia-radio-borde);
+	--sic-media-fuente-titular: var(--pia-font-titular);
+	--sic-media-fuente-cuerpo: var(--pia-font-cuerpo);
+	--sic-media-fs-xs: var(--pia-fs-xs);
+	--sic-media-fs-sm: var(--pia-fs-sm);
+
+	--sic-consent-bg: var(--pia-superficie);
+	--sic-consent-accent: var(--pia-cian);
+	--sic-consent-accent-text: var(--pia-negro);
+	--sic-consent-text: var(--pia-blanco);
+	--sic-consent-muted: var(--pia-tech-texto-suave);
+	--sic-consent-border: var(--pia-cian-suave);
+	--sic-consent-radius: var(--pia-radio-borde);
+	--sic-consent-font: var(--pia-font-cuerpo);
+
+	--ecn-neon: var(--pia-cian);
+	--ecn-superficie: var(--pia-superficie);
+	--ecn-gris: var(--pia-gris);
+}

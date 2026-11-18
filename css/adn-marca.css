@@ -1,0 +1,1134 @@
+/*
+ * ADN Empresarial — estética del manual de marca (1.7.0)
+ * =======================================================
+ * Misma estructura, mismas secciones y mismos espacios publicitarios que la
+ * 1.5; cambia la piel, tomada de la maqueta «Edición cero» aprobada por Fixy:
+ * Space Grotesk 500 con tracking cerrado en titulares, IBM Plex Sans en el
+ * cuerpo, verde profundo + lima + marfil, esquinas suaves (1.8), filetes finos y
+ * la cruz lima como marca de sección. Sin brillos ni vidrio.
+ * Solo tokens: ningún hexadecimal en este archivo.
+ */
+
+/* ---------- Base ---------- */
+body {
+	font-family: var(--pia-font-cuerpo);
+	-webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4,
+.sic-nota__titulo,
+.post-title,
+.wp-block-post-title {
+	font-family: var(--pia-font-titular);
+	font-weight: 500;
+	letter-spacing: var(--pia-titular-tracking);
+}
+
+/* Cruz lima: la marca gráfica del manual */
+.adn-cruz {
+	position: relative;
+	display: inline-block;
+	flex-shrink: 0;
+	width: 14px;
+	height: 14px;
+	color: var(--pia-cian);
+}
+
+.adn-cruz::before,
+.adn-cruz::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: currentColor;
+}
+
+.adn-cruz::after {
+	transform: rotate(90deg);
+}
+
+/* ---------- Línea superior ---------- */
+.adn-linea-superior {
+	background: var(--pia-negro);
+	color: var(--pia-tech-texto-suave);
+	border-bottom: 1px solid var(--pia-tech-linea);
+}
+
+.adn-linea-superior__fila {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--pia-sp-4);
+	max-width: var(--sic-ancho, 1240px);
+	min-height: 36px;
+	margin-inline: auto;
+	padding-inline: var(--pia-sp-5);
+	font-family: var(--pia-font-titular);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+.adn-linea-superior__lado {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--pia-sp-4);
+}
+
+/* ---------- Cinta de divisas ---------- */
+.adn-divisas {
+	background: var(--pia-negro);
+	color: var(--pia-marfil);
+	border-bottom: 1px solid var(--pia-tech-linea);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.75rem;
+}
+
+.adn-divisas__fila {
+	display: flex;
+	align-items: center;
+	gap: var(--pia-sp-5);
+	max-width: var(--sic-ancho, 1240px);
+	min-height: 34px;
+	margin-inline: auto;
+	padding-inline: var(--pia-sp-5);
+	overflow-x: auto;
+	scrollbar-width: none;
+	white-space: nowrap;
+}
+
+.adn-divisas__fila::-webkit-scrollbar {
+	display: none;
+}
+
+.adn-divisas__rotulo {
+	font-family: var(--pia-font-titular);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--pia-cian);
+}
+
+.adn-divisas__lista {
+	display: flex;
+	gap: var(--pia-sp-5);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.adn-divisas__nombre,
+.adn-divisas__hora {
+	color: var(--pia-tech-texto-suave);
+}
+
+.adn-divisas__valor {
+	font-variant-numeric: tabular-nums;
+}
+
+.adn-divisas__hora {
+	margin-left: auto;
+	font-size: 0.6875rem;
+}
+
+/* ---------- Cabecera y logo ---------- */
+.sic-cabecera {
+	border-bottom: 1px solid var(--pia-tech-linea);
+	box-shadow: none;
+}
+
+.sic-cabecera::after,
+.sic-cabecera::before {
+	box-shadow: none;
+}
+
+.sic-cabecera::after {
+	height: 1px;
+	opacity: 0.35;
+}
+
+/* El logotipo del manual reemplaza al texto. El nombre sigue en el HTML para
+ * lectores de pantalla y buscadores; solo se oculta a la vista. */
+.sic-logo .logo-text {
+	display: block;
+	/* Versión vertical del manual: ADN arriba, EMPRESARIAL centrado debajo. */
+	width: clamp(130px, 11vw, 160px);
+	aspect-ratio: 1424 / 523;
+	height: auto;
+	background: url('../images/adn-logo-principal.png') left center / contain no-repeat;
+	color: transparent;
+	font-size: 0;
+	line-height: 0;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.sic-logo .logo-text::first-letter {
+	color: transparent;
+}
+
+/* El logotipo ya dice «Empresarial»: el lema de la 1.5 bajo la marca sobra. */
+.sic-logo .logo-text::after {
+	content: none;
+}
+
+/* ---------- Navegación: texto plano; hover con fondo apenas más claro y
+ * texto lima (sin subrayado); activo en lima con un punto estático ---------- */
+.sic-nav__lista {
+	justify-content: flex-start;
+	column-gap: var(--pia-sp-2);
+	row-gap: 0;
+}
+
+.sic-nav__lista > li > a {
+	padding-inline: var(--pia-sp-3);
+}
+
+.sic-nav__lista > li > a {
+	position: relative;
+	font-family: var(--pia-font-titular);
+	font-weight: 500;
+	font-size: 0.875rem;
+	letter-spacing: 0;
+	border-radius: 6px;
+	background: transparent;
+	box-shadow: none;
+	text-decoration: none;
+	transition: color 200ms ease-out, background-color 200ms ease-out;
+}
+
+.sic-nav__lista > li > a:hover,
+.sic-nav__lista > li > a:focus-visible {
+	background: rgba(242, 241, 231, 0.05);
+	color: var(--pia-cian);
+	text-decoration: none;
+}
+
+.sic-nav__lista > li.current-menu-item > a,
+.sic-nav__lista > li.current_page_item > a,
+.sic-nav__lista > li > a[aria-current="page"] {
+	background: transparent;
+	color: var(--pia-cian);
+	box-shadow: none;
+}
+
+/* Activo: punto lima estático, centrado bajo el texto. */
+.sic-nav__lista > li.current-menu-item > a::after,
+.sic-nav__lista > li.current_page_item > a::after,
+.sic-nav__lista > li > a[aria-current="page"]::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: 3px;
+	width: 4px;
+	height: 4px;
+	margin-left: -2px;
+	border-radius: 50%;
+	background: var(--pia-cian);
+}
+
+/* Menú móvil: el enlace ocupa toda la fila, así que el punto va pegado al
+ * texto (a su derecha, centrado en altura) en lugar de flotar al medio. */
+@media (max-width: 900px) {
+	.sic-nav__lista > li.current-menu-item > a::after,
+	.sic-nav__lista > li.current_page_item > a::after,
+	.sic-nav__lista > li > a[aria-current="page"]::after {
+		position: static;
+		display: inline-block;
+		flex: none;
+		align-self: center;
+		margin: 0 0 0 8px;
+		vertical-align: middle;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sic-nav__lista > li > a {
+		transition: none;
+	}
+}
+
+/* ---------- Buscador ---------- */
+.sic-buscador__campo,
+.sic-buscador__boton {
+	border-radius: var(--pia-radio-pildora);
+	box-shadow: none;
+}
+
+.sic-buscador__campo {
+	background: transparent;
+	border: 1px solid var(--pia-tech-linea);
+	border-bottom-color: var(--pia-cian);
+	font-family: var(--pia-font-cuerpo);
+}
+
+.sic-buscador__boton {
+	background: var(--pia-cian);
+	color: var(--pia-negro);
+	font-family: var(--pia-font-titular);
+	font-weight: 500;
+}
+
+/* ---------- Títulos de sección: cruz lima + titular en sentence case ---------- */
+.entry-content .pia-seccion-titulo,
+.pia-seccion-titulo {
+	display: flex;
+	align-items: center;
+	gap: var(--pia-sp-4);
+	padding-bottom: var(--pia-sp-3);
+	border-bottom: 1px solid var(--pia-tech-linea);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+	font-weight: 500;
+	line-height: 1.1;
+	letter-spacing: -0.045em;
+	text-transform: none;
+}
+
+.entry-content .pia-seccion-titulo::before,
+.pia-seccion-titulo::before {
+	content: '';
+	flex-shrink: 0;
+	width: 16px;
+	height: 16px;
+	background:
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 100% 1px no-repeat,
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 1px 100% no-repeat;
+	border: 0;
+	transform: none;
+	box-shadow: none;
+}
+
+.entry-content .pia-seccion-titulo::after,
+.pia-seccion-titulo::after {
+	content: none;
+}
+
+/* ---------- Tarjetas y apertura ---------- */
+.wp-block-post-featured-image,
+.wp-block-post-featured-image img,
+.wp-block-post-featured-image a,
+.pia-tarjetas .wp-block-post,
+.pia-secundarias .wp-block-post,
+.pia-apertura .wp-block-post {
+	border-radius: var(--pia-radio-borde);
+	box-shadow: none;
+}
+
+.wp-block-post-featured-image {
+	overflow: hidden;
+}
+
+.wp-block-post-featured-image img {
+	transition: transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.wp-block-post:hover .wp-block-post-featured-image img {
+	transform: scale(1.025);
+}
+
+/* =====================================================================
+ * Escala tipográfica editorial de las noticias
+ * Un único lugar para los tamaños: principal 32-36 px en escritorio,
+ * secundarias 19-20, tarjetas 17-18, bajada 15-17, metadatos y categorías
+ * 11 px. clamp() reparte el tamaño entre celular, tablet y escritorio.
+ * Los selectores llevan #contenido porque blocks.css y pia-bloques.css
+ * fijan tamaños con más especificidad; así esta escala manda sin !important.
+ * ================================================================== */
+:root {
+	--adn-fs-titular-principal: clamp(1.625rem, 1.15rem + 1.5vw, 2.25rem);
+	--adn-fs-titular-secundario: clamp(0.9375rem, 0.88rem + 0.1vw, 1rem);
+	--adn-fs-titular-tarjeta: clamp(1rem, 0.92rem + 0.2vw, 1.125rem);
+	--adn-fs-bajada: clamp(0.9375rem, 0.88rem + 0.15vw, 1.0625rem);
+	--adn-fs-meta: 0.6875rem;
+	--adn-fs-categoria: 0.6875rem;
+	--adn-fs-seccion: clamp(1.375rem, 1.1rem + 0.6vw, 1.75rem);
+}
+
+#contenido .wp-block-post-title,
+#contenido .post-title {
+	overflow-wrap: break-word;
+	hyphens: manual;
+	text-wrap: pretty;
+}
+
+/* Noticia principal */
+#contenido .wp-block-query.pia-apertura .wp-block-post-title {
+	font-size: var(--adn-fs-titular-principal);
+	font-weight: 500;
+	line-height: 1.12;
+	letter-spacing: -0.03em;
+	text-wrap: balance;
+	margin-block: 0.5rem 0.625rem;
+}
+
+#contenido .wp-block-query.pia-apertura .wp-block-post-excerpt__excerpt {
+	font-size: var(--adn-fs-bajada);
+	line-height: 1.55;
+}
+
+/* Noticias secundarias (columna junto a la principal): tarjetas
+ * horizontales compactas, ver «Bloque destacado» en adn-grilla.css. */
+#contenido .wp-block-query.pia-secundarias .wp-block-post-title {
+	font-size: var(--adn-fs-titular-secundario);
+	font-weight: 600;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+	margin: 0;
+}
+
+/* Tarjetas de sección y piezas chicas */
+#contenido .wp-block-query.pia-tarjetas .wp-block-post-title {
+	font-size: var(--adn-fs-titular-tarjeta);
+	font-weight: 600;
+	line-height: 1.28;
+	letter-spacing: -0.01em;
+	margin-block: 0.375rem 0.5rem;
+}
+
+#contenido .wp-block-post .wp-block-post-excerpt__excerpt {
+	font-size: var(--adn-fs-bajada);
+	line-height: 1.55;
+}
+
+/* Categorías */
+#contenido .wp-block-post .wp-block-post-terms,
+#contenido .wp-block-post .wp-block-post-terms a,
+.post-cat a,
+.wp-block-post-terms a {
+	font-family: var(--pia-font-titular);
+	font-size: var(--adn-fs-categoria);
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	border-radius: var(--pia-radio-pildora);
+	box-shadow: none;
+}
+
+/* Títulos de sección: por encima de las tarjetas, por debajo de la principal */
+html body #contenido .pia-seccion-titulo {
+	font-size: var(--adn-fs-seccion);
+}
+
+/* Titulares: al pasar el mouse solo cambian de color, sin subrayado. */
+.post-title a:hover,
+.wp-block-post-title a:hover,
+.wp-block-post-title a:focus-visible,
+.wp-block-query .wp-block-post:hover .wp-block-post-title a {
+	text-decoration: none;
+}
+
+/* Fechas y metadatos */
+.post-meta,
+.wp-block-post-date,
+#contenido .wp-block-post .wp-block-post-date {
+	font-family: var(--pia-font-cuerpo);
+	font-size: var(--adn-fs-meta);
+	line-height: 1.4;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+/* ---------- Publicidad: mismos huecos, marco plano ---------- */
+/* sic-ads ya rotula cada hueco con «Publicidad»: el sello en píldora de la
+ * 1.5 duplicaba el aviso. */
+html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria)[class]::after,
+.pia-cabecera-anuncio::after {
+	content: none;
+}
+
+.pia-espacio-publicitario,
+.pia-franja-publicitaria,
+.pia-cabecera-anuncio {
+	box-shadow: none;
+}
+
+/* El hueco no pinta caja propia: solo la pieza (o el anuncio de casa). */
+html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria, .pia-cabecera-anuncio) {
+	background: transparent;
+	border: 0;
+	border-radius: var(--pia-radio-borde);
+}
+
+html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria)[class]:is(:has(.pia-casa, .sic-ads), :not(:has(.pia-casa, .sic-ads))) {
+	background: transparent;
+	box-shadow: none;
+}
+
+html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria, .pia-cabecera-anuncio)[class] .pia-casa {
+	border-radius: var(--pia-radio-borde);
+}
+
+.pia-casa {
+	border-radius: var(--pia-radio-borde);
+	border: 1px solid var(--pia-tech-linea);
+	background: var(--pia-superficie);
+	box-shadow: none;
+	transition: border-color 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.pia-casa::before,
+.pia-casa::after {
+	box-shadow: none;
+	border-radius: var(--pia-radio-borde);
+}
+
+.pia-casa:hover {
+	border-color: var(--pia-cian);
+	box-shadow: none;
+	transform: none;
+}
+
+.pia-casa__rotulo {
+	font-family: var(--pia-font-titular);
+	letter-spacing: 0.16em;
+	color: var(--pia-cian);
+}
+
+.pia-casa__titular {
+	font-family: var(--pia-font-titular);
+	font-weight: 500;
+	letter-spacing: -0.035em;
+}
+
+.pia-casa__cta {
+	border-radius: var(--pia-radio-pildora);
+	background: var(--pia-cian);
+	color: var(--pia-negro);
+	box-shadow: none;
+	font-family: var(--pia-font-titular);
+	font-weight: 500;
+}
+
+.pia-casa__medida {
+	border-radius: var(--pia-radio-pildora);
+}
+
+/* ---------- Nota ---------- */
+.sic-nota__titulo {
+	letter-spacing: -0.05em;
+	line-height: 1.06;
+	text-wrap: balance;
+}
+
+.sic-nota__cuerpo blockquote {
+	border-left: 2px solid var(--pia-cian);
+	border-radius: var(--pia-radio-borde-sm);
+}
+
+/* ---------- Pie ---------- */
+.sic-pie {
+	border-top: 1px solid var(--pia-tech-linea);
+	box-shadow: none;
+}
+
+.sic-pie::before,
+.sic-pie::after {
+	box-shadow: none;
+}
+
+/* ---------- Botones y campos en general ---------- */
+.wp-block-button__link,
+.wp-element-button,
+button {
+	border-radius: var(--pia-radio-pildora);
+}
+
+input,
+select,
+textarea {
+	border-radius: var(--pia-radio-borde-sm);
+}
+
+/* =========================================================================
+ * 1.8.0 — Vida: fondo «mercado vivo», tarjetas que responden y entradas
+ * suaves al bajar. Movimiento corto (≤ 300 ms, ease-out) y con propósito;
+ * todo se apaga con prefers-reduced-motion.
+ * ====================================================================== */
+
+/* Fondo animado: líneas de cotización en lima sobre el verde (adn-fondo.js). */
+canvas.pix-fondo {
+	position: fixed;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+	pointer-events: none;
+	opacity: 0.8;
+	/* Solo en los márgenes laterales: la franja del contenedor editorial
+	 * (1200 px + aire) queda transparente, así ninguna línea pasa detrás de
+	 * titulares, tarjetas ni anuncios. Se funde hacia el contenido. */
+	-webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(50% - 700px), transparent calc(50% - 624px), transparent calc(50% + 624px), #000 calc(50% + 700px), #000 100%);
+	mask-image: linear-gradient(90deg, #000 0, #000 calc(50% - 700px), transparent calc(50% - 624px), transparent calc(50% + 624px), #000 calc(50% + 700px), #000 100%);
+}
+
+/* Sin margen lateral real no hay dónde ponerlo: fondo plano del manual. */
+@media (max-width: 1279px) {
+	canvas.pix-fondo {
+		display: none;
+	}
+}
+
+/* Profundidad sin brillo: un velo apenas más claro arriba, sobre el verde
+ * profundo del manual. Fijo, sin movimiento. */
+html.pix-fondo-activo body {
+	background-color: var(--pia-negro);
+	background-image: radial-gradient(120% 60% at 50% 0%, rgba(242, 241, 231, 0.025) 0%, transparent 70%);
+	background-attachment: fixed;
+}
+
+/* El contenido va por encima del lienzo. */
+html.pix-fondo-activo :is(.adn-linea-superior, .adn-divisas, .sic-barra, .sic-cabecera, .sic-contenido, .pia-espacio-publicitario, .sic-pie) {
+	position: relative;
+	z-index: 1;
+}
+
+/* Zonas grandes translúcidas para que el fondo se vea a través. */
+html.pix-fondo-activo :is(.sic-cabecera, .sic-barra) {
+	background-color: color-mix(in srgb, var(--pia-negro) 82%, transparent);
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+}
+
+html.pix-fondo-activo .sic-contenido,
+html.pix-fondo-activo .sic-contenido .wp-block-group,
+html.pix-fondo-activo .sic-contenido .wp-block-columns {
+	background-color: transparent;
+}
+
+/* Tarjetas: superficie suave, borde lima tenue y respuesta al pasar.
+ * (Las secundarias del bloque destacado son una lista sin caja.) */
+.pia-tarjetas .wp-block-post,
+.pia-apertura .wp-block-post {
+	background-color: color-mix(in srgb, var(--pia-superficie) 88%, transparent);
+	border: 1px solid var(--pia-gris-borde);
+	border-radius: var(--pia-radio-borde);
+	overflow: hidden;
+	transition:
+		transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+		border-color 220ms cubic-bezier(0.23, 1, 0.32, 1),
+		box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.pia-tarjetas .wp-block-post:hover,
+.pia-apertura .wp-block-post:hover,
+.pia-tarjetas .wp-block-post:focus-within {
+	transform: translateY(-2px);
+	border-color: color-mix(in srgb, var(--pia-cian) 28%, transparent);
+	box-shadow: 0 14px 30px -20px rgba(0, 0, 0, 0.7);
+}
+
+.wp-block-post-featured-image,
+.wp-block-post-featured-image img {
+	border-radius: var(--pia-radio-borde-sm);
+}
+
+/* Anuncios: piezas redondeadas y un leve realce al pasar. */
+.sic-ads__img,
+.sic-ads noscript img {
+	border-radius: var(--pia-radio-borde-sm);
+}
+
+.sic-ads__pieza {
+	border-radius: var(--pia-radio-borde-sm);
+	transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.sic-ads__pieza:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 12px 28px -18px rgba(0, 0, 0, 0.7);
+}
+
+.pia-casa:hover {
+	transform: translateY(-2px);
+}
+
+/* Botones: píldora con respuesta al pasar y al presionar. */
+.pia-casa__cta,
+.sic-buscador__boton,
+.wp-block-button__link {
+	transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), filter 160ms ease, background-color 160ms ease;
+}
+
+.pia-casa__cta:hover,
+.sic-buscador__boton:hover,
+.wp-block-button__link:hover {
+	filter: brightness(1.08);
+	transform: translateY(-1px);
+}
+
+.pia-casa__cta:active,
+.sic-buscador__boton:active,
+.wp-block-button__link:active {
+	transform: scale(0.97);
+}
+
+/* La cruz de los títulos gira un cuarto al entrar la sección. */
+.pia-seccion-titulo::before {
+	transition: transform 420ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.adn-visto .pia-seccion-titulo::before,
+.pia-seccion-titulo.adn-visto::before {
+	transform: rotate(90deg);
+}
+
+/* Entradas al bajar: adn-vida.js marca .adn-revelar y luego .adn-visto.
+ * Sin JS no hay clase y todo se ve normal. */
+.adn-revelar {
+	opacity: 0;
+	transform: translateY(16px) scale(0.98);
+	transition:
+		opacity 300ms cubic-bezier(0.23, 1, 0.32, 1),
+		transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+	transition-delay: var(--adn-retraso, 0ms);
+}
+
+.adn-revelar.adn-visto {
+	opacity: 1;
+	transform: none;
+}
+
+/* El punto de «Última hora» late. */
+.sic-ticker__rotulo {
+	animation: adn-latido 2.4s ease-in-out infinite;
+}
+
+@keyframes adn-latido {
+	0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pia-ambar) 0%, transparent); }
+	50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--pia-ambar) 25%, transparent); }
+}
+
+/* ---------- 1.8: lectura oscura (notas y páginas igual que la portada) ---------- */
+.entry-content .pia-por-que-importa::before,
+.entry-content .pia-que-sigue::before,
+.entry-content .pia-fuentes::before {
+	color: var(--pia-cian);
+}
+
+.entry-content .pia-que-sigue {
+	border-left-color: var(--pia-gris);
+}
+
+.pia-casa__bajada,
+.pia-casa__medida {
+	color: var(--pia-tech-texto-suave);
+}
+
+.sic-nota__cuerpo blockquote,
+.entry-content blockquote {
+	padding: var(--pia-sp-4) var(--pia-sp-5);
+	background: var(--pia-superficie);
+	border-left: 2px solid var(--pia-cian);
+	border-radius: var(--pia-radio-borde-sm);
+}
+
+/* Buscador dentro de resultados / 404: mismo estilo que el de la cabecera. */
+#contenido .sic-buscador {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--pia-sp-2);
+	align-items: center;
+}
+
+#contenido .sic-buscador input:not([type=submit]) {
+	flex: 1 1 220px;
+	min-height: 44px;
+	padding: 0 var(--pia-sp-4);
+	background: var(--pia-superficie);
+	color: var(--pia-marfil);
+	border: 1px solid color-mix(in srgb, var(--pia-cian) 30%, transparent);
+	border-radius: var(--pia-radio-pildora);
+	font: inherit;
+}
+
+#contenido .sic-buscador input:not([type=submit]):focus-visible {
+	outline: 2px solid var(--pia-cian);
+	outline-offset: 2px;
+}
+
+#contenido .sic-buscador :is(button, input[type=submit]) {
+	min-height: 44px;
+	padding: 0 var(--pia-sp-5);
+	background: var(--pia-cian);
+	color: var(--pia-negro);
+	border: 0;
+	border-radius: var(--pia-radio-pildora);
+	font-weight: 600;
+	cursor: pointer;
+	transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), filter 160ms ease;
+}
+
+#contenido .sic-buscador :is(button, input[type=submit]):hover {
+	filter: brightness(1.08);
+}
+
+#contenido .sic-buscador :is(button, input[type=submit]):active {
+	transform: scale(0.97);
+}
+
+/* =========================================================================
+ * 1.8.1 — Secciones, búsqueda, 404, notas y páginas con la MISMA piel de la
+ * portada: título con cruz lima, tarjetas con borde lima tenue, fecha en
+ * versalitas chicas y etiqueta de categoría en píldora lima.
+ * ====================================================================== */
+
+/* Títulos de sección / búsqueda / 404 = títulos de bloque de la portada. */
+html body:is(.archive, .search, .error404) #contenido .sic-archivo__cabecera {
+	padding-top: var(--pia-sp-5);
+	padding-bottom: var(--pia-sp-4);
+	border-bottom: 1px solid var(--pia-tech-linea);
+}
+
+html body:is(.archive, .search, .error404) #contenido .sic-archivo__titulo {
+	display: flex;
+	align-items: center;
+	gap: var(--pia-sp-4);
+	font-size: clamp(2rem, 1.4rem + 2vw, 3rem);
+	line-height: 1.05;
+	letter-spacing: -0.045em;
+}
+
+html body:is(.archive, .search, .error404) #contenido .sic-archivo__cabecera .sic-archivo__titulo::before {
+	content: '';
+	display: block;
+	flex-shrink: 0;
+	width: 18px;
+	height: 18px;
+	margin: 0;
+	background:
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 100% 1px no-repeat,
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 1px 100% no-repeat;
+	transform: rotate(90deg);
+	transition: transform 420ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html body:is(.archive, .search) #contenido .sic-archivo__descripcion {
+	color: var(--pia-tech-texto-suave);
+	font-size: var(--pia-fs-base);
+}
+
+/* Tarjetas de la lista = tarjetas de la portada. */
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) > .sic-tarjeta {
+	padding: var(--pia-sp-4);
+	background-color: color-mix(in srgb, var(--pia-superficie) 88%, transparent);
+	border: 1px solid color-mix(in srgb, var(--pia-cian) 12%, transparent);
+	border-radius: var(--pia-radio-borde);
+	box-shadow: none;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+	transition:
+		transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+		border-color 220ms cubic-bezier(0.23, 1, 0.32, 1),
+		box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) > .sic-tarjeta:is(:hover, :focus-within) {
+	transform: translateY(-2px);
+	border-color: color-mix(in srgb, var(--pia-cian) 28%, transparent);
+	box-shadow: 0 14px 30px -20px rgba(0, 0, 0, 0.7);
+}
+
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) .sic-tarjeta__media {
+	border-radius: var(--pia-radio-borde-sm);
+	overflow: hidden;
+}
+
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) .sic-tarjeta__titulo {
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.15rem, 1rem + 0.4vw, 1.35rem);
+	font-weight: 500;
+	line-height: 1.18;
+	letter-spacing: -0.03em;
+}
+
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) .sic-tarjeta__titulo a {
+	color: var(--pia-marfil);
+}
+
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) .sic-tarjeta__titulo a:hover {
+	color: var(--pia-cian);
+}
+
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) .sic-meta,
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) .sic-meta a {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--pia-tech-texto-suave);
+}
+
+html body #contenido :is(.sic-archivo__lista, .sic-relacionadas, .sic-ultimas) .sic-tarjeta__sumario {
+	color: var(--pia-tech-texto-suave);
+}
+
+/* Etiqueta de categoría sobre la foto = píldora de la portada. */
+html body #contenido .sic-tarjeta__sello {
+	padding: 4px 8px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	background: var(--pia-cian);
+	color: var(--pia-negro);
+	border-radius: var(--pia-radio-borde-sm);
+}
+
+/* Sin foto: lienzo verde con la cruz, en vez del rótulo gris. */
+html body #contenido .sic-tarjeta__vacia {
+	font-size: 0;
+	background:
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 28px 1px no-repeat,
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 1px 28px no-repeat,
+		color-mix(in srgb, var(--pia-negro) 70%, var(--pia-superficie));
+}
+
+/* La primera nota de la sección: como la apertura de la portada. */
+@media (min-width: 900px) {
+	html body #contenido .sic-archivo__lista > .sic-tarjeta--media:first-child .sic-tarjeta__titulo {
+		font-size: clamp(1.9rem, 1.2rem + 1.8vw, 2.75rem);
+		line-height: 1.04;
+		letter-spacing: -0.05em;
+	}
+
+	html body #contenido .sic-archivo__lista > .sic-tarjeta--media:first-child .sic-tarjeta__sumario {
+		font-size: var(--pia-fs-base);
+	}
+}
+
+/* «Sigue leyendo» = título de bloque de la portada. */
+html body #contenido .sic-relacionadas > h2 {
+	display: flex;
+	align-items: center;
+	gap: var(--pia-sp-4);
+	padding-bottom: var(--pia-sp-3);
+	margin-bottom: var(--pia-sp-5);
+	border-bottom: 1px solid var(--pia-tech-linea);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+	font-weight: 500;
+	letter-spacing: -0.045em;
+}
+
+html body #contenido .sic-relacionadas > h2::before {
+	content: '';
+	flex-shrink: 0;
+	width: 16px;
+	height: 16px;
+	background:
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 100% 1px no-repeat,
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 1px 100% no-repeat;
+}
+
+/* Títulos de nota y de página: misma voz que la apertura de la portada. */
+html body #contenido .sic-nota__titulo {
+	font-family: var(--pia-font-titular);
+	font-size: clamp(2rem, 1.3rem + 2.4vw, 3.25rem);
+	font-weight: 500;
+	line-height: 1.04;
+	letter-spacing: -0.05em;
+	color: var(--pia-marfil);
+}
+
+html body.page:not(.home) #contenido .sic-nota__titulo {
+	display: flex;
+	align-items: center;
+	gap: var(--pia-sp-4);
+	padding-bottom: var(--pia-sp-3);
+	border-bottom: 1px solid var(--pia-tech-linea);
+}
+
+html body.page:not(.home) #contenido .sic-nota__titulo::before {
+	content: '';
+	flex-shrink: 0;
+	width: 18px;
+	height: 18px;
+	background:
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 100% 1px no-repeat,
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 1px 100% no-repeat;
+}
+
+html body #contenido .sic-nota .sic-meta {
+	font-size: 13px;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--pia-tech-texto-suave);
+}
+
+/* 1.8.2 — Secciones con la composición de la portada:
+ * - nota sin foto = tarjeta de texto (sin recuadro vacío), como en Inicio;
+ * - la primera nota abre como la apertura de Inicio (sin caja, título grande);
+ * - el resto en dos columnas, como los bloques por categoría de Inicio. */
+html body #contenido .sic-tarjeta__media:has(.sic-tarjeta__vacia) {
+	aspect-ratio: auto !important;
+	height: auto !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 0;
+	background: none;
+	overflow: visible;
+}
+
+html body #contenido .sic-tarjeta__media:has(.sic-tarjeta__vacia) > :is(.sic-tarjeta__vacia, .sic-tarjeta__velo) {
+	display: none;
+}
+
+html body #contenido .sic-tarjeta__media:has(.sic-tarjeta__vacia) > .sic-tarjeta__sello {
+	position: static;
+	display: inline-block;
+}
+
+html body #contenido .sic-archivo__lista {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html body #contenido .sic-archivo__lista > .sic-tarjeta--media:first-child {
+	grid-column: 1 / -1;
+}
+
+html body #contenido .sic-archivo__lista > .sic-tarjeta--media:first-child:has(.sic-tarjeta__vacia) {
+	display: flex !important;
+	flex-direction: column;
+	gap: var(--pia-sp-3);
+	padding: var(--pia-sp-4) 0;
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+	transform: none;
+}
+
+html body #contenido .sic-archivo__lista > .sic-tarjeta--media:first-child:has(.sic-tarjeta__vacia) > * {
+	max-width: 900px;
+	padding: 0 !important;
+}
+
+html body #contenido .sic-archivo__lista > .sic-tarjeta--media:first-child:has(.sic-tarjeta__vacia) .sic-tarjeta__titulo {
+	font-size: clamp(2rem, 1.2rem + 2.6vw, 3.25rem);
+	line-height: 1.04;
+	letter-spacing: -0.05em;
+}
+
+/* 1.8.3 — Sección sin notas con la piel de Inicio: alineado a la izquierda,
+ * sin rombo, «Lo último» como bloque de portada (cruz + tarjetas en 2 col). */
+html body #contenido .sic-vacio {
+	max-width: none;
+	margin-inline: 0;
+	text-align: left;
+	padding: var(--pia-sp-6) 0 0;
+	background: none;
+	border: 0;
+}
+
+html body #contenido .sic-vacio > h2 {
+	margin: 0 0 var(--pia-sp-3);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.25rem);
+	font-weight: 500;
+	line-height: 1.1;
+	letter-spacing: -0.04em;
+	text-align: left;
+}
+
+html body #contenido .sic-vacio > h2::before {
+	content: none;
+	display: none;
+}
+
+html body #contenido .sic-vacio > p {
+	max-width: 60ch;
+	margin: 0 0 var(--pia-sp-5);
+	color: var(--pia-tech-texto-suave);
+	font-size: var(--pia-fs-base);
+	text-align: left;
+}
+
+html body #contenido .sic-vacio > .sic-buscador {
+	justify-content: flex-start;
+	max-width: 640px;
+	margin: 0;
+}
+
+html body #contenido .sic-vacio .sic-ultimas {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--pia-sp-5);
+	max-width: none;
+	margin: var(--pia-sp-7) 0 0;
+	padding: 0;
+	border: 0;
+}
+
+html body #contenido .sic-vacio .sic-ultimas > h2 {
+	grid-column: 1 / -1;
+	display: flex;
+	align-items: center;
+	gap: var(--pia-sp-4);
+	margin: 0;
+	padding-bottom: var(--pia-sp-3);
+	border-bottom: 1px solid var(--pia-tech-linea);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+	font-weight: 500;
+	letter-spacing: -0.045em;
+}
+
+html body #contenido .sic-vacio .sic-ultimas > h2::before {
+	content: '';
+	flex-shrink: 0;
+	width: 16px;
+	height: 16px;
+	background:
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 100% 1px no-repeat,
+		linear-gradient(var(--pia-cian), var(--pia-cian)) center / 1px 100% no-repeat;
+}
+
+@media (max-width: 700px) {
+	html body #contenido .sic-vacio .sic-ultimas {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 700px) {
+	html body #contenido .sic-archivo__lista {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 700px) {
+	.adn-linea-superior__lado {
+		display: none;
+	}
+
+	.adn-divisas__fila,
+	.adn-linea-superior__fila {
+		padding-inline: var(--pia-sp-4);
+		font-size: 0.625rem;
+		letter-spacing: 0.12em;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-post-featured-image img,
+	.pia-casa,
+	.wp-block-post,
+	.sic-ads__pieza,
+	.adn-revelar {
+		transition: none;
+	}
+
+	.adn-revelar {
+		opacity: 1;
+		transform: none;
+	}
+
+	.sic-ticker__rotulo {
+		animation: none;
+	}
+
+}

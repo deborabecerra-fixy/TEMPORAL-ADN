@@ -1,0 +1,140 @@
+/* Buscador de la cabecera y «Volver arriba» (TEMA-018, TEMA-023). Solo variables --sic-*. */
+
+.sic-buscador {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--sic-sp-2);
+	min-width: 0;
+	color: var(--sic-cabecera-texto);
+}
+
+.sic-buscador__etiqueta {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+.sic-buscador__campo {
+	box-sizing: border-box;
+	flex: 1 1 14rem;
+	min-width: 0;
+	min-height: 44px;
+	padding: 0 var(--sic-sp-3);
+	border: 1px solid var(--sic-campo-borde-oscuro);
+	border-radius: var(--sic-radio-sm);
+	background: transparent;
+	color: var(--sic-cabecera-texto);
+	font: inherit;
+	font-size: var(--sic-fs-sm);
+}
+
+.sic-buscador__campo::placeholder {
+	color: var(--sic-cabecera-suave);
+	opacity: 1;
+}
+
+.sic-buscador__boton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--sic-sp-2);
+	min-width: 44px;
+	min-height: 44px;
+	padding: 0 var(--sic-sp-3);
+	border: 1px solid var(--sic-acento-luz);
+	border-radius: var(--sic-radio-sm);
+	background: var(--sic-acento);
+	color: var(--sic-acento-texto);
+	font: inherit;
+	font-size: var(--sic-fs-sm);
+	font-weight: var(--sic-nav-peso);
+	cursor: pointer;
+}
+
+.sic-buscador__boton:disabled {
+	cursor: progress;
+	opacity: 0.8;
+}
+
+.sic-buscador__campo:focus-visible,
+.sic-buscador__boton:focus-visible,
+.sic-arriba:focus-visible {
+	outline: 2px solid var(--sic-foco-oscuro);
+	outline-offset: 2px;
+}
+
+.sic-buscador__aviso {
+	flex-basis: 100%;
+	margin: 0;
+	color: var(--sic-cabecera-texto);
+	font-size: var(--sic-fs-sm);
+}
+
+.sic-buscador__aviso::before {
+	content: "";
+	display: inline-block;
+	width: 0.5rem;
+	height: 0.5rem;
+	margin-right: var(--sic-sp-2);
+	border-radius: 50%;
+	background: var(--sic-urgente);
+}
+
+/* En el panel del menú móvil (cabecera.js lo mueve): solo se ve con el panel abierto. */
+.sic-nav__dialogo .sic-buscador {
+	margin-bottom: var(--sic-sp-4);
+}
+
+@media (max-width: 900px) {
+	.sic-nav__dialogo:not(.is-abierto) .sic-buscador {
+		display: none;
+	}
+
+	.sic-cabecera__fila > .sic-buscador {
+		flex-basis: 100%;
+	}
+}
+
+/* Volver arriba: fijo abajo a la derecha; sin JS siempre visible como enlace a #theme-header. */
+.sic-arriba {
+	position: fixed;
+	right: var(--sic-sp-4);
+	bottom: calc(var(--sic-sp-4) + var(--sic-banner-alto, 0px) + var(--sic-compartir-alto, 0px));
+	z-index: 40;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 44px;
+	height: 44px;
+	border: 1px solid var(--sic-acento-luz);
+	border-radius: var(--sic-radio-sm);
+	background: var(--sic-cabecera);
+	color: var(--sic-cabecera-texto);
+	font-size: var(--sic-fs-md);
+	text-decoration: none;
+}
+
+.sic-arriba[data-js] {
+	visibility: hidden;
+	opacity: 0;
+}
+
+.sic-arriba[data-js].is-visible {
+	visibility: visible;
+	opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.sic-arriba[data-js] {
+		transition: opacity var(--sic-dur-media) var(--sic-curva-estandar), visibility var(--sic-dur-media);
+	}
+}

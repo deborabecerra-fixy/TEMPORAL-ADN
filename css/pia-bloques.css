@@ -1,0 +1,963 @@
+/*
+ * PIA — Bloques de portada (Gutenberg)
+ * ====================================
+ * La portada (página "Portada", la arma scripts/pia-portada.php) está
+ * construida con bloques Query Loop sobre sic-prensa. El padre da la
+ * retícula y las variantes de tarjeta (is-style-sic-*); este archivo pone
+ * la piel de PrimixIA: viñetas fuera, jerarquía de titular, kicker y fecha.
+ *
+ * Este archivo define el componente C7 — Tarjeta de noticia y la retícula
+ * de la portada. Cero hexadecimales: solo tokens de pia-brand-tokens.css.
+ * Heredado de ecn-bloques.css (ECN) con la paleta de Primicia.
+ *
+ * Jerarquía de color (docs/01-sistema-visual.md):
+ *   titular  → negro sobre claro, blanco sobre el lienzo (el color en un
+ *              titular le quita autoridad)
+ *   kicker   → cian oscuro sobre claro, cian sobre el lienzo (categoría: es
+ *              el único acento de la tarjeta); ámbar solo si es Última hora
+ *   metadato → gris
+ *   dato     → superficie propia + filete cian + procedencia (Radar)
+ */
+
+/* ---- Reset de la lista del Query Loop ----------------------------------
+ * .wp-block-post-template es un <ul>. Las reglas de lista del cuerpo de la
+ * nota (.entry-content ul) le darían viñetas y sangría. Se neutraliza con la misma
+ * especificidad de contenedor, sin !important. */
+.entry-content .wp-block-post-template,
+.wp-block-post-template {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.entry-content .wp-block-post-template > li,
+.wp-block-post-template > li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.entry-content .wp-block-post-template > li::before,
+.entry-content .wp-block-post-template > li::marker {
+	content: none;
+}
+
+/* ---- C7 — Tarjeta de noticia ------------------------------------------
+ * Estructura esperada en el bloque (de arriba abajo):
+ *   post-featured-image · post-terms (kicker) · post-title · post-date · post-excerpt
+ * El orden se fija con flex+order para no depender de cómo quedó guardado
+ * el bloque en el editor. */
+.wp-block-post-template > li.wp-block-post {
+	display: flex;
+	flex-direction: column;
+	gap: var(--pia-sp-2);
+}
+
+/* Imagen: relación fija 16:9 recortada. Es lo que alinea las tarjetas entre
+ * sí aunque las fotos originales tengan proporciones distintas. */
+.wp-block-post .wp-block-post-featured-image {
+	margin: 0 0 var(--pia-sp-1);
+	order: 0;
+}
+
+.wp-block-post .wp-block-post-featured-image a,
+.wp-block-post .wp-block-post-featured-image img {
+	display: block;
+	width: 100%;
+}
+
+.wp-block-post .wp-block-post-featured-image img {
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: var(--pia-radio-borde);
+	background: var(--pia-gris-superficie);
+	transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Al pasar el cursor la foto "se enciende": borde cian y leve elevación. */
+.wp-block-post .wp-block-post-featured-image a:hover img {
+	opacity: 0.94;
+	box-shadow: var(--pia-glow);
+	transform: translateY(-2px);
+}
+
+/* Kicker de categoría: el único acento de la tarjeta (C1). Sobre claro va
+ * en cian oscuro (el cian de marca no cumple contraste como texto sobre
+ * blanco); pia-senal.css lo sube a cian sobre el lienzo. */
+.wp-block-post .wp-block-post-terms {
+	order: 1;
+	margin: 0;
+	font-family: var(--pia-font-titular);
+	font-size: var(--pia-fs-xs);
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	line-height: 1.2;
+}
+
+.wp-block-post .wp-block-post-terms a,
+.wp-block-post .wp-block-post-terms a:hover {
+	background: var(--pia-cian);
+	color: var(--pia-negro);
+	text-decoration: none;
+}
+
+/* Última hora (categoría 7): la etiqueta es el único ámbar de la tarjeta. */
+.wp-block-post.category-ultima-hora .wp-block-post-terms a {
+	background: var(--pia-ambar);
+	color: var(--pia-negro);
+}
+
+/* Dentro de una sección que ya lleva el nombre de la categoría como titular, repetirlo en cada
+ * tarjeta no aporta nada. Se queda en el hero y en las demás consultas. */
+.pia-tarjetas .wp-block-post-terms {
+	display: none;
+}
+
+/* El separador entre categorías no debe leerse como parte del kicker. */
+.wp-block-post .wp-block-post-terms__separator {
+	color: var(--pia-gris-borde);
+}
+
+/* Titular: negro. Cian oscuro solo en hover. */
+.wp-block-post .wp-block-post-title {
+	order: 2;
+	margin: 0;
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	line-height: 1.18;
+}
+
+.entry-content .wp-block-post .wp-block-post-title a,
+.wp-block-post .wp-block-post-title a {
+	color: var(--pia-negro);
+	text-decoration: none;
+}
+
+.entry-content .wp-block-post .wp-block-post-title a:hover,
+.wp-block-post .wp-block-post-title a:hover,
+.wp-block-post .wp-block-post-title a:focus-visible {
+	color: var(--pia-cian-oscuro);
+}
+
+/* Sobre la tarjeta oscura del padre (apertura y media en tono oscuro) el
+ * titular pasa a blanco; el cian, como siempre, solo en hover. */
+[data-tono="oscuro"] .wp-block-query:is(.is-style-sic-apertura, .is-style-sic-media) .wp-block-post-title a {
+	color: var(--pia-blanco);
+}
+
+[data-tono="oscuro"] .wp-block-query:is(.is-style-sic-apertura, .is-style-sic-media) .wp-block-post-title a:hover,
+[data-tono="oscuro"] .wp-block-query:is(.is-style-sic-apertura, .is-style-sic-media) .wp-block-post-title a:focus-visible {
+	color: var(--pia-cian);
+}
+
+[data-tono="oscuro"] .wp-block-query:is(.is-style-sic-apertura, .is-style-sic-media) :is(.wp-block-post-date, .wp-block-post-date a, .wp-block-post-date time, .wp-block-post-excerpt__excerpt) {
+	color: var(--pia-tech-texto-suave);
+}
+
+/* Fecha: sin fecha visible, un medio de noticias parece abandonado. */
+.wp-block-post .wp-block-post-date {
+	order: 3;
+	margin: 0;
+	font-size: var(--pia-fs-xs);
+	font-weight: 500;
+	color: var(--pia-gris);
+}
+
+.wp-block-post .wp-block-post-date a,
+.wp-block-post .wp-block-post-date time {
+	color: var(--pia-gris);
+	text-decoration: none;
+}
+
+.wp-block-post .wp-block-post-excerpt {
+	order: 4;
+	margin: 0;
+}
+
+.wp-block-post .wp-block-post-excerpt__excerpt {
+	margin: 0;
+	color: var(--pia-gris);
+	font-size: var(--pia-fs-base);
+	line-height: 1.55;
+}
+
+.wp-block-post .wp-block-post-excerpt__more-text {
+	display: none;
+}
+
+/* ---- Escalas de titular por tipo de tarjeta ---------------------------
+ * Una portada sin escala es una lista. La apertura tiene que ganar por
+ * tamaño, no por color. */
+
+/* Apertura (una sola por portada) */
+.pia-apertura .wp-block-post-title {
+	font-size: var(--pia-fs-2xl);
+	font-weight: var(--pia-titular-wght);
+}
+
+.pia-apertura .wp-block-post-excerpt__excerpt {
+	font-size: var(--pia-fs-md);
+	line-height: 1.5;
+}
+
+/* Secundarias de la fila de apertura */
+.pia-secundarias .wp-block-post-title {
+	font-size: var(--pia-fs-md);
+}
+
+/* Tarjetas de sección */
+.pia-tarjetas .wp-block-post-title {
+	font-size: var(--pia-fs-md);
+}
+
+/* Lista compacta sin foto (columna "Lo último" del cuerpo) */
+.pia-lista-compacta .wp-block-post-template > li.wp-block-post {
+	gap: var(--pia-sp-1);
+	padding-block: var(--pia-sp-3);
+	border-bottom: 1px solid var(--pia-gris-borde);
+}
+
+.pia-lista-compacta .wp-block-post-template > li.wp-block-post:first-child {
+	padding-top: 0;
+}
+
+.pia-lista-compacta .wp-block-post-template > li.wp-block-post:last-child {
+	border-bottom: 0;
+	padding-bottom: 0;
+}
+
+.pia-lista-compacta .wp-block-post-title {
+	font-size: var(--pia-fs-base);
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+/* ---- Retícula de la portada ------------------------------------------- */
+.wp-block-post-template.is-layout-grid {
+	gap: var(--pia-sp-5);
+}
+
+.wp-block-query + .wp-block-query {
+	margin-top: var(--pia-sp-5);
+}
+
+/* Separación entre filas de la portada */
+.pia-fila {
+	margin-block: var(--pia-sp-6);
+}
+
+/* ---- Portada (scripts/pia-portada.php) --------------------------------
+ * Dos columnas como la portada de producción: el listado de notas y, a su
+ * lado, la región complementaria con lo último. Por debajo de 782px
+ * Gutenberg apila las columnas y lo último cae tras el listado. */
+.pia-portada {
+	gap: var(--pia-sp-6);
+	margin-block: var(--pia-sp-5) var(--pia-sp-6);
+}
+
+/* En la portada el h1 de page.php queda para lectores de pantalla
+ * (EXPERIENCE.md › un solo h1, visualmente oculto en la portada). */
+.home .sic-pagina > .sic-nota__titulo {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.pia-portada__lateral {
+	position: sticky;
+	top: var(--pia-sp-5);
+}
+
+.pia-portada__ultimas {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.pia-portada__ultimas > li {
+	display: flex;
+	flex-direction: column;
+	gap: var(--pia-sp-1);
+	padding-block: var(--pia-sp-3);
+	border-bottom: 1px solid var(--pia-gris-borde);
+}
+
+.pia-portada__ultimas > li:first-child {
+	padding-top: 0;
+}
+
+.pia-portada__ultimas > li:last-child {
+	border-bottom: 0;
+}
+
+.pia-portada__ultimas .wp-block-latest-posts__post-title {
+	font-family: var(--pia-font-titular);
+	font-size: var(--pia-fs-base);
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--pia-negro);
+	text-decoration: none;
+}
+
+.pia-portada__ultimas .wp-block-latest-posts__post-title:hover,
+.pia-portada__ultimas .wp-block-latest-posts__post-title:focus-visible {
+	color: var(--pia-cian-oscuro);
+}
+
+.pia-portada__ultimas .wp-block-latest-posts__post-date {
+	font-size: var(--pia-fs-xs);
+	color: var(--pia-gris);
+}
+
+/* «Secciones» y el boletín bajo «Lo último» (functions.php › pia_child_secciones_en_portada). */
+.pia-portada__lateral .pia-widget--secciones {
+	margin-top: var(--pia-sp-6);
+}
+
+/* Contraste sobre el lienzo oscuro: píldoras en blanco y botón con texto negro. */
+[data-tono="oscuro"] .pia-portada__lateral .pia-widget__pildoras a {
+	color: var(--pia-blanco);
+	background: transparent;
+	border-color: var(--pia-tech-linea);
+}
+
+[data-tono="oscuro"] .pia-portada__lateral .pia-widget__pildoras a:hover,
+[data-tono="oscuro"] .pia-portada__lateral .pia-widget__pildoras a:focus-visible {
+	color: var(--pia-cian);
+	border-color: var(--pia-cian);
+}
+
+[data-tono="oscuro"] .pia-portada__lateral .pia-widget__boletin {
+	color: var(--pia-tech-texto-suave);
+	border-top-color: var(--pia-tech-linea);
+}
+
+[data-tono="oscuro"] .pia-portada__lateral .pia-widget__boton {
+	color: var(--pia-negro);
+}
+
+@media (max-width: 782px) {
+	.pia-portada__lateral {
+		position: static;
+	}
+}
+
+/* La portada es página estática, así que el padre la marca como zona de
+ * lectura y style.css le pone la hoja clara. La portada va sobre el lienzo
+ * (CLAUDE.md › portada oscura, artículo claro): sin hoja, como el índice. */
+body.home .sic-envoltorio {
+	background: transparent;
+	box-shadow: none;
+	color: var(--pia-blanco);
+}
+
+/* «Lo último» sobre el lienzo oscuro: tokens sobre oscuro, no los de claro. */
+[data-tono="oscuro"] .pia-portada__lateral .pia-seccion-titulo {
+	color: var(--pia-blanco);
+	border-bottom-color: var(--pia-tech-linea);
+}
+
+[data-tono="oscuro"] .pia-portada__ultimas > li {
+	border-bottom-color: var(--pia-tech-linea);
+}
+
+[data-tono="oscuro"] .pia-portada__ultimas .wp-block-latest-posts__post-title {
+	color: var(--pia-blanco);
+}
+
+[data-tono="oscuro"] .pia-portada__ultimas .wp-block-latest-posts__post-title:hover,
+[data-tono="oscuro"] .pia-portada__ultimas .wp-block-latest-posts__post-title:focus-visible {
+	color: var(--pia-cian);
+}
+
+[data-tono="oscuro"] .pia-portada__ultimas .wp-block-latest-posts__post-date {
+	color: var(--pia-tech-texto-suave);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-post .wp-block-post-featured-image img {
+		transition: none;
+	}
+
+	.wp-block-post .wp-block-post-featured-image a:hover img {
+		transform: none;
+	}
+}
+
+/* ---- Título de sección con filete cian --------------------------------
+ * Marca dónde empieza cada sección sin gritar. El filete es el acento. */
+.entry-content .pia-seccion-titulo,
+.pia-seccion-titulo {
+	position: relative;
+	margin: 0 0 var(--pia-sp-4);
+	padding-bottom: var(--pia-sp-2);
+	border-bottom: 1px solid var(--pia-gris-borde);
+	font-family: var(--pia-font-titular);
+	font-size: var(--pia-fs-md);
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--pia-negro);
+}
+
+.pia-seccion-titulo::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -1px;
+	width: 56px;
+	height: var(--pia-ancho-linea-dato);
+	background: var(--pia-cian);
+	border-radius: var(--pia-radio-pildora);
+	box-shadow: 0 0 10px var(--pia-cian-suave);
+}
+
+/* Variante para el Radar de modelos: el filete no cambia de color, cambia
+ * de forma. Doble trazo en lugar de uno continuo: se distingue del filete
+ * editorial sin gastar un color del sistema. */
+.pia-seccion-titulo--dato::after {
+	width: 96px;
+	background: repeating-linear-gradient(
+		90deg,
+		var(--pia-cian) 0 24px,
+		transparent 24px 32px
+	);
+}
+
+/* ---- Franja de boletín ------------------------------------------------
+ * Prioridad 3 del negocio: la captura no puede vivir solo en la barra
+ * lateral y el pie. Franja ancha, fondo negro, una sola acción. */
+.pia-franja-boletin {
+	position: relative;
+	background-color: var(--pia-negro);
+	background-image: var(--pia-halo), var(--pia-reticula);
+	background-size: auto, var(--pia-reticula-tam);
+	border: 1px solid var(--pia-cian-suave);
+	border-radius: var(--pia-radio-borde);
+	box-shadow: var(--pia-glow);
+	color: var(--pia-blanco);
+	padding: var(--pia-sp-6) var(--pia-sp-5);
+	margin-block: var(--pia-sp-6);
+	overflow: hidden;
+}
+
+/* Línea de señal en el borde superior de la franja */
+.pia-franja-boletin::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 2px;
+	background: var(--pia-filete);
+	box-shadow: 0 0 12px var(--pia-cian-suave);
+}
+
+.pia-franja-boletin h2,
+.pia-franja-boletin h3,
+.entry-content .pia-franja-boletin h2,
+.entry-content .pia-franja-boletin h3 {
+	color: var(--pia-blanco);
+	margin: 0 0 var(--pia-sp-2);
+	font-family: var(--pia-font-titular);
+	font-size: var(--pia-fs-lg);
+	font-weight: 700;
+}
+
+.pia-franja-boletin p {
+	color: var(--pia-blanco);
+	opacity: 0.82;
+	margin: 0 0 var(--pia-sp-4);
+}
+
+/* El formulario de Hostinger Reach hereda fondo claro: se fuerza contraste
+ * sobre el negro sin tocar el markup del plugin. */
+.pia-franja-boletin label,
+.pia-franja-boletin .hostinger-reach-form label {
+	color: var(--pia-blanco);
+}
+
+.pia-franja-boletin input[type="email"],
+.pia-franja-boletin input[type="text"] {
+	border: 1px solid var(--pia-blanco);
+	border-radius: var(--pia-radio-borde-sm);
+}
+
+.pia-franja-boletin small,
+.pia-franja-boletin .hostinger-reach-form small {
+	color: var(--pia-blanco);
+	opacity: 0.7;
+}
+
+/* ---- Responsive -------------------------------------------------------
+ * Por debajo de 782px Gutenberg apila las columnas solo. Lo que hay que
+ * corregir es la escala del titular de apertura, que a 39px desborda. */
+@media (max-width: 782px) {
+	.pia-apertura .wp-block-post-title {
+		font-size: var(--pia-fs-xl);
+	}
+
+	.pia-apertura .wp-block-post-excerpt__excerpt {
+		font-size: var(--pia-fs-base);
+	}
+
+	.pia-fila {
+		margin-block: var(--pia-sp-5);
+	}
+
+	.pia-franja-boletin {
+		padding: var(--pia-sp-5) var(--pia-sp-4);
+	}
+}
+
+@media (max-width: 480px) {
+	.pia-apertura .wp-block-post-title {
+		font-size: var(--pia-fs-lg);
+	}
+}
+
+/* ---- Botón sobre fondo negro (franja de boletín) ----------------------
+ * Sobre el negro de la franja el botón se invierte: fondo blanco, texto
+ * negro; en hover pasa al cian de marca con texto negro. */
+.pia-franja-boletin .wp-block-button__link,
+.pia-franja-boletin .wp-element-button {
+	background-color: var(--pia-blanco);
+	color: var(--pia-negro);
+	border: 0;
+	border-radius: 0;
+	padding: var(--pia-sp-3) var(--pia-sp-5);
+	border-radius: var(--pia-radio-pildora);
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.pia-franja-boletin .wp-block-button__link:hover,
+.pia-franja-boletin .wp-block-button__link:focus-visible,
+.pia-franja-boletin .wp-element-button:hover {
+	background-color: var(--pia-cian);
+	color: var(--pia-negro);
+}
+
+/* ---- Contenedor del ticker del Radar ------------------------------------
+ * El ticker lo pinta el plugin primicia-radar ([pia_radar_ticker]); aquí solo
+ * se le da su sitio en la cabecera: arriba del todo (sic/before_header),
+ * sobre el negro neural. Si el plugin está apagado o no hay modelos
+ * destacados, functions.php no pinta la franja. */
+.pia-ticker-wrap {
+	background: var(--pia-negro);
+	border-bottom: 1px solid var(--pia-tech-linea);
+	position: relative;
+	z-index: 2;
+}
+
+.pia-ticker-wrap .pia-tick {
+	background: transparent;
+	color: var(--pia-blanco);
+}
+
+.pia-ticker-wrap .pia-tick__rotulo,
+.pia-ticker-wrap .pia-tick__sep {
+	color: var(--pia-tech-texto-suave);
+}
+
+.pia-ticker-wrap .pia-tick__precio {
+	font-family: var(--pia-font-mono);
+	color: var(--pia-cian);
+}
+
+.pia-ticker-wrap .sic-contenedor {
+	padding-inline: 0;
+}
+
+/* ---- Anuncio de casa ("Publica aquí") --------------------------------
+ * Rellena el inventario que todavía no está vendido. Un hueco gris
+ * rotulado "PUBLICIDAD" lee como sitio inacabado; el mismo hueco
+ * ofreciéndose lee como inventario disponible. Y de paso es un enlace a
+ * contacto, así que trabaja comercialmente en vez de solo ocupar sitio.
+ *
+ * Cuando entre AdSense o un anunciante, el PHP deja de inyectarlo: el
+ * anuncio pagado siempre gana al de casa. */
+.pia-casa {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--pia-sp-2) var(--pia-sp-4);
+	flex-wrap: wrap;
+	width: 100%;
+	min-height: 90px;
+	padding: var(--pia-sp-4) var(--pia-sp-5);
+	background-color: var(--pia-negro);
+	background-image: var(--pia-halo), var(--pia-reticula);
+	background-size: auto, var(--pia-reticula-tam);
+	border-left: var(--pia-ancho-linea-dato) solid var(--pia-cian);
+	border-radius: var(--pia-radio-borde);
+	box-shadow: 0 0 0 1px var(--pia-cian-tenue), 0 0 20px var(--pia-cian-tenue);
+	color: var(--pia-blanco);
+	text-decoration: none;
+	transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.pia-casa:hover,
+.pia-casa:focus-visible {
+	background-color: var(--pia-superficie);
+	box-shadow: var(--pia-glow);
+	text-decoration: none;
+}
+
+.pia-casa__rotulo {
+	font-family: var(--pia-font-cuerpo);
+	font-size: var(--pia-fs-xs);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--pia-cian);
+	flex-basis: 100%;
+	text-align: center;
+	line-height: 1;
+}
+
+.pia-casa__titular {
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	font-size: var(--pia-fs-lg);
+	line-height: 1.05;
+	color: var(--pia-blanco);
+}
+
+.pia-casa__bajada {
+	font-family: var(--pia-font-cuerpo);
+	font-size: var(--pia-fs-sm);
+	color: var(--pia-gris-borde);
+}
+
+.pia-casa__cta {
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	font-size: var(--pia-fs-xs);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--pia-blanco);
+	border: 1px solid var(--pia-blanco);
+	border-radius: var(--pia-radio-pildora);
+	padding: var(--pia-sp-2) var(--pia-sp-4);
+	white-space: nowrap;
+}
+
+.pia-casa:hover .pia-casa__cta {
+	background: var(--pia-cian);
+	color: var(--pia-negro);
+	border-color: var(--pia-cian);
+	box-shadow: 0 0 10px var(--pia-cian-suave);
+}
+
+
+.pia-casa--caja .pia-casa__titular {
+	font-size: var(--pia-fs-xl);
+}
+
+/* El contenedor ya no necesita su etiqueta "PUBLICIDAD" ni su borde
+ * punteado cuando lleva un anuncio de casa dentro. */
+.pia-espacio-publicitario:has(.pia-casa),
+.pia-franja-publicitaria:has(.pia-casa) {
+	background: none;
+	border: 0;
+	padding: 0;
+	min-height: 0;
+}
+
+.pia-espacio-publicitario:has(.pia-casa)::before,
+.pia-franja-publicitaria:has(.pia-casa)::before {
+	content: none;
+}
+
+.pia-espacio-publicitario--caja:has(.pia-casa) {
+	max-width: none;
+}
+
+@media (max-width: 640px) {
+	.pia-casa {
+		flex-direction: column;
+		text-align: center;
+		gap: var(--pia-sp-2);
+		padding: var(--pia-sp-4);
+	}
+
+	.pia-casa__titular {
+		font-size: var(--pia-fs-md);
+	}
+}
+
+/* ---- Anuncio junto al logo --------------------------------------------
+ * El hijo lo cuelga de sic/logo_after, dentro de #logo.sic-logo, que el
+ * padre ya pone en flex junto al logotipo. */
+/* En movil NO se oculta: se coloca en flujo, justo bajo el logo. El
+ * inventario tiene que ser el mismo en las dos pantallas; lo que cambia
+ * es donde cae cada pieza, no cuantas hay. */
+.pia-cabecera-anuncio {
+	display: block;
+	margin-top: var(--pia-sp-3);
+}
+
+@media (min-width: 992px) {
+	.pia-cabecera-anuncio {
+		flex: 0 1 728px;
+		min-width: 0;
+		max-width: 728px;
+		margin: 0;
+	}
+
+	.pia-cabecera-anuncio .sic-ads {
+		margin: 0;
+		max-width: none;
+	}
+
+	.pia-cabecera-anuncio .pia-casa {
+		min-height: 90px;
+		padding: var(--pia-sp-3) var(--pia-sp-4);
+	}
+
+	.pia-cabecera-anuncio .pia-casa__titular {
+		font-size: var(--pia-fs-md);
+	}
+
+	.pia-cabecera-anuncio .pia-casa__bajada {
+		display: none;
+	}
+}
+
+/* ---- Formatos IAB del inventario --------------------------------------
+ * Medidas estandar del IAB, no medidas propias: el anunciante ya tiene las
+ * piezas hechas en estos tamanos. El hueco se reserva con la altura real
+ * del formato para que al llegar el anuncio no salte el maquetado. */
+.pia-casa--billboard {
+	min-height: 250px;
+	max-width: 970px;
+	margin-inline: auto;
+}
+
+.pia-casa--megabanner {
+	min-height: 90px;
+	max-width: 970px;
+	margin-inline: auto;
+}
+
+.pia-casa--leaderboard,
+.pia-casa--cabecera {
+	min-height: 90px;
+	max-width: 728px;
+	margin-inline: auto;
+}
+
+.pia-casa--halfpage {
+	flex-direction: column;
+	text-align: center;
+	max-width: 300px;
+	margin-inline: auto;
+	border-left: 0;
+	border-top: var(--pia-ancho-linea-dato) solid var(--pia-cian);
+	gap: var(--pia-sp-3);
+}
+
+.pia-casa--halfpage { min-height: 600px; }
+
+/* En los formatos altos el titular puede crecer sin apretar nada. */
+.pia-casa--billboard .pia-casa__titular,
+.pia-casa--halfpage .pia-casa__titular {
+	font-size: var(--pia-fs-xl);
+}
+
+.pia-casa--billboard,
+.pia-casa--halfpage {
+	flex-direction: column;
+	text-align: center;
+}
+
+/* La medida se muestra en el anuncio de casa: al anunciante le dice de un
+ * vistazo que pieza tiene que mandar. Desaparece con el anuncio real. */
+.pia-casa__medida {
+	font-family: var(--pia-font-cuerpo);
+	font-size: var(--pia-fs-xs);
+	letter-spacing: 0.12em;
+	color: var(--pia-gris);
+	border: 1px solid var(--pia-gris);
+	border-radius: var(--pia-radio-borde-sm);
+	padding: 2px var(--pia-sp-2);
+	line-height: 1.4;
+}
+
+/* En el leaderboard de 90px de alto no cabe todo: se queda lo esencial. */
+.pia-casa--leaderboard .pia-casa__bajada,
+.pia-casa--cabecera .pia-casa__bajada,
+.pia-casa--megabanner .pia-casa__bajada {
+	display: none;
+}
+
+.pia-casa--leaderboard,
+.pia-casa--cabecera,
+.pia-casa--megabanner {
+	flex-direction: row;
+	text-align: left;
+}
+
+.pia-casa--leaderboard .pia-casa__rotulo,
+.pia-casa--cabecera .pia-casa__rotulo,
+.pia-casa--megabanner .pia-casa__rotulo {
+	flex-basis: auto;
+	text-align: left;
+}
+
+@media (max-width: 640px) {
+	/* Movil: una sola medida horizontal (320x100) y la half page 300x250.
+	 * Dos piezas en vez de tres le simplifica la produccion al anunciante,
+	 * y 50px de alto dejan el anuncio de casa ilegible. */
+	.pia-casa--billboard,
+	.pia-casa--megabanner,
+	.pia-casa--leaderboard {
+		min-height: 100px;
+		flex-direction: column;
+		text-align: center;
+		gap: var(--pia-sp-2);
+	}
+
+	.pia-casa--halfpage {
+		min-height: 250px;
+	}
+
+	.pia-casa--leaderboard .pia-casa__rotulo,
+	.pia-casa--megabanner .pia-casa__rotulo {
+		text-align: center;
+	}
+
+	.pia-casa__medida { display: none; }
+
+	.pia-casa--billboard .pia-casa__titular,
+	.pia-casa--halfpage .pia-casa__titular {
+		font-size: var(--pia-fs-md);
+	}
+}
+
+/* ---- Ancho real del anuncio dentro de un bloque de grupo --------------
+ * .pia-franja-publicitaria es display:flex (pia-components.css) y su hijo
+ * .wp-block-group__inner-container es el flex item. Sin ancho declarado,
+ * ese hijo se encoge al contenido y el anuncio nunca alcanza su medida.
+ * Con esto el hueco ocupa todo el ancho disponible, que es lo que un
+ * anunciante espera de un billboard. */
+.pia-franja-publicitaria > .wp-block-group__inner-container,
+.pia-espacio-publicitario > .wp-block-group__inner-container {
+	width: 100%;
+	flex: 1 1 100%;
+}
+
+/* ---- Anuncio de cabecera: movil vs escritorio ------------------------
+ * El div vive DENTRO de #logo.sic-logo, junto al logotipo, y el padre lo
+ * pone en flex: un hijo sin base declarada se aprieta al lado del logo en
+ * vez de bajar. Por eso hay que forzar que ocupe una linea propia.
+ *
+ * En movil el formato baja a 320x50: esta posicion va sobre el pliegue y
+ * un banner de 100px de alto empuja la portada entera hacia abajo. */
+@media (max-width: 991px) {
+	.sic-logo {
+		flex-wrap: wrap;
+	}
+
+	.pia-cabecera-anuncio {
+		order: 99;
+		flex: 0 0 100%;
+		width: 100%;
+		max-width: none;
+		clear: both;
+		margin: var(--pia-sp-3) 0 0;
+	}
+
+	.pia-cabecera-anuncio .pia-casa {
+		max-width: none;
+		min-height: 50px;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: center;
+		text-align: left;
+		gap: var(--pia-sp-3);
+		padding: var(--pia-sp-2) var(--pia-sp-3);
+	}
+
+	/* A 50px de alto solo cabe lo imprescindible. */
+	.pia-cabecera-anuncio .pia-casa__rotulo,
+	.pia-cabecera-anuncio .pia-casa__bajada,
+	.pia-cabecera-anuncio .pia-casa__medida {
+		display: none;
+	}
+
+	.pia-cabecera-anuncio .pia-casa__titular {
+		font-size: var(--pia-fs-base);
+		white-space: nowrap;
+	}
+
+	.pia-cabecera-anuncio .pia-casa__cta {
+		padding: var(--pia-sp-1) var(--pia-sp-3);
+		font-size: 0.68rem;
+	}
+}
+
+/* ---- Barra lateral y pie con widgets (2.5.0 · estructura de EcomNoticias) ----------------------
+ * El contenedor, las columnas y la caja del widget los pone sic-prensa (layout.css); aquí solo lo
+ * que es de PrimixIA: listas de notas, tabla del Radar recortada y el hueco publicitario. */
+.sic-widget .wp-block-latest-posts__list,
+.sic-widget .wp-block-categories-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.sic-widget .wp-block-latest-posts__list > li,
+.sic-widget .wp-block-categories-list > li {
+	padding-block: var(--pia-sp-2);
+	border-bottom: 1px solid var(--pia-tech-linea);
+}
+
+.sic-widget .wp-block-latest-posts__list > li:last-child,
+.sic-widget .wp-block-categories-list > li:last-child {
+	border-bottom: 0;
+}
+
+.sic-widget .wp-block-latest-posts__post-title {
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	line-height: 1.25;
+	text-decoration: none;
+}
+
+.sic-widget .wp-block-latest-posts__post-date {
+	display: block;
+	margin-top: var(--pia-sp-1);
+	font-size: var(--pia-fs-xs);
+	color: var(--pia-tech-texto-suave);
+}
+
+/* El Radar en 370 px no cabe completo: Modelo · Lab · Entrada. El resto vive en /modelos/. */
+.sic-lateral .pia-radar :is(th, td):nth-child(n + 4) {
+	display: none;
+}
+
+/* El hueco publicitario del widget no lleva caja de widget (la quita layout.css con :has) */
+.sic-lateral .pia-espacio-publicitario--caja {
+	margin-inline: auto;
+}
+
+/* Pie: el enlace «Configurar cookies» se lee como el resto del menú legal */
+.pia-cookies-enlace a {
+	cursor: pointer;
+}
+
+/* sic-consent: el panel de categorías usa un fondo negro al 2,5 % que no se ve sobre superficie
+ * oscura. Se corrige aquí y no en el plugin (la fuente es ecn-web). */
+.sic-consent__panel {
+	background: color-mix(in srgb, var(--pia-blanco) 6%, transparent);
+}

@@ -1,0 +1,153 @@
+/**
+ * Huecos publicitarios.
+ *
+ * Los colores los pone cada tema hijo con variables CSS. Aquí solo van las
+ * medidas y el comportamiento, que son iguales en los dos medios.
+ *
+ * EL HUECO RESERVA SU ALTURA ANTES DE QUE LLEGUE LA IMAGEN. Si no, la página
+ * salta cuando entra el anuncio, y ese salto lo castiga Google en Core Web
+ * Vitals — justo la métrica que sostiene la velocidad del sitio.
+ *
+ * Cómo se reserva, y por qué NO con `aspect-ratio`: la primera versión le
+ * ponía `aspect-ratio` al bloque entero, pero el rótulo «Publicidad» vive
+ * dentro de ese bloque. Resultado: la caja medía el alto del anuncio y el
+ * contenido medía el alto del anuncio MÁS el rótulo, así que la pieza se salía
+ * por abajo exactamente los píxeles del rótulo — en los nueve huecos, en
+ * escritorio y en móvil (medido con scripts/auditar-espacios.mjs).
+ *
+ * Ahora cada posición declara `--sic-ads-alto` y el bloque reserva
+ * `alto + rótulo`. La cuenta cuadra y la imagen no puede desbordar.
+ */
+
+.sic-ads {
+	--sic-ads-borde: var(--ecn-neon, #FF2E3B);
+	--sic-ads-fondo: var(--ecn-superficie, #14161C);
+	--sic-ads-rotulo: var(--ecn-gris, #6B7280);
+
+	/* Alto de la línea «Publicidad» más su margen inferior. */
+	--sic-ads-rotulo-alto: 18px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	margin: 24px auto;
+	text-align: center;
+
+	/* El ancho se declara, no se deduce del contenido.
+	 *
+	 * El contenedor de la barra lateral del tema es un flex row, y sin esto
+	 * nuestro bloque entra como ítem flexible y se encoge al ancho del rótulo
+	 * «Publicidad»: 76 px. Con la caja a 76 px de ancho y sin alto, la imagen
+	 * con `loading="lazy"` no llega a considerarse visible y nunca se
+	 * descarga — así que el hueco queda vacío en escritorio. Medido en
+	 * producción con scripts/auditar-espacios.mjs. */
+	width: 100%;
+	flex-shrink: 0;
+
+	min-height: calc(var(--sic-ads-alto, 90px) + var(--sic-ads-rotulo-alto));
+}
+
+/* El rótulo «Publicidad» es obligación editorial: el lector tiene que poder
+   distinguir lo pagado de lo redaccional. */
+.sic-ads::before {
+	content: "Publicidad";
+	display: block;
+	flex: 0 0 auto;
+	font-size: 10px;
+	line-height: 12px;
+	letter-spacing: .16em;
+	text-transform: uppercase;
+	color: var(--sic-ads-rotulo);
+	margin-bottom: 6px;
+}
+
+.sic-ads__pieza {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	line-height: 0;
+	text-decoration: none;
+	animation: sic-ads-entrar .35s ease;
+}
+
+.sic-ads__pieza[hidden] {
+	display: none;
+}
+
+.sic-ads__img,
+.sic-ads noscript img {
+	display: block;
+	max-width: 100%;
+	/* Tope duro: una pieza más alta de la cuenta no puede empujar la página. */
+	max-height: var(--sic-ads-alto, 90px);
+	width: auto;
+	height: auto;
+	margin: 0 auto;
+}
+
+@keyframes sic-ads-entrar {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sic-ads__pieza { animation: none; }
+}
+
+/* ---------- Medidas por posición (de sic_ads_formatos()) ---------- */
+
+.sic-ads--portada-billboard,
+.sic-ads--nota-billboard {
+	--sic-ads-alto: 250px;
+	max-width: 970px;
+}
+
+.sic-ads--pie {
+	--sic-ads-alto: 90px;
+	max-width: 970px;
+}
+
+.sic-ads--portada-superior,
+.sic-ads--portada-cierre,
+.sic-ads--nota-dentro,
+.sic-ads--nota-final,
+.sic-ads--cabecera-logo {
+	--sic-ads-alto: 90px;
+	max-width: 728px;
+}
+
+.sic-ads--lateral {
+	--sic-ads-alto: 600px;
+	max-width: 300px;
+}
+
+/* ---------- Teléfono ---------- */
+
+@media (max-width: 991px) {
+	.sic-ads--portada-billboard,
+	.sic-ads--nota-billboard,
+	.sic-ads--pie,
+	.sic-ads--portada-superior,
+	.sic-ads--portada-cierre,
+	.sic-ads--nota-dentro,
+	.sic-ads--nota-final {
+		--sic-ads-alto: 100px;
+		max-width: 320px;
+	}
+
+	/* Va sobre el pliegue: 100 px de alto ahí empujan la portada entera. */
+	.sic-ads--cabecera-logo {
+		--sic-ads-alto: 50px;
+		max-width: 320px;
+	}
+
+	.sic-ads--lateral {
+		--sic-ads-alto: 250px;
+		max-width: 300px;
+	}
+
+	.sic-ads {
+		margin-block: 20px;
+	}
+}

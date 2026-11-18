@@ -1,0 +1,310 @@
+/**
+ * PIA — Capa "señal" (la capa oscura de Primicia IA)
+ *
+ * La portada, el Radar de modelos y las landings comerciales van sobre negro
+ * neural con cian de señal. El cuerpo de la nota NO se toca: se lee en claro,
+ * porque un texto de mil palabras sobre negro cansa y la nota es donde el
+ * lector se queda. La cabecera tampoco está aquí: es oscura en todas las
+ * páginas y por eso vive en style.css.
+ *
+ * Heredada de ecn-neon.css (ECN, 2026-08-31). Dos cosas que hay que saber
+ * antes de tocarla:
+ *
+ * 1. LOS CONTEXTOS SE DECLARAN CON :is(), NO UNO POR UNO. La lista vive en
+ *    un sitio y añadir un contexto es añadirlo ahí. Contextos:
+ *      body.home                        → portada
+ *      body.post-type-archive-pia_modelo → /modelos/ (el Radar)
+ *      body.single-pia_modelo           → ficha de un modelo
+ *      body.tax-pia_lab                 → archivo por laboratorio
+ *      body.pia-landing                 → landings comerciales
+ *      body.archive / .search / .error404 → categorías, etiquetas, autor,
+ *                                          búsqueda y 404 (2.1.3)
+ *
+ * 2. HAY QUE ENTRAR POR #contenido (el <main id="contenido"> de sic-prensa).
+ *    Un ID gana a cualquier número de clases, y así esta capa gana a las
+ *    reglas del padre (.sic-tarjeta, .sic-widget, .sic-envoltorio…) y a las de
+ *    style.css sin recurrir a !important. (Con el tema anterior, Jannah, se entraba por otro contenedor.)
+ *
+ * Carga después de style.css, así que gana por orden y no hace falta ningún
+ * !important. Quitar su línea en functions.php devuelve el sitio al fondo
+ * claro sin tocar nada más.
+ */
+
+/* =====================================================================
+ * 1. El lienzo
+ * ================================================================== */
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab, .pia-landing) {
+	background-color: var(--pia-negro);
+	/* Halo de esquina sobre retícula de 28 px. Hubo un tercer trazo diagonal
+	 * imitando las líneas de circuito de las piezas; se quitó tras verlo
+	 * renderizado, porque daba haces anchos en vez de trazos finos. */
+	background-image:
+		var(--pia-halo),
+		var(--pia-reticula);
+	background-size:
+		auto,
+		var(--pia-reticula-tam);
+	color: var(--pia-blanco);
+}
+
+/* En la portada la columna no se sustituye por otra caja: las tarjetas ya dan
+ * toda la estructura, y una caja dentro de otra sobre negro se lee a ventana
+ * de aplicación. (La hoja del .sic-envoltorio de la portada la quita
+ * pia-bloques.css; aquí queda el artículo de la página.) */
+body.home #contenido article.sic-pagina {
+	background: transparent;
+	box-shadow: none;
+	border: 0;
+	padding-inline: 0;
+}
+
+/* En el Radar y las landings sí es una caja: ahí el contenido es una ficha
+ * o un archivo, no una portada de tarjetas sueltas.
+ *
+ * Archivos del Radar: la cabecera del archivo y cada tarjeta son la caja.
+ * Las fichas (single-pia_modelo) y las landings son páginas singulares: el
+ * padre les pone la hoja clara en .sic-envoltorio, y como toda su tipografía
+ * va invertida a blanco, la caja oscura es la propia hoja. Sin esto el texto
+ * blanco quedaría sobre blanco. */
+body:is(.post-type-archive-pia_modelo, .tax-pia_lab) #contenido :is(
+	.sic-archivo__cabecera,
+	.sic-tarjeta
+) {
+	background: var(--pia-superficie);
+	border: var(--pia-borde-senal);
+	box-shadow: none;
+}
+
+body:is(.single-pia_modelo, .pia-landing) #contenido > .sic-envoltorio {
+	background: var(--pia-superficie);
+	border: var(--pia-borde-senal);
+	box-shadow: none;
+	color: var(--pia-blanco);
+}
+
+/* =====================================================================
+ * 2. Texto sobre el lienzo
+ * El titular es blanco; el acento lo dan el borde y el brillo, no la letra.
+ * Sobre el negro el cian sí cumple contraste (9,6:1), así que aquí puede
+ * ser texto: kickers, hover y cifras.
+ * ================================================================== */
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab, .pia-landing) #contenido :is(
+	.entry-content .wp-block-post .wp-block-post-title,
+	.entry-content .wp-block-post .wp-block-post-title a,
+	.wp-block-post-title,
+	.wp-block-post-title a,
+	.sic-nota__titulo,
+	.sic-tarjeta__titulo,
+	.sic-tarjeta__titulo a,
+	.sic-archivo__titulo,
+	.sic-seccion__titulo,
+	.pia-seccion-titulo,
+	h1, h2, h3, h4
+) {
+	color: var(--pia-blanco);
+}
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab) #contenido :is(
+	.entry-content .wp-block-post .wp-block-post-title a:hover,
+	.wp-block-post-title a:hover,
+	.wp-block-post-title a:focus-visible,
+	.sic-tarjeta__titulo a:hover
+) {
+	color: var(--pia-cian);
+}
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab, .pia-landing) #contenido :is(
+	.wp-block-post-excerpt__excerpt,
+	.wp-block-post-date,
+	.wp-block-post-date a,
+	.wp-block-post-date time,
+	.sic-tarjeta__sumario,
+	.sic-meta,
+	.sic-meta a,
+	.entry-content > p,
+	.sic-migas,
+	.sic-migas a,
+	.sic-migas [aria-current]
+) {
+	color: var(--pia-tech-texto-suave);
+}
+
+/* La medida del hueco publicitario ("728×90") iba en gris prensa: sobre el
+ * lienzo se queda en 4,1:1, por debajo del mínimo. */
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab, .pia-landing) .pia-casa__medida {
+	color: var(--pia-tech-texto-suave);
+}
+
+/* =====================================================================
+ * 3. Tarjetas de portada
+ * Contorno atenuado en reposo, brillo al acercarse. Es el gesto que más se
+ * repite en las piezas de campaña.
+ * ================================================================== */
+
+body.home #contenido .wp-block-post-template > li.wp-block-post {
+	background: var(--pia-superficie);
+	border: var(--pia-borde-senal);
+	border-radius: var(--pia-radio-borde);
+	padding: var(--pia-sp-4);
+	transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+body.home #contenido .wp-block-post-template > li.wp-block-post:hover,
+body.home #contenido .wp-block-post-template > li.wp-block-post:focus-within {
+	border: var(--pia-borde-senal-vivo);
+	box-shadow: var(--pia-glow);
+	transform: translateY(-2px);
+}
+
+/* La apertura no lleva caja: es la foto la que manda. Una tarjeta alrededor
+ * de la nota principal la iguala a las secundarias. */
+body.home #contenido .pia-apertura .wp-block-post-template > li.wp-block-post {
+	background: transparent;
+	border-color: transparent;
+	padding-inline: 0;
+}
+
+body.home #contenido .pia-apertura .wp-block-post-template > li.wp-block-post:hover {
+	transform: none;
+	box-shadow: none;
+	border-color: transparent;
+}
+
+/* Etiqueta de categoría sobre el lienzo (C1): el padre la pinta como píldora de acento, así que el
+ * texto va en NEGRO (regla de marca: el cian es luz; si es relleno, texto negro). Antes esta regla
+ * ponía el texto en cian y la píldora quedaba cian sobre cian. */
+body.home #contenido .wp-block-post .wp-block-post-terms a {
+	background: var(--pia-cian);
+	color: var(--pia-negro);
+}
+
+body.home #contenido .wp-block-post.category-ultima-hora .wp-block-post-terms a {
+	background: var(--pia-ambar);
+	color: var(--pia-negro);
+}
+
+/* ---- Listados como índice de entradas: portada, categoría, etiqueta, autor,
+ * búsqueda y 404. sic-prensa pinta cada nota como <article class="sic-tarjeta">
+ * sin caja (solo un filete inferior); aquí pasa a tarjeta sobre superficie, el
+ * mismo gesto que las tarjetas de bloques. */
+body:is(.home, .archive, .search, .error404) #contenido article.sic-tarjeta {
+	background: var(--pia-superficie);
+	border: var(--pia-borde-senal);
+	border-radius: var(--pia-radio-borde);
+	padding: var(--pia-sp-4);
+	margin-block-end: var(--pia-sp-4);
+	transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+body:is(.home, .archive, .search, .error404) #contenido article.sic-tarjeta:hover {
+	border: var(--pia-borde-senal-vivo);
+	box-shadow: var(--pia-glow);
+}
+
+body:is(.home, .archive, .search, .error404) #contenido .sic-tarjeta .sic-tarjeta__sumario,
+body:is(.home, .archive, .search, .error404) #contenido .sic-tarjeta .sic-meta,
+body:is(.home, .archive, .search, .error404) #contenido .sic-tarjeta .sic-meta a {
+	color: var(--pia-tech-texto-suave);
+}
+
+/* Botón de la tarjeta. sic-prensa no pinta "Leer más" en sus tarjetas; queda
+ * por si el padre lo añade (el botón del padre es .sic-boton). */
+body:is(.home, .archive, .search, .error404) #contenido .sic-tarjeta .sic-boton {
+	background: transparent;
+	color: var(--pia-cian);
+	border: 1px solid var(--pia-cian-suave);
+}
+
+body:is(.home, .archive, .search, .error404) #contenido .sic-tarjeta .sic-boton:hover {
+	background: var(--pia-cian);
+	color: var(--pia-negro);
+}
+
+/* =====================================================================
+ * 4. Barra lateral
+ * Cada widget es un .sic-widget (título .sic-widget__titulo). Aquí se le da
+ * su superficie. Los huecos publicitarios que viven en un widget no llevan
+ * caja (el padre ya se la quita: .sic-widget:has(.sic-ads)), así que se
+ * excluyen aquí para no volver a ponérsela.
+ * ================================================================== */
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab) #contenido .sic-widget:not(:has(.sic-ads, .pia-casa, .pia-espacio-publicitario)) {
+	background: var(--pia-superficie);
+	border: var(--pia-borde-senal);
+	box-shadow: none;
+}
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab) #contenido .sic-widget :is(
+	.sic-widget__titulo,
+	h1, h2, h3, h4,
+	li a,
+	p,
+	.wp-block-latest-posts__post-title
+) {
+	color: var(--pia-blanco);
+}
+
+/* Cualquier enlace del widget, no solo los de lista: la "Política de
+ * Privacidad" del boletín es un <a> suelto dentro de un párrafo y se quedaba
+ * en negro sobre la superficie oscura. Se excluye el botón, que tiene su
+ * propio relleno claro y ya contrasta. */
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab) #contenido .sic-widget
+	a:not(.wp-block-button__link):not(.wp-element-button) {
+	color: var(--pia-blanco);
+}
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab) #contenido .sic-widget :is(
+	time,
+	.wp-block-latest-posts__post-date
+) {
+	color: var(--pia-tech-texto-suave);
+}
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab) #contenido .sic-widget li a:hover {
+	color: var(--pia-cian);
+}
+
+/* Los componentes del Radar no aparecen aquí a propósito: su superficie
+ * oscura es parte de la definición del componente (pia-components.css y
+ * radar.css del plugin), no de esta capa. Se reconocen igual dentro de una
+ * nota clara: es la superficie y la procedencia lo que certifica el dato.
+ */
+
+/* =====================================================================
+ * 5. Anuncio de casa y espacios publicitarios
+ * Sobre negro el hueco no puede ser una caja blanca: sería lo más brillante
+ * de la pantalla, y es espacio todavía no vendido.
+ * ================================================================== */
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab, .pia-landing) :is(
+	.pia-espacio-publicitario,
+	.pia-franja-publicitaria
+) {
+	/* 2.0.1: sin punteado. El hueco es una tarjeta flotante que la pieza
+	 * llena de borde a borde (pix-inmersivo.css, sección 7). */
+	background: var(--pia-negro);
+	border: 0;
+}
+
+body:is(.home, .archive, .search, .error404, .post-type-archive-pia_modelo, .single-pia_modelo, .tax-pia_lab, .pia-landing) :is(
+	.pia-espacio-publicitario,
+	.pia-franja-publicitaria
+)::before {
+	color: var(--pia-tech-texto-suave);
+}
+
+/* =====================================================================
+ * 6. Móvil
+ * ================================================================== */
+
+/* En escritorio la columna va sin margen lateral para que las tarjetas ocupen
+ * todo el ancho. En el teléfono eso deja el titular y el sumario pegados al
+ * borde de la pantalla: sin la caja blanca que antes marcaba el límite, no
+ * queda nada que separe el texto del canto del cristal. */
+@media (max-width: 767px) {
+	body.home #contenido article.sic-pagina {
+		padding-inline: var(--pia-sp-4);
+	}
+}

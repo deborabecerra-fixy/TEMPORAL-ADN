@@ -1,0 +1,160 @@
+/*
+ * Tarjeta con imagen y overlay de noticia (opt-in, ver inc/tarjeta.php). Solo variables --sic-*.
+ * Animaciones solo con transform y opacity; sin desenfoques ni filtros.
+ */
+
+.sic-tarjeta--media {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	column-gap: var(--sic-sp-5);
+	align-items: start;
+}
+
+/* Escritorio: imagen a la izquierda, texto a la derecha. */
+@media (min-width: 700px) {
+	.sic-tarjeta--media {
+		grid-template-columns: minmax(0, 17.5rem) minmax(0, 1fr);
+	}
+
+	.sic-tarjeta--media > .sic-tarjeta__media {
+		grid-column: 1;
+		grid-row: 1 / span 4;
+	}
+
+	.sic-tarjeta--media > :not(.sic-tarjeta__media) {
+		grid-column: 2;
+	}
+}
+
+.sic-tarjeta__media {
+	position: relative;
+	display: block;
+	aspect-ratio: 16 / 9;
+	margin-bottom: var(--sic-sp-3);
+	overflow: hidden;
+	border-radius: var(--sic-radio-sm);
+	background: var(--sic-cabecera);
+	text-decoration: none;
+}
+
+@media (min-width: 700px) {
+	.sic-tarjeta__media {
+		margin-bottom: 0;
+	}
+}
+
+.sic-tarjeta__imagen {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.sic-tarjeta__imagen {
+		transition: transform var(--sic-dur-lenta) var(--sic-curva-salida);
+	}
+
+	.sic-tarjeta--media:hover .sic-tarjeta__imagen {
+		transform: scale(1.04);
+	}
+}
+
+/* Respaldo de marca: el nombre del medio sobre el fondo del tema. */
+.sic-tarjeta__vacia {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	padding: var(--sic-sp-3);
+	background-image: var(--sic-halo), var(--sic-reticula);
+	background-size: auto, var(--sic-reticula-tam);
+	font-family: var(--sic-font-titular);
+	font-size: var(--sic-fs-lg);
+	letter-spacing: 0.06em;
+	text-align: center;
+	text-transform: uppercase;
+	color: var(--sic-cabecera-suave);
+}
+
+/* Velo: oscurece la parte baja para que la etiqueta y el borde se lean sobre cualquier foto. */
+.sic-tarjeta__velo {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, color-mix(in srgb, var(--sic-cabecera) 78%, transparent) 0%, transparent 55%);
+	pointer-events: none;
+}
+
+/* Etiqueta de la sección, arriba a la izquierda: píldora de acento con texto oscuro. */
+.sic-tarjeta__sello {
+	position: absolute;
+	top: var(--sic-sp-3);
+	left: var(--sic-sp-3);
+	max-width: calc(100% - 2 * var(--sic-sp-3));
+	padding: 0.2rem 0.6rem;
+	overflow: hidden;
+	border-radius: var(--sic-radio-sm);
+	background: var(--sic-acento);
+	color: var(--sic-acento-texto);
+	font-size: var(--sic-fs-xs);
+	font-weight: var(--sic-etiqueta-peso);
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-overflow: ellipsis;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+/* Última hora: el único color de urgencia. */
+.sic-tarjeta__sello--urgente {
+	background: var(--sic-urgente);
+	color: var(--sic-urgente-texto);
+}
+
+/* «Sigue leyendo» en la nota: tres tarjetas verticales en una fila (imagen arriba, titular abajo). Siempre
+ * son tres (single.php completa con las más recientes), así que la fila nunca queda con huecos. */
+.sic-relacionadas {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--sic-sp-5) var(--sic-sp-4);
+}
+
+.sic-relacionadas > h2 {
+	grid-column: 1 / -1;
+	margin-bottom: 0;
+}
+
+.sic-relacionadas .sic-tarjeta--media {
+	display: block;
+	padding: 0;
+	border-bottom: 0;
+}
+
+@media (min-width: 700px) {
+	.sic-relacionadas {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+/* «Mientras tanto, lo último» (archivo sin notas y 404): tarjetas verticales completas, de dos en dos. */
+.sic-ultimas {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--sic-sp-5) var(--sic-sp-4);
+}
+
+.sic-ultimas > h2 {
+	grid-column: 1 / -1;
+	margin-bottom: 0;
+}
+
+.sic-ultimas .sic-tarjeta--media {
+	display: block;
+}
+
+@media (min-width: 600px) {
+	.sic-ultimas {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}

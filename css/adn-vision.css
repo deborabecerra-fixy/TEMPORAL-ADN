@@ -1,0 +1,508 @@
+/* =====================================================================
+ * ADN Empresarial — «Visión empresarial» + «Pulso de los negocios»
+ * (marcado en index.html, contenido en js/adn-vision.js)
+ * Visión vive en la columna editorial y el Pulso en la lateral: la grilla
+ * de la portada la arma adn-grilla.css.
+ * ================================================================== */
+.adn-vision[hidden],
+.adn-pulso[hidden] {
+	display: none;
+}
+
+/* Separador editorial: filete fino arriba y el mismo ritmo que el resto. */
+.adn-vision {
+	padding-top: var(--adn-ritmo, 32px);
+	border-top: 1px solid var(--pia-gris-borde);
+	color: var(--pia-marfil);
+}
+
+/* ---------- Cabecera de sección ---------- */
+.adn-vision__cabeza {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--pia-sp-4);
+}
+
+.adn-vision__titulo {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	margin: 0;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+/* Acento lima: filete vertical corto, la señal del manual. */
+.adn-vision__titulo::before {
+	content: '';
+	flex: none;
+	width: 4px;
+	height: 1.1em;
+	border-radius: 2px;
+	background: var(--pia-cian);
+}
+
+.adn-vision__mas {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	flex: none;
+	color: var(--pia-tech-texto-suave);
+	font-family: var(--pia-font-titular);
+	font-size: 0.8125rem;
+	font-weight: 500;
+	text-decoration: none;
+	transition: color 160ms ease;
+}
+
+.adn-vision__mas::after {
+	content: '\2192';
+	transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.adn-vision__mas:hover,
+.adn-vision__mas:focus-visible {
+	color: var(--pia-cian);
+	text-decoration: none;
+}
+
+.adn-vision__mas:hover::after {
+	transform: translateX(3px);
+}
+
+.adn-vision__bajada {
+	margin: 8px 0 24px;
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.9375rem;
+	line-height: 1.5;
+}
+
+/* ---------- Tarjetas ---------- */
+.adn-vision__notas {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 24px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.adn-vision__nota {
+	margin: 0;
+	min-width: 0;
+}
+
+.adn-vision__tarjeta {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	height: 100%;
+}
+
+.adn-vision__imagen {
+	display: block;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	border-radius: 12px;
+	background: var(--pia-superficie);
+}
+
+.adn-vision__imagen img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.adn-vision__cuerpo {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+}
+
+.adn-vision .adn-vision__categoria {
+	align-self: flex-start;
+	color: var(--pia-cian);
+	font-family: var(--pia-font-titular);
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.adn-vision__titular {
+	margin: 0;
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.0625rem, 0.95rem + 0.3vw, 1.25rem);
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: -0.015em;
+	overflow-wrap: break-word;
+	text-wrap: pretty;
+}
+
+.adn-vision .adn-vision__titular a {
+	color: var(--pia-marfil);
+	text-decoration: none;
+	transition: color 160ms ease;
+}
+
+.adn-vision .adn-vision__titular a:hover,
+.adn-vision .adn-vision__titular a:focus-visible {
+	color: var(--pia-cian);
+	text-decoration: none;
+}
+
+.adn-vision__tarjeta:hover .adn-vision__imagen img {
+	transform: scale(1.03);
+}
+
+.adn-vision__fecha {
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.6875rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+/* ---------- Pulso de los Negocios ----------
+ * Jerarquía editorial: título en tipo oración con un filete lima corto
+ * (el único detalle de identidad), filas con fondos alternados de contraste
+ * mínimo y valores alineados a la derecha, destacados por peso, no por
+ * color. Sin sombras, brillos, degradados ni animaciones. */
+.adn-pulso {
+	padding: 22px 20px 18px;
+	border: 1px solid var(--pia-gris-borde);
+	border-radius: 18px;
+	background: var(--pia-superficie);
+}
+
+.adn-pulso__titulo {
+	margin: 0 0 18px;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 1.1875rem;
+	font-weight: 500;
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+}
+
+.adn-pulso__titulo::after {
+	content: '';
+	display: block;
+	width: 40px;
+	height: 2px;
+	margin-top: 10px;
+	border-radius: 2px;
+	background: var(--pia-cian);
+}
+
+/* Las filas se extienden apenas hacia los bordes para que el fondo
+ * alternado respire; el texto queda alineado con el título. */
+.adn-pulso__lista {
+	margin: 0 -10px;
+}
+
+.adn-pulso__item {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-areas:
+		'nombre valor'
+		'periodo valor';
+	align-items: center;
+	column-gap: 12px;
+	row-gap: 3px;
+	padding: 11px 10px;
+	border-bottom: 1px solid var(--pia-tech-linea);
+}
+
+.adn-pulso__item:nth-child(odd) {
+	background: rgba(242, 241, 231, 0.025);
+}
+
+.adn-pulso__item:last-child {
+	border-bottom: 0;
+}
+
+.adn-pulso__nombre {
+	grid-area: nombre;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 0.875rem;
+	font-weight: 400;
+}
+
+.adn-pulso__valor {
+	grid-area: valor;
+	justify-self: end;
+	margin: 0;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 1.0625rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.01em;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.adn-pulso__periodo {
+	grid-area: periodo;
+	margin: 0;
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.6875rem;
+	letter-spacing: 0.04em;
+}
+
+/* Sin fuente conectada: nombre atenuado y una etiqueta mínima en lugar de
+ * la cifra, para que no compita con los indicadores con dato. */
+.adn-pulso__item.is-pendiente .adn-pulso__nombre {
+	color: var(--pia-tech-texto-suave);
+}
+
+.adn-pulso__item.is-pendiente .adn-pulso__valor {
+	color: transparent;
+	font-size: 0;
+}
+
+.adn-pulso__item.is-pendiente .adn-pulso__valor::after {
+	content: 'Pendiente';
+	display: inline-block;
+	padding: 2px 7px;
+	border: 1px solid var(--pia-tech-linea);
+	border-radius: 999px;
+	color: rgba(242, 241, 231, 0.5);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.5625rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.adn-pulso__nota {
+	margin: 12px 0 0;
+	padding-top: 12px;
+	border-top: 1px solid var(--pia-gris-borde);
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.6875rem;
+	line-height: 1.5;
+}
+
+/* ---------- Tablet: noticias arriba, indicadores debajo en dos columnas ---------- */
+@media (min-width: 640px) and (max-width: 991px) {
+	.adn-pulso__lista {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: 20px;
+	}
+
+	.adn-pulso__item:nth-last-child(2) {
+		border-bottom: 0;
+	}
+
+	/* En dos columnas el fondo alterna por fila (pares de indicadores). */
+	.adn-pulso__item:nth-child(odd) {
+		background: transparent;
+	}
+
+	.adn-pulso__item:nth-child(4n + 1),
+	.adn-pulso__item:nth-child(4n + 2) {
+		background: rgba(242, 241, 231, 0.025);
+	}
+}
+
+/* ---------- Secciones (columna lateral, debajo del Pulso) ----------
+ * Card con carácter propio, inspirada en una carpeta: cabecera con el título
+ * a la izquierda y una pestaña lima en la esquina superior derecha (borde en
+ * S, con el mismo radio de la tarjeta y una grilla de puntos en verde
+ * oscuro). Las categorías van en un panel interior más oscuro; en hover, la
+ * fila toma un fondo apenas más claro y un borde lima sutil (sin cambiar de
+ * tamaño). Lima solo como acento: pestaña, filete, flechas e interacción. */
+.adn-secciones {
+	position: relative;
+	padding: 20px 14px 14px;
+	border: 1px solid var(--pia-gris-borde);
+	border-radius: 18px;
+	background: var(--pia-superficie);
+}
+
+/* Pestaña lima integrada en la esquina (cubre el borde en ese tramo). */
+.adn-secciones::after {
+	content: '';
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	width: 136px;
+	height: 30px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 136 30'%3E%3Cpath fill='%23CCEB53' d='M0 30C16 30 18 1 38 1H118A17 17 0 0 1 135 18V30Z'/%3E%3Cg fill='%23121B15'%3E%3Ccircle cx='104' cy='10' r='1.6'/%3E%3Ccircle cx='109' cy='10' r='1.6'/%3E%3Ccircle cx='114' cy='10' r='1.6'/%3E%3Ccircle cx='104' cy='15' r='1.6'/%3E%3Ccircle cx='109' cy='15' r='1.6'/%3E%3Ccircle cx='114' cy='15' r='1.6'/%3E%3Ccircle cx='104' cy='20' r='1.6'/%3E%3Ccircle cx='109' cy='20' r='1.6'/%3E%3Ccircle cx='114' cy='20' r='1.6'/%3E%3C/g%3E%3C/svg%3E") right top / 136px 30px no-repeat;
+	pointer-events: none;
+}
+
+.adn-secciones__titulo {
+	margin: 0 0 14px 6px;
+	padding-right: 140px;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 1.1875rem;
+	font-weight: 500;
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+}
+
+.adn-secciones__titulo::after {
+	content: '';
+	display: block;
+	width: 40px;
+	height: 2px;
+	margin-top: 10px;
+	border-radius: 2px;
+	background: var(--pia-cian);
+}
+
+/* Panel interior de las categorías. */
+.adn-secciones__lista {
+	margin: 0;
+	padding: 6px;
+	list-style: none;
+	border: 1px solid color-mix(in srgb, var(--pia-cian) 14%, transparent);
+	border-radius: 14px;
+	background: var(--pia-negro);
+}
+
+.adn-secciones__lista li {
+	position: relative;
+	margin: 0;
+}
+
+/* Separadores discretos, por dentro del panel. */
+.adn-secciones__lista li + li::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 12px;
+	right: 12px;
+	height: 1px;
+	background: var(--pia-tech-linea);
+	pointer-events: none;
+}
+
+.adn-secciones .adn-secciones__lista a {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	position: relative;
+	z-index: 1;
+	padding: 10px 12px;
+	border: 1px solid transparent;
+	border-radius: 10px;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 0.875rem;
+	font-weight: 400;
+	text-decoration: none;
+	transition: color 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+/* Flechas finas en lima, discretas en reposo. */
+.adn-secciones .adn-secciones__lista a::after {
+	content: '\2192';
+	flex: none;
+	color: var(--pia-cian);
+	opacity: 0.6;
+	transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.adn-secciones .adn-secciones__lista a:hover,
+.adn-secciones .adn-secciones__lista a:focus-visible {
+	border-color: color-mix(in srgb, var(--pia-cian) 40%, transparent);
+	background: var(--pia-superficie);
+	color: var(--pia-cian);
+	text-decoration: none;
+}
+
+.adn-secciones .adn-secciones__lista a:hover::after,
+.adn-secciones .adn-secciones__lista a:focus-visible::after {
+	opacity: 1;
+	transform: translateX(3px);
+}
+
+/* La fila resaltada tapa los separadores que la rodean. */
+.adn-secciones__lista li:hover + li::before,
+.adn-secciones__lista li:has(> a:hover)::before,
+.adn-secciones__lista li:focus-within + li::before,
+.adn-secciones__lista li:focus-within::before {
+	opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.adn-secciones .adn-secciones__lista a,
+	.adn-secciones .adn-secciones__lista a::after {
+		transition: none;
+	}
+}
+
+/* Celular: Secciones no se muestra (las categorías están en el menú). Sigue
+ * en el HTML; al no ocupar lugar, la columna no deja hueco. */
+@media (max-width: 767px) {
+	.adn-secciones {
+		display: none;
+	}
+}
+
+/* ---------- Celular: tarjetas horizontales compactas ---------- */
+@media (max-width: 699px) {
+	.adn-vision__bajada {
+		margin-bottom: 18px;
+	}
+
+	.adn-vision__notas {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 18px;
+	}
+
+	.adn-vision__tarjeta {
+		flex-direction: row;
+		align-items: flex-start;
+		gap: 14px;
+	}
+
+	.adn-vision__imagen {
+		flex: none;
+		width: 38%;
+		max-width: 150px;
+		border-radius: 10px;
+	}
+
+	.adn-vision__cuerpo {
+		gap: 6px;
+	}
+
+	.adn-vision__titular {
+		font-size: 1rem;
+		line-height: 1.28;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.adn-vision__imagen img,
+	.adn-vision__mas::after {
+		transition: none;
+	}
+
+	.adn-vision__tarjeta:hover .adn-vision__imagen img {
+		transform: none;
+	}
+}

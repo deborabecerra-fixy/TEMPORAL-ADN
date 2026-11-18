@@ -1,0 +1,280 @@
+/*
+ * Bloques de portada (TEMA-009): tarjeta de nota del padre sobre Query Loop de core.
+ * Variantes de DESIGN.md › Tarjeta de nota: apertura, media, lista y compacta.
+ * Solo var(--sic-*): ningún color escrito (TEMA-003).
+ */
+
+/* Sección de portada */
+.sic-seccion {
+	max-width: var(--sic-ancho-contenedor);
+	margin: 0 auto var(--sic-sp-6);
+	padding: 0 var(--sic-sp-4);
+}
+
+.sic-seccion__titulo {
+	margin: 0 0 var(--sic-sp-4);
+	padding-top: var(--sic-sp-3);
+	border-top: var(--sic-filete);
+	font-size: var(--sic-fs-xl);
+	font-weight: var(--sic-h2-peso);
+	font-stretch: var(--sic-h2-ancho, 100%);
+	color: var(--sic-lienzo-texto);
+}
+
+/* Oculto a la vista, visible para lectores de pantalla (el h2 de sección de la apertura) */
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Tarjeta base: un solo enlace (el titular) se extiende a toda la tarjeta */
+.wp-block-query .wp-block-post-template {
+	display: grid;
+	gap: var(--sic-sp-5);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wp-block-query .wp-block-post {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sic-sp-2);
+	margin: 0;
+	min-width: 0;
+}
+
+.wp-block-query .wp-block-post:has(.wp-block-post-title a:focus-visible) {
+	outline: 2px solid var(--sic-foco);
+	outline-offset: 2px;
+	border-radius: var(--sic-radio);
+}
+
+[data-tono="oscuro"] .wp-block-query .wp-block-post:has(.wp-block-post-title a:focus-visible) {
+	outline-color: var(--sic-foco-oscuro);
+}
+
+/* Imagen: reserva 16:9 con la superficie mientras carga (esqueleto sin animación) */
+.wp-block-query .wp-block-post-featured-image {
+	margin: 0;
+	overflow: hidden;
+	aspect-ratio: 16 / 9;
+	border-radius: var(--sic-radio);
+	background: var(--sic-lienzo-superficie);
+}
+
+.wp-block-query .wp-block-post-featured-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Etiqueta de categoría: una por tarjeta, relleno de acento */
+.wp-block-query .wp-block-post-terms {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sic-sp-1);
+	margin: 0;
+	font-size: var(--sic-fs-xs);
+	line-height: 1;
+}
+
+.wp-block-query .wp-block-post-terms .wp-block-post-terms__separator {
+	display: none;
+}
+
+.wp-block-query .wp-block-post-terms a {
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	padding: var(--sic-sp-1) var(--sic-sp-2);
+	border-radius: var(--sic-radio-sm);
+	background: var(--sic-acento);
+	color: var(--sic-acento-texto);
+	font-weight: var(--sic-etiqueta-peso);
+	font-stretch: var(--sic-etiqueta-ancho, 85%);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.wp-block-query .wp-block-post-terms a:not(:first-of-type) {
+	display: none;
+}
+
+/* Titular */
+.wp-block-query .wp-block-post-title {
+	margin: 0;
+	font-family: var(--sic-font-titular);
+	font-size: var(--sic-fs-md);
+	font-weight: var(--sic-h2-peso);
+	font-stretch: var(--sic-h2-ancho, 100%);
+	line-height: var(--sic-lh-titular);
+	letter-spacing: var(--sic-titular-tracking);
+	color: var(--sic-lienzo-texto);
+}
+
+.wp-block-query .wp-block-post-title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.wp-block-query .wp-block-post-title a::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+.wp-block-query .wp-block-post:hover .wp-block-post-title a {
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
+}
+
+/* Fecha (<time> lo emite core) */
+.wp-block-query .wp-block-post-date {
+	font-size: var(--sic-fs-sm);
+	color: var(--sic-lienzo-suave);
+}
+
+.wp-block-query .wp-block-post-date a {
+	color: inherit;
+}
+
+/* Zonas oscuras: la tarjeta se separa por superficie y borde; la luz solo al interactuar */
+[data-tono="oscuro"] .wp-block-query:is(.is-style-sic-apertura, .is-style-sic-media) .wp-block-post {
+	padding: var(--sic-sp-3);
+	border: 1px solid var(--sic-acento-luz-suave);
+	border-radius: var(--sic-radio);
+	background: var(--sic-lienzo-superficie);
+}
+
+[data-tono="oscuro"] .wp-block-query:is(.is-style-sic-apertura, .is-style-sic-media) .wp-block-post:hover {
+	border-color: var(--sic-acento-luz);
+	box-shadow: var(--sic-halo);
+}
+
+/* Variante apertura: imagen grande + titular 2xl (móvil) / 3xl (escritorio) */
+.wp-block-query.is-style-sic-apertura .wp-block-post-title {
+	font-size: var(--sic-fs-2xl);
+	font-weight: var(--sic-h1-peso);
+	font-stretch: var(--sic-h1-ancho, 100%);
+}
+
+/* Variante media: imagen + titular md (el valor base) */
+.wp-block-query.is-style-sic-media .wp-block-post-template {
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+}
+
+/* Variante lista: sin imagen, titular base + meta, separadas por filete */
+.wp-block-query.is-style-sic-lista .wp-block-post-template {
+	gap: 0;
+}
+
+.wp-block-query.is-style-sic-lista .wp-block-post {
+	padding: var(--sic-sp-3) 0;
+	border-top: 1px solid var(--sic-lienzo-borde);
+}
+
+.wp-block-query.is-style-sic-lista .wp-block-post:first-child {
+	border-top: 0;
+	padding-top: 0;
+}
+
+.wp-block-query.is-style-sic-lista .wp-block-post-featured-image {
+	display: none;
+}
+
+.wp-block-query.is-style-sic-lista .wp-block-post-title {
+	font-size: var(--sic-fs-base);
+}
+
+/* Variante compacta: miniatura 1:1 de 80 px + titular */
+.wp-block-query.is-style-sic-compacta .wp-block-post {
+	display: grid;
+	grid-template-columns: 80px minmax(0, 1fr);
+	column-gap: var(--sic-sp-3);
+	row-gap: var(--sic-sp-1);
+	align-content: start;
+}
+
+.wp-block-query.is-style-sic-compacta .wp-block-post > * {
+	grid-column: 2;
+}
+
+.wp-block-query.is-style-sic-compacta .wp-block-post-featured-image {
+	grid-column: 1;
+	grid-row: 1 / span 3;
+	width: 80px;
+	aspect-ratio: 1;
+}
+
+.wp-block-query.is-style-sic-compacta .wp-block-post-title {
+	font-size: var(--sic-fs-base);
+}
+
+/* Apertura de portada: grande 7/12, lista 5/12; en móvil, una debajo de otra */
+.sic-apertura {
+	display: grid;
+	gap: var(--sic-sp-5);
+}
+
+/* «Lo más leído»: lista numerada, titular + sección */
+.sic-mas-leidas .wp-block-post-template {
+	counter-reset: sic-mas-leidas;
+}
+
+.sic-mas-leidas .wp-block-post {
+	display: grid;
+	grid-template-columns: 2.5rem minmax(0, 1fr);
+	column-gap: var(--sic-sp-3);
+	counter-increment: sic-mas-leidas;
+}
+
+.sic-mas-leidas .wp-block-post > * {
+	grid-column: 2;
+}
+
+.sic-mas-leidas .wp-block-post::before {
+	content: counter(sic-mas-leidas);
+	grid-column: 1;
+	grid-row: 1 / span 2;
+	font-family: var(--sic-font-titular);
+	font-size: var(--sic-fs-xl);
+	font-weight: var(--sic-h1-peso);
+	line-height: 1;
+	color: var(--sic-lienzo-rotulo);
+}
+
+.sic-mas-leidas .wp-block-post-terms {
+	order: 2;
+}
+
+@media (min-width: 992px) {
+	.sic-seccion {
+		margin-bottom: var(--sic-sp-7);
+	}
+
+	.sic-apertura {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		align-items: start;
+	}
+
+	.wp-block-query.is-style-sic-apertura .wp-block-post-title {
+		font-size: var(--sic-fs-3xl);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.wp-block-query .wp-block-post {
+		transition: border-color var(--sic-dur-rapida) var(--sic-curva-estandar), box-shadow var(--sic-dur-rapida) var(--sic-curva-estandar);
+	}
+}

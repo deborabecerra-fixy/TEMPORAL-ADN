@@ -1,0 +1,438 @@
+/* =====================================================================
+ * ADN Empresarial — Mega menú editorial (js/adn-mega.js)
+ * Todo cuelga de html.adn-mega-activo: si el script no corre, el menú y la
+ * portada quedan exactamente como antes.
+ * Colores del manual: verde profundo (fondo), marfil (texto), lima (acento).
+ * ================================================================== */
+
+/* ---------- Portada: las secciones por categoría pasan al menú ----------
+ * Se ocultan a la vista, no se borran: las notas siguen en el HTML y son la
+ * fuente de las previsualizaciones del menú. El bloque principal queda. */
+html.adn-mega-activo body.home #contenido .pia-fila:has(.pia-tarjetas):not(:has(.pia-apertura, .pia-secundarias)) {
+	display: none;
+}
+
+/* ---------- Piezas comunes ---------- */
+.adn-mega-activo .sic-nav .adn-mega a {
+	min-height: 0;
+	padding: 0;
+	text-decoration: none;
+}
+
+.adn-mega__cabeza {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--pia-sp-4);
+}
+
+.adn-mega__categoria {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 1.0625rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+}
+
+.adn-mega__categoria::before {
+	content: '';
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--pia-cian);
+}
+
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__todo {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--pia-tech-texto-suave);
+	font-family: var(--pia-font-titular);
+	font-size: 0.8125rem;
+	font-weight: 500;
+	white-space: nowrap;
+	transition: color 160ms ease;
+}
+
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__todo::after {
+	content: '\2192';
+	transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__todo:hover,
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__todo:focus-visible {
+	color: var(--pia-cian);
+}
+
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__todo:hover::after {
+	transform: translateX(3px);
+}
+
+.adn-mega__notas {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__enlace {
+	display: flex;
+	align-items: flex-start;
+	gap: 14px;
+	color: var(--pia-marfil);
+	border-radius: 12px;
+}
+
+.adn-mega__imagen {
+	flex: none;
+	display: block;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	border: 1px solid var(--pia-gris-borde);
+	border-radius: 10px;
+	background: var(--pia-superficie);
+}
+
+.adn-mega__imagen img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.adn-mega__texto {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.adn-mega__titulo {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	font-family: var(--pia-font-titular);
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+	overflow-wrap: break-word;
+	transition: color 160ms ease;
+}
+
+.adn-mega__fecha {
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.6875rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__enlace:hover .adn-mega__titulo,
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__enlace:focus-visible .adn-mega__titulo {
+	color: var(--pia-cian);
+}
+
+.adn-mega-activo .sic-nav .adn-mega .adn-mega__enlace:hover .adn-mega__imagen img {
+	transform: scale(1.04);
+}
+
+/* ---------- Escritorio y tablet horizontal ---------- */
+@media (min-width: 901px) {
+	/* El panel se alinea con el contenedor de la cabecera, no con el ítem. */
+	html.adn-mega-activo .sic-cabecera {
+		z-index: 60;
+	}
+
+	.adn-mega-activo .sic-cabecera__fila {
+		position: relative;
+	}
+
+	.adn-mega-activo #sic-nav,
+	.adn-mega-activo .sic-nav__dialogo,
+	.adn-mega-activo .sic-nav__lista,
+	.adn-mega-activo .sic-nav__lista > li {
+		position: static;
+	}
+
+	/* En escritorio abre el propio nombre de la categoría (hover o clic). */
+	.adn-mega-activo .sic-nav[data-js] .sic-nav__subtoggle {
+		display: none;
+	}
+
+	.adn-mega-activo .sic-nav .sic-mega.adn-mega {
+		display: block;
+		position: absolute;
+		top: 100%;
+		left: var(--sic-sp-4, 1rem);
+		right: var(--sic-sp-4, 1rem);
+		z-index: 51;
+		width: auto;
+		min-width: 0;
+		margin-top: 10px;
+		padding: 18px 24px 22px;
+		border: 1px solid color-mix(in srgb, var(--pia-cian) 38%, transparent);
+		border-radius: 18px;
+		/* Superficie un escalón más clara que el lienzo: el panel se despega del fondo. */
+		background: linear-gradient(180deg, var(--pia-superficie-alta) 0%, var(--pia-superficie) 100%);
+		box-shadow:
+			inset 0 1px 0 rgba(242, 241, 231, 0.06),
+			0 32px 64px -20px rgba(0, 0, 0, 0.85),
+			0 12px 24px -12px rgba(0, 0, 0, 0.6);
+		color: var(--pia-marfil);
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-6px);
+		animation: none;
+		/* Cierre con un respiro: cruzar en diagonal no lo cierra de golpe. */
+		transition:
+			opacity 160ms ease 140ms,
+			transform 200ms cubic-bezier(0.23, 1, 0.32, 1) 140ms,
+			visibility 0s linear 300ms;
+	}
+
+	/* Filete lima en el borde superior: marca de señal del manual. */
+	.adn-mega-activo .sic-nav .sic-mega.adn-mega::after {
+		content: '';
+		position: absolute;
+		top: -1px;
+		left: 28px;
+		right: 28px;
+		height: 2px;
+		border-radius: 2px;
+		background: linear-gradient(90deg, transparent, var(--pia-cian) 18%, var(--pia-cian) 82%, transparent);
+		opacity: 0.85;
+		pointer-events: none;
+	}
+
+	/* Velo sobre la página mientras el menú está abierto: el contenido de
+	 * debajo (banners, fotos) deja de competir con el panel. Vive en la
+	 * cabecera, que ya está por encima del contenido; el panel queda encima. */
+	html.adn-mega-activo .sic-cabecera::before {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		height: 100vh;
+		background: rgba(6, 10, 8, 0.72);
+		-webkit-backdrop-filter: blur(3px);
+		backdrop-filter: blur(3px);
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition: opacity 200ms ease 140ms, visibility 0s linear 340ms;
+	}
+
+	html.adn-mega-activo .sic-cabecera:has(#sic-nav li.is-abierto > .adn-mega)::before {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 200ms ease, visibility 0s;
+	}
+
+	/* Puente invisible entre la barra y el panel: el hover no se corta en el hueco. */
+	.adn-mega-activo .sic-nav .sic-mega.adn-mega::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 100%;
+		height: 22px;
+	}
+
+	.adn-mega-activo .sic-nav li.is-abierto > .sic-mega.adn-mega {
+		display: block;
+		z-index: 52;
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		transition:
+			opacity 180ms ease,
+			transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+			visibility 0s;
+	}
+
+	.adn-mega__cabeza {
+		margin-bottom: 16px;
+		padding-bottom: 14px;
+		border-bottom: 1px solid var(--pia-gris-borde);
+	}
+
+	.adn-mega-activo .sic-nav .adn-mega .adn-mega__notas {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 24px;
+	}
+
+	.adn-mega__notas > li + li {
+		position: relative;
+	}
+
+	.adn-mega__notas > li + li::before {
+		content: '';
+		position: absolute;
+		top: 4px;
+		bottom: 4px;
+		left: -12px;
+		width: 1px;
+		background: var(--pia-gris-borde);
+	}
+
+	.adn-mega__imagen {
+		width: 128px;
+	}
+}
+
+/* Hover real (mouse): abre con una mínima intención para no destellar al pasar. */
+@media (hover: hover) and (min-width: 901px) {
+	html.adn-mega-activo .sic-cabecera:has(#sic-nav li.sic-tiene-panel:not(.sic-descartado):hover > .adn-mega)::before {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 200ms ease 70ms, visibility 0s linear 70ms;
+	}
+
+	.adn-mega-activo .sic-nav li.sic-tiene-panel:not(.sic-descartado):hover > .sic-mega.adn-mega {
+		display: block;
+		z-index: 52;
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		transition:
+			opacity 180ms ease 70ms,
+			transform 220ms cubic-bezier(0.23, 1, 0.32, 1) 70ms,
+			visibility 0s linear 70ms;
+	}
+}
+
+@media (min-width: 901px) and (max-width: 1199px) {
+	.adn-mega__imagen {
+		width: 104px;
+	}
+
+	.adn-mega-activo .sic-nav .adn-mega .adn-mega__notas {
+		gap: 20px;
+	}
+}
+
+/* ---------- Celular y tablet vertical: acordeón ---------- */
+
+/* Apertura y cierre del menú móvil: opacidad + 8 px de desplazamiento en
+ * 250 ms (ease-out al abrir, ease-in al cerrar). Solo se anima el panel, no
+ * el header. El cierre lo coordina nav.js con .is-cerrando. */
+@keyframes adn-menu-entrar {
+	from {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes adn-menu-salir {
+	from {
+		opacity: 1;
+		transform: none;
+	}
+
+	to {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+}
+
+@media (max-width: 900px) {
+	.sic-nav__dialogo.is-abierto {
+		animation: adn-menu-entrar 250ms ease-out both;
+	}
+
+	.sic-nav__dialogo.is-abierto.is-cerrando {
+		animation: adn-menu-salir 250ms ease-in both;
+		pointer-events: none;
+	}
+}
+
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+	.sic-nav__dialogo.is-abierto,
+	.sic-nav__dialogo.is-abierto.is-cerrando {
+		animation: none;
+	}
+}
+
+@media (max-width: 900px) {
+	/* El menú baja desde arriba y deja ver la página atenuada debajo. */
+	html.adn-mega-activo .sic-nav__dialogo.is-abierto {
+		inset: 0 0 auto 0;
+		max-height: 86vh;
+		max-height: 86dvh;
+		padding-bottom: var(--pia-sp-5, 1.25rem);
+		border-bottom: 1px solid var(--pia-cian-suave);
+		border-radius: 0 0 20px 20px;
+		background: var(--pia-negro);
+		box-shadow:
+			0 0 0 100vmax rgba(6, 10, 8, 0.6),
+			0 24px 48px rgba(0, 0, 0, 0.5);
+	}
+
+	.adn-mega-activo .sic-nav__subtoggle {
+		color: var(--pia-marfil);
+	}
+
+	.adn-mega-activo .sic-nav li.is-abierto > .sic-nav__subtoggle {
+		color: var(--pia-cian);
+	}
+
+	.adn-mega-activo .sic-nav li.is-abierto > .sic-mega.adn-mega {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 4px 0 16px;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+	}
+
+
+	/* El nombre ya está en la fila: queda solo «Ver todas», al final. */
+	.adn-mega__cabeza {
+		order: 2;
+	}
+
+	.adn-mega__categoria {
+		display: none;
+	}
+
+	.adn-mega-activo .sic-nav .adn-mega .adn-mega__notas {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.adn-mega__imagen {
+		width: 96px;
+		border-radius: 8px;
+	}
+
+	.adn-mega__titulo {
+		-webkit-line-clamp: 2;
+		font-size: 0.875rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.adn-mega-activo .sic-nav .sic-mega.adn-mega,
+	.adn-mega__imagen img,
+	.adn-mega__titulo {
+		transition: none;
+		transform: none;
+	}
+}

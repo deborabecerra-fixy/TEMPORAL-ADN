@@ -1,0 +1,1035 @@
+/* =====================================================================
+ * 1.9.0 — Cabecera como EcomNoticias y PrimixIA
+ * Fila 1: logo a la izquierda, publicidad de cabecera (728x90) a la derecha.
+ * Fila 2: menú en una sola línea + buscador. Nada salta a una segunda línea.
+ * ================================================================== */
+@media (min-width: 992px) {
+	.sic-cabecera__fila {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		grid-template-areas:
+			'marca anuncio anuncio'
+			'nav nav buscar';
+		column-gap: var(--pia-sp-6);
+		row-gap: var(--pia-sp-4);
+	}
+
+	#logo .logo-text,
+	#logo .sic-logo-enlace,
+	#logo .custom-logo-link {
+		justify-self: start;
+	}
+
+	.sic-cabecera__fila .pia-cabecera-anuncio,
+	.pia-cabecera-anuncio {
+		grid-area: anuncio;
+		justify-self: end;
+		align-self: center;
+		width: auto;
+		max-width: 728px;
+		margin: 0;
+	}
+
+	#sic-nav {
+		justify-self: stretch;
+		min-width: 0;
+		padding-top: var(--pia-sp-3);
+		border-top: 1px solid var(--pia-tech-linea);
+	}
+
+	.sic-cabecera__fila > .sic-buscador {
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: center;
+		gap: var(--pia-sp-2);
+		width: 320px;
+		padding-top: var(--pia-sp-3);
+		border-top: 1px solid var(--pia-tech-linea);
+	}
+
+	.sic-cabecera__fila > .sic-buscador .sic-buscador__campo {
+		flex: 1 1 auto;
+		min-width: 0;
+		width: auto;
+	}
+
+	.sic-cabecera__fila > .sic-buscador .sic-buscador__boton {
+		flex: none;
+		white-space: nowrap;
+	}
+
+	#sic-nav .sic-nav__lista {
+		flex-wrap: nowrap;
+		column-gap: 0;
+	}
+
+	.sic-nav__lista > li > a {
+		white-space: nowrap;
+		padding-inline: var(--pia-sp-3);
+	}
+}
+
+/* Pantallas medianas: el menú aprieta antes de partirse. */
+@media (min-width: 992px) and (max-width: 1199px) {
+	.sic-nav__lista > li > a {
+		padding-inline: var(--pia-sp-2);
+		font-size: 0.8125rem;
+	}
+
+	.sic-cabecera__fila > .sic-buscador {
+		width: 260px;
+	}
+}
+
+/* ---------- Barra lateral (portada, notas, secciones) ---------- */
+.sic-lateral {
+	display: flex;
+	flex-direction: column;
+	gap: var(--pia-sp-5);
+}
+
+.sic-lateral .sic-widget {
+	padding: var(--pia-sp-4);
+	border: 1px solid var(--pia-tech-linea);
+	border-radius: var(--pia-radio-borde);
+	background: var(--pia-superficie);
+}
+
+.sic-lateral .sic-widget:has(.pia-espacio-publicitario) {
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+.sic-lateral .sic-widget__titulo {
+	margin: 0 0 var(--pia-sp-3);
+	font-family: var(--pia-font-titular);
+	font-size: var(--pia-fs-base);
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--pia-cian);
+}
+
+@media (min-width: 992px) {
+	.sic-lateral .sic-widget:has(.pia-espacio-publicitario) {
+		position: static;
+		top: var(--pia-sp-5);
+	}
+}
+
+/* =====================================================================
+ * 1.9.5 — Publicidad del mismo tamaño que EcomNoticias y PrimixIA
+ * Antes la cabecera salía en 388x48 y el resto quedaba topado en 970/728.
+ * Ahora cada pieza llena su hueco con su proporción (cabecera 728x90,
+ * billboard y pie a lo ancho del contenedor, superior y cierre a lo ancho
+ * de la columna) y va en una tarjeta con filo lima y sello «Publicidad».
+ * sic-ads es compartido: no se edita, se sobreescribe aquí.
+ * ================================================================== */
+@media (min-width: 992px) {
+	/* Cabecera: 728x90 real a la derecha del logo. */
+	.sic-cabecera__fila .pia-cabecera-anuncio,
+	.pia-cabecera-anuncio {
+		flex: 0 1 728px;
+		justify-self: end;
+		width: 100%;
+		max-width: 728px;
+	}
+
+	/* Huecos del cuerpo: sin tope de 970/728, llenan contenedor o columna. */
+	html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria)[class]:has(.sic-ads),
+	html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria)[class]:has(.sic-ads[data-ancho="728"]) {
+		max-width: none;
+	}
+
+	/* Billboard y pie: el .container de ADN no tiene tope, se igualan al
+	 * ancho de contenido de PrimixIA (1168). */
+	html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria)[class]:has(.sic-ads--portada-billboard, .sic-ads--nota-billboard, .sic-ads--pie) {
+		max-width: 1168px;
+		margin-inline: auto;
+	}
+
+	/* sic-ads centra con flex: sin esto la pieza se encoge a su tamaño natural. */
+	html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden]) {
+		width: 100%;
+	}
+
+	html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria, .pia-cabecera-anuncio)[class] .sic-ads:not(.sic-ads--lateral, .sic-ads--casa),
+	.pia-cabecera-anuncio .sic-ads:not(.sic-ads--casa) {
+		--sic-ads-rotulo-alto: 0px;
+		max-width: none;
+		min-height: 0;
+	}
+
+	html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria, .pia-cabecera-anuncio)[class] .sic-ads:not(.sic-ads--lateral) .sic-ads__pieza,
+	.pia-cabecera-anuncio .sic-ads .sic-ads__pieza {
+		width: 100%;
+		max-width: none;
+	}
+
+	html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria, .pia-cabecera-anuncio)[class] .sic-ads:not(.sic-ads--lateral) :is(.sic-ads__img, noscript img),
+	.pia-cabecera-anuncio .sic-ads :is(.sic-ads__img, noscript img) {
+		width: 100%;
+		height: auto;
+		max-height: none;
+	}
+}
+
+/* ---- Tarjeta: filo lima, esquinas redondas y sello encima de la pieza ---- */
+html body .sic-ads:not(.sic-ads--casa) {
+	position: relative;
+}
+
+html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden]) {
+	position: relative;
+	overflow: hidden;
+	border-radius: var(--pia-radio-borde);
+	/* Contorno de 1,5 px en lima moderado (identidad ADN), sin halo. */
+	box-shadow:
+		0 0 0 1.5px color-mix(in srgb, var(--pia-cian) 35%, transparent),
+		0 10px 24px -14px rgba(0, 0, 0, 0.7);
+	transition:
+		transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+		box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden]):focus-visible {
+	box-shadow:
+		0 0 0 1.5px color-mix(in srgb, var(--pia-cian) 55%, transparent),
+		0 14px 30px -18px rgba(0, 0, 0, 0.75);
+}
+
+/* El realce al pasar solo con mouse: en celular un toque no debe saltar. */
+@media (hover: hover) and (pointer: fine) {
+	html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden]):hover {
+		transform: translateY(-2px);
+		box-shadow:
+			0 0 0 1.5px color-mix(in srgb, var(--pia-cian) 55%, transparent),
+			0 14px 30px -18px rgba(0, 0, 0, 0.75);
+	}
+}
+
+/* ---- 1.9.6 Animaciones discretas ---- */
+
+/* Rotación de campañas: la pieza que entra crece apenas desde 0.98 en vez
+ * del fundido plano de sic-ads. Solo transform y opacity. */
+html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden]) {
+	animation: adn-ads-entrar 280ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
+}
+
+@keyframes adn-ads-entrar {
+	from {
+		opacity: 0;
+		transform: scale(0.98);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* Brillo: una franja de luz muy tenue cruza la pieza cada 9 s. Cada hueco
+ * arranca en otro momento para que nunca brillen todos juntos. */
+html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden])::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	pointer-events: none;
+	background: linear-gradient(
+		105deg,
+		transparent 38%,
+		rgba(255, 255, 255, 0.13) 50%,
+		transparent 62%
+	);
+	transform: translateX(-130%);
+	animation: adn-ads-brillo 9s cubic-bezier(0.77, 0, 0.175, 1) var(--adn-ads-brillo-inicio, 1.5s) infinite;
+}
+
+@keyframes adn-ads-brillo {
+	0% {
+		transform: translateX(-130%);
+	}
+
+	14%,
+	100% {
+		transform: translateX(130%);
+	}
+}
+
+html body .sic-ads--cabecera-logo { --adn-ads-brillo-inicio: 1.2s; }
+html body .sic-ads--portada-billboard { --adn-ads-brillo-inicio: 3.4s; }
+html body .sic-ads--portada-superior { --adn-ads-brillo-inicio: 5.6s; }
+html body .sic-ads--lateral { --adn-ads-brillo-inicio: 7.1s; }
+html body .sic-ads--portada-cierre { --adn-ads-brillo-inicio: 2.3s; }
+html body .sic-ads--pie { --adn-ads-brillo-inicio: 4.5s; }
+
+html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:focus-visible {
+	outline: 2px solid var(--pia-cian);
+	outline-offset: 3px;
+}
+
+html body .sic-ads:not(.sic-ads--casa) :is(.sic-ads__img, noscript img) {
+	border-radius: 0;
+}
+
+/* «Publicidad»: píldora sobre el borde superior izquierdo del banner, con
+ * la mitad por encima del borde (top + translateY(-50%)), a 14 px del canto.
+ * La referencia es .sic-ads (position: relative); queda fuera de la pieza,
+ * que recorta sus esquinas con overflow: hidden, así la etiqueta no se corta.
+ * Fondo sólido para que se lea igual sobre el banner y sobre el lienzo. */
+html body .sic-ads:not(.sic-ads--casa)::before {
+	position: absolute;
+	top: var(--sic-ads-rotulo-alto, 0px);
+	left: 14px;
+	z-index: 3;
+	margin: 0;
+	padding: 3px 10px 3px 20px;
+	border-radius: var(--pia-radio-pildora);
+	background:
+		radial-gradient(circle at 10px 50%, var(--pia-cian) 0 3px, transparent 3.5px),
+		var(--pia-negro);
+	box-shadow: 0 0 0 1px var(--pia-cian-suave);
+	color: var(--pia-blanco);
+	font-size: 0.625rem;
+	font-weight: 600;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+
+/* Los contenedores del hueco recortaban lo que sobresale: la mitad de la
+ * etiqueta queda por fuera del borde. Las esquinas las sigue recortando la
+ * propia pieza. */
+html body :is(.pia-espacio-publicitario, .pia-franja-publicitaria)[class]:has(.sic-ads) {
+	overflow: visible;
+}
+
+/* Escritorio: la pieza arranca en el borde de .sic-ads, sin reserva extra. */
+@media (min-width: 992px) {
+	html body .sic-ads:not(.sic-ads--casa) {
+		--sic-ads-rotulo-alto: 0px;
+	}
+}
+
+/* Tablet y celular: la línea «Publicidad» reservaba 18 px sobre la pieza.
+ * Esa franja se conserva como relleno (mismo alto total, misma posición del
+ * banner) y la píldora se apoya en el borde del banner, que va centrado:
+ * se alinea con su canto izquierdo, no con el del hueco. */
+@media (max-width: 991px) {
+	html body .sic-ads:not(.sic-ads--casa):not(.sic-ads--lateral) {
+		padding-top: var(--sic-ads-rotulo-alto, 18px);
+		min-height: var(--sic-ads-alto, 90px);
+	}
+
+	html body .sic-ads:not(.sic-ads--casa):not(.sic-ads--lateral)::before {
+		left: max(14px, calc((100% - 320px) / 2 + 14px));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden]) {
+		transition: none;
+	}
+
+	html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden]):hover {
+		transform: none;
+	}
+
+	/* Menos movimiento: la rotación queda en fundido y el brillo se va. */
+	html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden]) {
+		animation: adn-ads-fundido 200ms ease backwards;
+	}
+
+	html body .sic-ads:not(.sic-ads--casa) .sic-ads__pieza:not([hidden])::after {
+		content: none;
+		animation: none;
+	}
+}
+
+@keyframes adn-ads-fundido {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+/* =====================================================================
+ * Barra de navegación en cápsula (según maqueta)
+ * Menú + separador + buscador dentro de un mismo contenedor redondeado
+ * con filo lima suave. Solo escritorio: en celular sigue el menú hamburguesa.
+ * La cápsula es un ::before de la fila que ocupa la segunda línea de la
+ * grilla, así no hace falta tocar el HTML.
+ * ================================================================== */
+@media (min-width: 992px) {
+	.sic-cabecera__fila::before {
+		content: '';
+		grid-row: 2;
+		grid-column: 1 / -1;
+		align-self: stretch;
+		justify-self: stretch;
+		border: 1px solid var(--pia-cian-suave);
+		border-radius: var(--pia-radio-pildora);
+		background: color-mix(in srgb, var(--pia-negro) 70%, transparent);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+		pointer-events: none;
+	}
+
+	#sic-nav,
+	.sic-cabecera__fila > .sic-buscador {
+		position: relative;
+		z-index: 1;
+		align-self: center;
+		padding-block: 8px;
+		border-top: 0;
+	}
+
+	#sic-nav {
+		padding-left: var(--pia-sp-5, 1.25rem);
+	}
+
+	.sic-cabecera__fila > .sic-buscador {
+		width: 330px;
+		gap: var(--pia-sp-3);
+		padding-right: 8px;
+	}
+
+	/* Separador vertical entre el menú y el buscador. */
+	.sic-cabecera__fila > .sic-buscador::before {
+		content: '';
+		flex: none;
+		width: 1px;
+		height: 26px;
+		background: rgba(242, 241, 231, 0.25);
+	}
+
+	/* Ítems: texto claro; activo en lima con su punto (adn-marca.css). */
+	.sic-nav__lista > li > a {
+		color: #F2F1E7;
+		font-weight: 600;
+	}
+
+	/* Campo: cápsula con lupa a la izquierda. */
+	.sic-cabecera__fila > .sic-buscador .sic-buscador__campo {
+		height: 40px;
+		padding-left: 40px;
+		border: 1px solid rgba(242, 241, 231, 0.22);
+		background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F2F1E7' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") 14px center / 17px no-repeat;
+		color: #F2F1E7;
+		font-size: 0.875rem;
+	}
+
+	.sic-cabecera__fila > .sic-buscador .sic-buscador__campo::placeholder {
+		color: rgba(242, 241, 231, 0.6);
+	}
+
+	.sic-cabecera__fila > .sic-buscador .sic-buscador__campo:focus-visible {
+		border-color: var(--pia-cian);
+	}
+
+	/* Botón: lima sólido, solo texto (la lupa ya está en el campo). */
+	.sic-cabecera__fila > .sic-buscador .sic-buscador__boton {
+		height: 40px;
+		padding-inline: 22px;
+		background: var(--pia-cian);
+		color: var(--pia-negro);
+		font-weight: 600;
+		font-size: 0.9375rem;
+	}
+
+	.sic-cabecera__fila > .sic-buscador .sic-buscador__boton .sic-icono {
+		display: none;
+	}
+}
+
+@media (min-width: 1200px) {
+	.sic-nav__lista > li > a {
+		font-size: 0.9375rem;
+	}
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+	.sic-cabecera__fila > .sic-buscador {
+		width: 300px;
+	}
+}
+
+/* =====================================================================
+ * Barra de Mercados (según maqueta)
+ * Rótulo en cápsula con filo lima e icono de barras; cotizaciones más
+ * grandes, valor en negrita y separadores verticales entre ellas.
+ * Escala compacta (referencia «Dólar hoy»): rótulo 12 px, nombres 12,5 px
+ * regular, valores 13 px semibold, fecha 12 px; divisores casi invisibles.
+ * ================================================================== */
+.adn-divisas {
+	font-family: var(--pia-font-cuerpo);
+}
+
+.adn-divisas__fila {
+	gap: var(--pia-sp-6);
+	min-height: 56px;
+	padding-block: 10px;
+}
+
+.adn-divisas__rotulo {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	flex: none;
+	padding: 7px 16px;
+	border: 1px solid var(--pia-cian-suave);
+	border-radius: var(--pia-radio-pildora);
+	background: color-mix(in srgb, var(--pia-cian) 6%, transparent);
+	box-shadow: none;
+	color: var(--pia-cian);
+	font-family: var(--pia-font-titular);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.adn-divisas__rotulo::before {
+	content: '';
+	flex: none;
+	width: 15px;
+	height: 13px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 13'%3E%3Cg fill='%23CCEB53'%3E%3Crect x='0' y='8' width='2.6' height='5' rx='.6'/%3E%3Crect x='4.1' y='4' width='2.6' height='9' rx='.6'/%3E%3Crect x='8.2' y='6' width='2.6' height='7' rx='.6'/%3E%3Crect x='12.3' y='0' width='2.6' height='13' rx='.6'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.adn-divisas__lista {
+	gap: 0;
+	align-items: center;
+}
+
+.adn-divisas__item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding-inline: 16px;
+	font-size: 0.78125rem;
+	line-height: 1;
+}
+
+.adn-divisas__item:first-child {
+	padding-left: 0;
+}
+
+.adn-divisas__item + .adn-divisas__item {
+	border-left: 1px solid rgba(242, 241, 231, 0.1);
+}
+
+.adn-divisas__nombre {
+	color: rgba(242, 241, 231, 0.85);
+	font-weight: 400;
+}
+
+.adn-divisas__valor {
+	color: #FFFFFF;
+	font-size: 0.8125rem;
+	font-weight: 600;
+}
+
+.adn-divisas__hora {
+	font-size: 0.75rem;
+	font-weight: 400;
+	color: rgba(242, 241, 231, 0.6);
+	opacity: 1;
+}
+
+/* Celular: misma estética, más compacta. */
+@media (max-width: 599px) {
+	.adn-divisas__fila {
+		gap: var(--pia-sp-4);
+		min-height: 48px;
+		padding-block: 8px;
+	}
+
+	.adn-divisas__rotulo {
+		padding: 6px 12px;
+		font-size: 0.75rem;
+	}
+
+	.adn-divisas__item {
+		padding-inline: var(--pia-sp-3);
+		font-size: 0.75rem;
+	}
+}
+
+/* =====================================================================
+ * Anuncio lateral (300x600) dentro de un marco con margen interior
+ * Antes la pieza se estiraba a todo el ancho de la columna (370x740,
+ * style_1.css 2.5.8). Ahora el marco ocupa la columna (~370x726) y la
+ * creatividad queda a su tamaño real, 300 px, centrada y sin deformarse.
+ * ================================================================== */
+html body .sic-lateral .sic-ads.sic-ads--lateral {
+	box-sizing: border-box;
+	justify-content: center;
+	margin-block: 0;
+	border: 1px solid var(--pia-gris-borde);
+	border-radius: 18px;
+	background:
+		radial-gradient(120% 60% at 50% 0%, var(--pia-cian-tenue) 0%, transparent 60%),
+		linear-gradient(180deg, var(--pia-superficie) 0%, var(--pia-negro) 100%);
+	box-shadow: inset 0 1px 0 rgba(242, 241, 231, 0.05);
+}
+
+html body .sic-lateral .sic-ads--lateral .sic-ads__pieza:not([hidden]) {
+	width: auto;
+	max-width: 100%;
+	border-radius: 12px;
+}
+
+@media (min-width: 992px) {
+	html body .sic-lateral .sic-ads.sic-ads--lateral {
+		--sic-ads-alto: 600px;
+		width: 100%;
+		max-width: none;
+		min-height: 726px;
+		padding: 62px 34px;
+	}
+
+	/* La pieza vuelve a su ancho real (tope 300 px) y conserva su proporción. */
+	html body .sic-lateral .sic-ads--lateral .sic-ads__img {
+		width: 300px;
+		max-width: 100%;
+		height: auto;
+		max-height: 600px;
+		border-radius: 12px;
+	}
+
+}
+
+/* Vertical: la píldora va sobre el borde superior del marco, pasada la
+ * curva de su esquina (radio 18 px). */
+html body .sic-lateral .sic-ads.sic-ads--lateral::before {
+	top: 0;
+	left: 18px;
+}
+
+/* Tablet y celular: el marco toma el ancho disponible con un margen corto. */
+@media (max-width: 991px) {
+	html body .sic-lateral .sic-ads.sic-ads--lateral {
+		width: 100%;
+		max-width: 420px;
+		min-height: calc(var(--sic-ads-alto, 250px) + var(--sic-ads-rotulo-alto, 18px) + 36px);
+		margin-inline: auto;
+		padding: 16px;
+	}
+
+	html body .sic-lateral .sic-ads--lateral .sic-ads__img {
+		max-width: 100%;
+		height: auto;
+		border-radius: 10px;
+	}
+}
+
+/* =====================================================================
+ * Botón «Pausar titulares» de la barra de última hora
+ * Antes medía 44 px de alto (min-height de barra.css) y su borde lima
+ * quedaba más alto que la etiqueta «Última hora». 7 px menos, centrado en
+ * la barra; texto, ancho, borde y radio sin cambios. Sigue cumpliendo el
+ * área táctil mínima de WCAG 2.5.8 (24 px).
+ * ================================================================== */
+.sic-barra[data-js] .sic-ticker__pausa {
+	min-height: 37px;
+	align-self: center;
+}
+
+/* El botón de 44 px era lo que daba alto a la barra: se fija ese mismo
+ * alto en la fila para que la barra no cambie. */
+.sic-barra[data-js] .sic-barra__fila {
+	min-height: 52px;
+}
+
+/* =====================================================================
+ * Publicidad destacada: flotación + reflejo sobre el borde
+ * Solo en el billboard bajo el menú (portada-billboard) y en el vertical
+ * 300×600 (lateral). El resto de los anuncios no cambia.
+ *
+ * 1. Flotación: sube y baja 5 px en 5,5 s con transform (sin escala, giro
+ *    ni cambio de opacidad).
+ *    - Vertical: flota el envoltorio .adn-ads-flotante (mide lo mismo que
+ *      la creatividad 300×600 y no rota), con la imagen y su reflejo; el
+ *      marco y la etiqueta quedan fijos.
+ *    - Billboard: no tiene marco y sus creatividades rotan cada 5 s (cada
+ *      una es un elemento nuevo). Flota el .sic-ads, que no rota, y la
+ *      etiqueta «Publicidad» recibe el movimiento inverso sincronizado:
+ *      queda fija. El hueco exterior (#pia-ad-portada-top) no se mueve.
+ * 2. Reflejo: un tramo de luz lima recorre el contorno de 1,5 px y se apaga
+ *    durante el último 40 % del ciclo (8 s). conic-gradient enmascarado a
+ *    un anillo de 1 px: no ilumina el interior ni genera halo. El ángulo se
+ *    anima con @property; sin soporte, el reflejo aparece y se apaga.
+ *    Vive en elementos que no rotan (el envoltorio de la creatividad
+ *    vertical y el .sic-ads del billboard), así el ciclo no se reinicia
+ *    con cada creatividad y sigue el borde de la imagen al flotar.
+ *    En celular el billboard no lleva reflejo: sus creatividades cambian
+ *    de alto y el contorno no coincidiría con el banner.
+ * 3. En estos dos se apaga el brillo diagonal que cruza el interior: la
+ *    luz recorre solo el perímetro.
+ * ================================================================== */
+@property --adn-reflejo-angulo {
+	syntax: '<angle>';
+	inherits: false;
+	initial-value: 0deg;
+}
+
+@keyframes adn-ads-flotar {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-5px);
+	}
+}
+
+/* Movimiento inverso para la etiqueta del billboard (mantiene su -50%). */
+@keyframes adn-ads-flotar-contra {
+	0%,
+	100% {
+		transform: translateY(-50%);
+	}
+
+	50% {
+		transform: translateY(calc(-50% + 5px));
+	}
+}
+
+@keyframes adn-ads-reflejo {
+	0% {
+		--adn-reflejo-angulo: 0deg;
+		opacity: 0;
+	}
+
+	6% {
+		opacity: 1;
+	}
+
+	54% {
+		opacity: 1;
+	}
+
+	60% {
+		--adn-reflejo-angulo: 360deg;
+		opacity: 0;
+	}
+
+	100% {
+		--adn-reflejo-angulo: 360deg;
+		opacity: 0;
+	}
+}
+
+/* ---------- 1. Flotación ---------- */
+/* Vertical: el envoltorio toma el tamaño exacto de la creatividad y flota
+ * con ella; las piezas que rotan adentro solo hacen su entrada. */
+html body .sic-lateral .sic-ads.sic-ads--lateral .adn-ads-flotante {
+	position: relative;
+	width: fit-content;
+	max-width: 100%;
+	border-radius: 12px;
+	animation: adn-ads-flotar 5.5s ease-in-out infinite;
+}
+
+html body .sic-ads.sic-ads--portada-billboard {
+	animation: adn-ads-flotar 5.5s ease-in-out infinite;
+}
+
+html body .sic-ads.sic-ads--portada-billboard::before {
+	animation: adn-ads-flotar-contra 5.5s ease-in-out infinite;
+}
+
+/* ---------- 3. Sin brillo interior en estos dos ---------- */
+html body :is(.sic-ads.sic-ads--lateral, .sic-ads.sic-ads--portada-billboard) .sic-ads__pieza:not([hidden])::after {
+	content: none;
+}
+
+/* ---------- 2. Reflejo sobre el borde ---------- */
+/* Vertical: el anillo recorre el contorno de 1,5 px de la creatividad
+ * (radio 12 px + 1,5), no el marco exterior. */
+html body .sic-lateral .sic-ads.sic-ads--lateral .adn-ads-flotante::after {
+	content: '';
+	position: absolute;
+	z-index: 2;
+	padding: 1.5px;
+	background: conic-gradient(
+		from var(--adn-reflejo-angulo),
+		transparent 0deg,
+		transparent 300deg,
+		color-mix(in srgb, var(--pia-cian) 35%, transparent) 330deg,
+		var(--pia-cian) 350deg,
+		transparent 360deg
+	);
+	-webkit-mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask:
+		linear-gradient(#000 0 0) content-box exclude,
+		linear-gradient(#000 0 0);
+	opacity: 0;
+	pointer-events: none;
+	inset: -1.5px;
+	border-radius: 13.5px;
+	animation: adn-ads-reflejo 8s linear infinite;
+}
+
+@media (min-width: 992px) {
+	/* Billboard: mismo anillo sobre el canto del banner (radio de la pieza),
+	 * desfasado 4 s del vertical: los dos reflejos se alternan. */
+	html body .sic-ads.sic-ads--portada-billboard::after {
+		content: '';
+		position: absolute;
+		z-index: 2;
+		padding: 1.5px;
+		background: conic-gradient(
+			from var(--adn-reflejo-angulo),
+			transparent 0deg,
+			transparent 300deg,
+			color-mix(in srgb, var(--pia-cian) 35%, transparent) 330deg,
+			var(--pia-cian) 350deg,
+			transparent 360deg
+		);
+		-webkit-mask:
+			linear-gradient(#000 0 0) content-box,
+			linear-gradient(#000 0 0);
+		-webkit-mask-composite: xor;
+		mask:
+			linear-gradient(#000 0 0) content-box exclude,
+			linear-gradient(#000 0 0);
+		opacity: 0;
+		pointer-events: none;
+		inset: -1.5px;
+		border-radius: calc(var(--pia-radio-borde) + 1.5px);
+		animation: adn-ads-reflejo 8s linear 4s infinite;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html body .sic-lateral .sic-ads.sic-ads--lateral .adn-ads-flotante,
+	html body .sic-ads.sic-ads--portada-billboard,
+	html body .sic-ads.sic-ads--portada-billboard::before {
+		animation: none;
+	}
+
+	html body .sic-lateral .sic-ads.sic-ads--lateral .adn-ads-flotante::after,
+	html body .sic-ads.sic-ads--portada-billboard::after {
+		content: none;
+		animation: none;
+	}
+}
+
+/* =====================================================================
+ * Titular de la barra «Última hora»
+ * Liviano y editorial: IBM Plex Sans regular a 13 px, gris marfil en
+ * reposo y blanco al pasar o con foco (transición 0,2 s), sin subrayado en
+ * ningún estado. Solo afecta a los enlaces del ticker.
+ * Efecto de escritura (js/barra.js): el titular completo va en un texto
+ * oculto a la vista para lectores de pantalla y las letras que se escriben
+ * son aria-hidden. Al cambiar de titular, fundido breve.
+ * ================================================================== */
+.sic-barra .sic-ticker__item a {
+	color: rgba(242, 241, 231, 0.78);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.8125rem;
+	font-weight: 400;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.sic-barra .sic-ticker__item a:hover,
+.sic-barra .sic-ticker__item a:focus-visible {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+/* Titular completo para lectores de pantalla (invisible). */
+.sic-ticker__completo {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* La línea conserva su alto aunque el titular esté vacío al empezar. */
+.sic-ticker__escrito::after {
+	content: '\200B';
+}
+
+.sic-barra .sic-ticker__lista {
+	transition: opacity 220ms ease;
+}
+
+.sic-barra .sic-ticker__lista.is-saliendo {
+	opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sic-barra .sic-ticker__item a,
+	.sic-barra .sic-ticker__lista {
+		transition: none;
+	}
+}
+
+/* =====================================================================
+ * Header en celular y tablet (hasta 900 px, donde aparece la hamburguesa)
+ * El anuncio del header vive dentro de #logo en el HTML: en una fila
+ * flexible quedaba entre el logo y el menú, y el botón caía a una tercera
+ * fila. Ahora la fila es una grilla de dos filas:
+ *   logo ........ menú      (una sola fila, ~72 px, centrados)
+ *   anuncio del header      (a lo ancho, debajo)
+ * #logo pasa a display: contents para que el logo y el anuncio se ubiquen
+ * por separado (mismo recurso que usa el header de escritorio). El
+ * buscador ya vive dentro del menú en celular (cabecera.js).
+ * ================================================================== */
+@media (max-width: 900px) {
+	.sic-cabecera__fila {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-areas:
+			'marca menu'
+			'anuncio anuncio';
+		align-items: center;
+		column-gap: 16px;
+		row-gap: 12px;
+		padding-block: 12px;
+	}
+
+	#logo.sic-logo {
+		display: contents;
+	}
+
+	#logo .logo-text {
+		grid-area: marca;
+		justify-self: start;
+	}
+
+	.sic-cabecera__fila > #sic-nav {
+		grid-area: menu;
+		justify-self: end;
+	}
+
+	.sic-cabecera__fila .pia-cabecera-anuncio {
+		grid-area: anuncio;
+		justify-self: stretch;
+		width: auto;
+		margin: 0;
+	}
+
+	/* Sin JS el buscador sigue en la fila: va a lo ancho, debajo. */
+	.sic-cabecera__fila > .sic-buscador {
+		grid-column: 1 / -1;
+	}
+
+	/* El anuncio del header en celular es de 320×50 (data-alto-movil="50"),
+	 * pero el hueco reservaba 90 px (medida de escritorio) y dejaba un vacío
+	 * debajo. La reserva pasa a su alto móvil declarado; la pieza no cambia. */
+	html body .sic-ads.sic-ads--cabecera-logo {
+		--sic-ads-alto: 50px;
+		margin-block: 0;
+	}
+}
+
+/* =====================================================================
+ * Barra «Mercados» en celular (hasta 767 px): cinta continua
+ * Sin el rótulo «Mercados» (gana todo el ancho) y con las cotizaciones
+ * desplazándose de derecha a izquierda en un bucle sin corte: la pista
+ * lleva la lista y una copia aria-hidden (js/adn-mercados.js) y se mueve
+ * exactamente una copia (-50 %). Velocidad constante: la duración la
+ * ajusta el script al ancho real. Se pausa al tocar o pasar el puntero.
+ * Escritorio: los envoltorios no generan caja y la barra no cambia.
+ * ================================================================== */
+.adn-divisas__cinta,
+.adn-divisas__pista {
+	display: contents;
+}
+
+.adn-divisas__lista--copia {
+	display: none;
+}
+
+@keyframes adn-cinta {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@media (max-width: 767px) {
+	.adn-divisas__rotulo {
+		display: none;
+	}
+
+	.adn-divisas__cinta {
+		display: block;
+		flex: 1 1 auto;
+		min-width: 0;
+		overflow: hidden;
+		/* Bordes fundidos: los valores entran y salen sin corte seco. */
+		-webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+		mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+	}
+
+	.adn-divisas__pista {
+		display: flex;
+		width: max-content;
+		animation: adn-cinta var(--adn-cinta-duracion, 22s) linear infinite;
+	}
+
+	.adn-divisas__cinta:hover .adn-divisas__pista,
+	.adn-divisas__cinta:active .adn-divisas__pista {
+		animation-play-state: paused;
+	}
+
+	/* Cada copia es idéntica (mismo divisor al comienzo de cada ítem), así el
+	 * empalme entre una y otra no se nota. */
+	.adn-divisas__pista .adn-divisas__lista {
+		display: flex;
+		flex: none;
+		overflow: visible;
+		-webkit-mask-image: none;
+		mask-image: none;
+		white-space: nowrap;
+	}
+
+	.adn-divisas__pista .adn-divisas__item,
+	.adn-divisas__pista .adn-divisas__item:first-child {
+		padding-inline: 14px;
+		border-left: 1px solid rgba(242, 241, 231, 0.1);
+	}
+
+	.adn-divisas__lista--copia {
+		display: flex;
+	}
+}
+
+/* Movimiento reducido: sin animación; la lista se recorre deslizando. */
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+	.adn-divisas__cinta {
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+
+	.adn-divisas__cinta::-webkit-scrollbar {
+		display: none;
+	}
+
+	.adn-divisas__pista {
+		animation: none;
+	}
+
+	.adn-divisas__pista .adn-divisas__lista--copia {
+		display: none;
+	}
+}

@@ -1,0 +1,739 @@
+/*
+Theme Name: ADN Empresarial Child
+Theme URI:         https://adnempresariallatam.com
+Description:       Tema hijo de ADN Empresarial, medio de actualidad, datos y negocios de Argentina, Paraguay y LATAM. Hijo del tema padre sic-prensa (SICOMMER), con la misma estructura de PrimixIA: la marca vive como variables en assets/css/pia-brand-tokens.css. Nunca hardcodear colores aquí.
+Author:            ADN Empresarial · SICOMMER INT LLC
+Author URI:        https://adnempresariallatam.com
+Template:          sic-prensa
+Version:           1.9.6
+Requires at least: 6.5
+Requires PHP:      8.1
+License:           GNU General Public License v2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:       adn-empresarial-child
+*/
+
+
+/*
+ * Lo propio de PrimixIA sobre el padre sic-prensa (T20, 2026-10-27).
+ * Cero hexadecimales: solo tokens. Sin !important. El padre pone la estructura
+ * (cabecera, nav, nota, pie) con --sic-*; este archivo añade el carácter del
+ * medio: píldoras de navegación, filete cian, chips de temas, logo SVG y los
+ * bloques editoriales de la nota. Las hojas pia-senal, pix-inmersivo y
+ * pix-efectos conservan selectores heredados de Jannah que ya no apuntan a
+ * nada; su remapeo no es de esta tarea.
+ *
+ * 2.3.0 (2026-10-27) — el hijo cuelga de sic-prensa en lugar de Jannah. Tokens
+ *   traducidos a --sic-* (pia-brand-tokens.css), cian oscuro #07788A (D-015) y
+ *   gris de texto #5B6371 (D-016). Salen los overrides de Jannah (#top-nav,
+ *   #main-nav, .mag-box, widgets); entran los de sic-cabecera, sic-nav y sic-nota.
+ * Historial anterior (sobre Jannah): 1.0.0 tokens y bloques editoriales; 1.1.0
+ *   cabecera oscura, píldoras, chips, ticker del Radar; 2.0.0 rebrand a PrimixIA
+ *   y lienzo vivo; 2.1.x efectos de IA Master Tech; 2.2.x marca nueva (Magnific),
+ *   logo completo con claim y widgets en español.
+ *
+ * Orden de carga (functions.php): pia-fonts → pia-brand-tokens → pia-components →
+ * pia-bloques → este archivo → pia-senal → pix-inmersivo → pix-efectos, todos
+ * con sic-prensa-style como dependencia.
+ */
+
+/* ---- Contenedor del hijo (anuncios y chips fuera de .sic-envoltorio) ---- */
+.sic-contenedor {
+	max-width: var(--sic-ancho-contenedor);
+	margin-inline: auto;
+	padding-inline: var(--sic-sp-4);
+}
+
+/* ---- Cabecera: oscura en TODAS las páginas, retícula y filete cian ----
+ * El fondo y la retícula los pone el padre desde --sic-cabecera y --sic-reticula;
+ * aquí solo el filete de señal bajo la barra. */
+.sic-cabecera {
+	position: relative;
+}
+
+.sic-cabecera::after {
+	content: '';
+	position: absolute;
+	inset-inline: 0;
+	bottom: -1px;
+	height: 2px;
+	background: var(--sic-filete);
+	box-shadow: 0 0 12px var(--sic-acento-luz-suave), 0 0 28px var(--sic-acento-luz-tenue);
+	pointer-events: none;
+}
+
+.sic-logo {
+	flex-wrap: wrap;
+}
+
+/* ---- Logo: sello ADN + "Empresarial" en texto ----
+ * Si el Personalizador trae el logo negativo, el padre pinta esa imagen y esto
+ * no actúa. Sin él, el enlace de texto se vuelve el wordmark: bloque latón con
+ * "ADN" y el resto del nombre en la serif. Es texto real (lo lee un lector de
+ * pantalla y no depende de una imagen). */
+.sic-logo .logo-text {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	color: var(--sic-cabecera-texto);
+	font-family: var(--pia-font-titular);
+	font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.4rem);
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: -0.02em;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.sic-logo .logo-text::first-letter {
+	letter-spacing: inherit;
+}
+
+.sic-logo .logo-text:hover {
+	color: var(--sic-cabecera-texto);
+	text-decoration: none;
+}
+
+/* ---- Navegación: ítems en píldora, activo en cian con texto negro ---- */
+.sic-nav__lista > li > a {
+	font-family: var(--sic-font-titular);
+	font-weight: var(--sic-nav-peso);
+	border-radius: var(--sic-radio-pildora);
+	padding: var(--sic-sp-1) var(--sic-sp-4);
+	text-decoration: none;
+	transition: background-color var(--sic-dur-rapida) var(--sic-curva-estandar), color var(--sic-dur-rapida) var(--sic-curva-estandar), box-shadow var(--sic-dur-rapida) var(--sic-curva-estandar);
+}
+
+.sic-nav__lista > li > a:hover,
+.sic-nav__lista > li.is-abierto > a {
+	background: var(--sic-nav-hover);
+	color: var(--sic-nav-texto);
+	text-decoration: none;
+}
+
+.sic-nav__lista > li.current-menu-item > a,
+.sic-nav__lista > li.current-menu-ancestor > a,
+.sic-nav__lista > li.current-menu-item > a:hover {
+	background: var(--sic-nav-activo);
+	color: var(--sic-nav-activo-texto);
+	box-shadow: var(--sic-halo);
+	text-decoration: none;
+}
+
+/* Desplegables y mega menú: superficie oscura con borde cian tenue */
+.sic-nav .sub-menu,
+.sic-nav .sic-mega {
+	border: 1px solid var(--sic-nav-borde);
+	border-radius: var(--sic-radio);
+	box-shadow: var(--sic-sombra-flotante), 0 0 24px var(--sic-acento-luz-tenue);
+}
+
+/* ---- Ítems especiales del menú principal ----
+ * Clases CSS puestas en el ítem (wp-admin, REST o scripts/pia-setup-menu.php):
+ *   .pia-ultima-hora → píldora ámbar con punto pulsante (el único ámbar del menú)
+ *   .pia-suscribete  → «Newsletter»: píldora cian con brillo
+ *   .pia-radar       → «Radar»: punto de señal cian tras el texto */
+.sic-nav__lista > li.pia-ultima-hora > a,
+.sic-nav__lista > li.pia-ultima-hora > a:hover {
+	background: var(--sic-urgente);
+	color: var(--sic-urgente-texto);
+	font-weight: 700;
+	box-shadow: var(--pia-ambar-glow);
+}
+
+.pia-ultima-hora > a::before {
+	content: '';
+	display: inline-block;
+	width: 0.5em;
+	height: 0.5em;
+	border-radius: 50%;
+	background: var(--sic-urgente-texto);
+	margin-inline-end: var(--sic-sp-2);
+	vertical-align: middle;
+	animation: pia-pulso 1.6s ease-in-out infinite;
+}
+
+.sic-nav__lista > li.pia-suscribete > a {
+	background: var(--sic-acento);
+	color: var(--sic-acento-texto);
+	padding-inline: var(--sic-sp-5);
+	font-weight: 700;
+	box-shadow: var(--sic-halo);
+}
+
+.sic-nav__lista > li.pia-suscribete > a:hover {
+	/* No cambia de relleno: sube el brillo. El cian es luz, no relleno. */
+	background: var(--pia-cian-vivo);
+	color: var(--sic-acento-texto);
+	box-shadow: var(--pia-glow-fuerte);
+}
+
+.pia-radar > a::after {
+	content: '';
+	display: inline-block;
+	width: 0.4em;
+	height: 0.4em;
+	border-radius: 50%;
+	background: var(--sic-acento-luz);
+	margin-inline-start: var(--sic-sp-2);
+	vertical-align: 0.1em;
+	animation: pia-latido 1.8s ease-out infinite;
+}
+
+.sic-nav__lista > li.pia-radar.current-menu-item > a::after,
+.sic-nav__lista > li.pia-radar.current-menu-ancestor > a::after {
+	background: var(--sic-acento-texto);
+	animation: none;
+}
+
+@keyframes pia-latido {
+	0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--sic-acento-luz) 55%, transparent); }
+	70%  { box-shadow: 0 0 0 0.45em transparent; }
+	100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.pia-ultima-hora > a::before,
+	.pia-radar > a::after {
+		animation: none;
+	}
+}
+
+/* ---- Franja de temas (chips) bajo la navegación ----
+ * La pinta functions.php con los hijos del ítem «Inicio» del menú principal. */
+.pia-temas-wrap {
+	background: var(--sic-cabecera);
+	border-bottom: 1px solid var(--sic-cabecera-borde);
+	color: var(--sic-cabecera-texto);
+}
+
+.pia-temas {
+	display: flex;
+	align-items: center;
+	gap: var(--sic-sp-2);
+	padding-block: var(--sic-sp-2);
+	overflow-x: auto;
+	scrollbar-width: none;
+	-webkit-overflow-scrolling: touch;
+}
+
+.pia-temas::-webkit-scrollbar {
+	display: none;
+}
+
+.pia-temas__rotulo {
+	flex: 0 0 auto;
+	font-family: var(--sic-font-titular);
+	font-weight: 700;
+	font-size: var(--sic-fs-xs);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--sic-lienzo-rotulo);
+	margin-inline-end: var(--sic-sp-2);
+}
+
+.pia-tema {
+	flex: 0 0 auto;
+	font-family: var(--sic-font-cuerpo);
+	font-weight: 500;
+	font-size: var(--sic-fs-sm);
+	color: var(--sic-cabecera-texto);
+	background: var(--sic-lienzo-superficie);
+	border: 1px solid var(--sic-cabecera-borde);
+	border-radius: var(--sic-radio-pildora);
+	padding: var(--sic-sp-1) var(--sic-sp-3);
+	white-space: nowrap;
+	text-decoration: none;
+	transition: border-color var(--sic-dur-rapida) var(--sic-curva-estandar), box-shadow var(--sic-dur-rapida) var(--sic-curva-estandar);
+}
+
+.pia-tema:hover,
+.pia-tema:focus-visible,
+.pia-tema.is-actual {
+	border-color: var(--sic-acento-luz);
+	box-shadow: var(--sic-halo);
+	text-decoration: none;
+}
+
+/* El chip de Última hora es el único ámbar de la franja. */
+.pia-tema--ultima-hora {
+	border-color: var(--pia-ambar-suave);
+	color: var(--sic-urgente);
+}
+
+.pia-tema--ultima-hora:hover,
+.pia-tema--ultima-hora.is-actual {
+	border-color: var(--sic-urgente);
+	box-shadow: var(--pia-ambar-glow);
+}
+
+/* ---- Nota: etiqueta de sección, titular, meta y cifras ----
+ * Etiqueta de sección: cian con texto negro (un solo acento lee más autoritario). */
+.sic-nota__seccion a {
+	display: inline-block;
+	padding: 2px var(--sic-sp-3);
+	background: var(--sic-acento);
+	color: var(--sic-acento-texto);
+	font-family: var(--sic-font-titular);
+	font-size: var(--sic-fs-xs);
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	text-decoration: none;
+	border-radius: var(--sic-radio-sm);
+}
+
+.sic-nota__titulo {
+	font-family: var(--sic-font-titular);
+	font-weight: var(--sic-h1-peso);
+	letter-spacing: -0.02em;
+	color: var(--sic-lectura-texto);
+}
+
+.sic-meta {
+	color: var(--sic-lectura-suave);
+	font-weight: 500;
+}
+
+/* Numerales tabulares donde hay cifras */
+.entry-content table,
+.sic-meta,
+time {
+	font-variant-numeric: tabular-nums;
+	font-feature-settings: 'tnum';
+}
+
+/* Nombres de modelo y precios de API en monoespaciada: es lo que el lector
+ * copia y pega. */
+.entry-content code,
+.pia-mono {
+	font-family: var(--sic-font-mono);
+	font-size: 0.92em;
+}
+
+.sic-nota__imagen img,
+.entry-content img {
+	border-radius: var(--sic-radio);
+}
+
+/* ---- Botones: píldora ---- */
+.wp-block-button__link,
+.sic-boton {
+	border-radius: var(--sic-radio-boton);
+}
+
+/* ---- Enlaces del contenido sobre claro: cian oscuro ----
+ * El cian de marca no cumple contraste sobre blanco como texto; el enlace
+ * dentro del párrafo va en --sic-acento-enlace y en hover pasa a negro. */
+.entry-content p a,
+.entry-content li a {
+	color: var(--sic-acento-enlace);
+	text-decoration-color: var(--sic-acento-luz-suave);
+}
+
+.entry-content p a:hover,
+.entry-content li a:hover {
+	color: var(--sic-lectura-texto);
+	text-decoration-color: var(--sic-acento-luz);
+}
+
+/* ---- Pie: filete cian superior ---- */
+.sic-pie {
+	position: relative;
+}
+
+.sic-pie::before {
+	content: '';
+	position: absolute;
+	inset-inline: 0;
+	top: 0;
+	height: 2px;
+	background: var(--sic-filete);
+	box-shadow: 0 0 12px var(--sic-acento-luz-suave);
+	pointer-events: none;
+}
+
+@keyframes pia-pulso-suave {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.78; }
+}
+
+/* =====================================================================
+ * Bloques editoriales de la nota (patrón del medio)
+ * Los emite el redactor (n8n) o se escriben a mano:
+ *   <div class="pia-por-que-importa">…</div>
+ *   <div class="pia-que-sigue">…</div>
+ *   <div class="pia-fuentes"><ul>…</ul></div>
+ *   <span class="pia-cifra">72%</span>
+ * ================================================================== */
+.entry-content .pia-por-que-importa,
+.entry-content .pia-que-sigue {
+	border-left: var(--pia-ancho-linea-dato) solid var(--pia-cian);
+	background: var(--pia-cian-fondo-claro);
+	border-radius: 0 var(--pia-radio-borde) var(--pia-radio-borde) 0;
+	padding: var(--pia-sp-4) var(--pia-sp-5);
+	margin: var(--pia-sp-5) 0;
+}
+
+.entry-content .pia-por-que-importa::before,
+.entry-content .pia-que-sigue::before {
+	display: block;
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	font-size: var(--pia-fs-xs);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--pia-negro);
+	margin-bottom: var(--pia-sp-2);
+}
+
+.entry-content .pia-por-que-importa::before { content: 'Por qu\00E9  importa a las empresas'; }
+.entry-content .pia-que-sigue::before { content: 'Qu\00E9  sigue'; }
+
+.entry-content .pia-que-sigue {
+	border-left-color: var(--pia-gris-texto);
+	background: var(--pia-gris-superficie);
+}
+
+.entry-content .pia-por-que-importa p:last-child,
+.entry-content .pia-que-sigue p:last-child {
+	margin-bottom: 0;
+}
+
+.entry-content .pia-fuentes {
+	border-top: 1px solid var(--pia-gris-borde);
+	margin-top: var(--pia-sp-6);
+	padding-top: var(--pia-sp-4);
+	font-size: var(--pia-fs-sm);
+	color: var(--pia-gris-texto);
+}
+
+.entry-content .pia-fuentes::before {
+	content: 'Fuentes';
+	display: block;
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	color: var(--pia-negro);
+	margin-bottom: var(--pia-sp-2);
+}
+
+.entry-content .pia-fuentes ul {
+	margin: 0;
+	padding-left: 1.2em;
+}
+
+.entry-content .pia-fuentes a {
+	overflow-wrap: anywhere;
+}
+
+/* Cifras destacadas dentro de la nota */
+.pia-cifra {
+	color: var(--pia-cian-oscuro);
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	font-feature-settings: 'tnum';
+}
+
+/* Badge breaking dentro de nota o tarjeta */
+.pia-badge-breaking {
+	display: inline-block;
+	background: var(--pia-ambar);
+	color: var(--pia-ambar-texto);
+	font-family: var(--pia-font-titular);
+	font-weight: 700;
+	font-size: var(--pia-fs-xs);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 2px var(--pia-sp-3);
+	border-radius: var(--pia-radio-borde-sm);
+	animation: pia-pulso-suave 2s ease-in-out infinite;
+}
+
+
+/* ---- Complementario: «Lo último» y «Secciones» sobre superficie oscura ----
+ * Región <aside> que pinta functions.php entre el contenido y el pie. */
+.pia-complementario {
+	background: var(--sic-lienzo);
+	background-image: var(--sic-reticula);
+	background-size: var(--sic-reticula-tam) var(--sic-reticula-tam);
+	color: var(--sic-lienzo-texto);
+	border-top: 1px solid var(--sic-lienzo-borde);
+	padding-block: var(--sic-sp-6);
+}
+
+.pia-complementario__fila {
+	display: grid;
+	gap: var(--sic-sp-6);
+}
+
+@media (min-width: 783px) {
+	.pia-complementario__fila {
+		grid-template-columns: 2fr 1fr;
+	}
+}
+
+.pia-widget__titulo {
+	position: relative;
+	margin: 0 0 var(--sic-sp-4);
+	padding-bottom: var(--sic-sp-2);
+	font-family: var(--sic-font-titular);
+	font-weight: 700;
+	font-size: var(--sic-fs-sm);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--sic-lienzo-texto);
+	border-bottom: 1px solid var(--sic-lienzo-borde);
+}
+
+.pia-widget__titulo::after {
+	content: '';
+	position: absolute;
+	inset-inline-start: 0;
+	bottom: -1px;
+	width: 40px;
+	height: 2px;
+	background: var(--sic-acento-luz);
+	box-shadow: 0 0 10px var(--sic-acento-luz-suave);
+}
+
+.pia-widget__lista,
+.pia-widget__pildoras {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pia-widget__lista li {
+	padding: var(--sic-sp-3) 0;
+	border-bottom: 1px solid var(--sic-lienzo-borde);
+}
+
+.pia-widget__lista li:last-child {
+	border-bottom: 0;
+}
+
+.pia-widget__enlace {
+	display: block;
+	font-family: var(--sic-font-titular);
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--sic-lienzo-texto);
+	text-decoration: none;
+}
+
+.pia-widget__enlace:hover {
+	color: var(--sic-lienzo-rotulo);
+}
+
+.pia-widget__fecha {
+	display: block;
+	margin-top: var(--sic-sp-1);
+	font-size: var(--sic-fs-xs);
+	color: var(--sic-lienzo-suave);
+}
+
+.pia-widget__pildoras {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sic-sp-2);
+}
+
+.pia-widget__pildoras a {
+	display: inline-block;
+	padding: var(--sic-sp-1) var(--sic-sp-3);
+	font-size: var(--sic-fs-sm);
+	font-weight: 500;
+	color: var(--sic-lienzo-texto);
+	background: var(--sic-lienzo-superficie);
+	border: 1px solid var(--sic-lienzo-borde);
+	border-radius: var(--sic-radio-pildora);
+	text-decoration: none;
+}
+
+.pia-widget__pildoras a:hover {
+	border-color: var(--sic-acento-luz);
+	box-shadow: var(--sic-halo);
+}
+
+.pia-widget__boletin {
+	margin: var(--sic-sp-5) 0 0;
+	padding-top: var(--sic-sp-4);
+	border-top: 1px solid var(--sic-lienzo-borde);
+	font-size: var(--sic-fs-sm);
+	color: var(--sic-lienzo-suave);
+}
+
+/* El enlace del boletín es el botón de la marca: cian con texto negro. */
+.pia-widget__boton {
+	display: block;
+	margin-top: var(--sic-sp-3);
+	padding: var(--sic-sp-2) var(--sic-sp-4);
+	text-align: center;
+	font-family: var(--sic-font-titular);
+	font-weight: 700;
+	color: var(--sic-acento-texto);
+	background: var(--sic-acento);
+	border-radius: var(--sic-radio-boton);
+	box-shadow: var(--sic-halo);
+	text-decoration: none;
+}
+
+.pia-widget__boton:hover {
+	background: var(--pia-cian-vivo);
+	box-shadow: var(--pia-glow-fuerte);
+}
+
+
+/* ---- Móvil ---- */
+@media (max-width: 782px) {
+	.sic-nav__lista > li > a {
+		padding-inline: var(--sic-sp-3);
+	}
+}
+
+@media (max-width: 600px) {
+	.entry-content .pia-por-que-importa,
+	.entry-content .pia-que-sigue {
+		padding: var(--sic-sp-3) var(--sic-sp-4);
+		margin: var(--sic-sp-4) 0;
+	}
+}
+
+/* ---- Lectura: la nota va sobre claro aunque el lienzo del medio sea oscuro ----
+ * Un texto largo sobre negro cansa. La columna de lectura es una hoja clara con
+ * los tokens --sic-lectura-*; el lienzo vivo queda alrededor, no detrás del texto. */
+.sic-zona-lectura .sic-envoltorio {
+	max-width: min(var(--sic-ancho-contenedor), calc(100% - 2 * var(--sic-sp-4)));
+	margin-block: var(--sic-sp-6);
+	background: var(--sic-lectura);
+	color: var(--sic-lectura-texto);
+	border-radius: var(--sic-radio);
+	box-shadow: var(--sic-sombra-tarjeta);
+}
+
+@media (max-width: 600px) {
+	.sic-zona-lectura .sic-envoltorio {
+		max-width: 100%;
+		margin-block: 0;
+		border-radius: 0;
+	}
+}
+
+/* ---- Cabecera: anuncio a la derecha y buscador a todo el ancho (2.5.3) -------------------------
+ * El anuncio cuelga de #logo (sic/logo_after). En escritorio #logo ocupa toda la fila y el anuncio se
+ * pega al borde derecho; el buscador, que caía solo en su propia línea con el ancho de su contenido,
+ * pasa a ocupar la fila entera para alinear con la navegación y el contenido. */
+@media (min-width: 992px) {
+	.sic-cabecera__fila > .sic-logo {
+		flex: 1 1 100%;
+	}
+
+	.sic-cabecera__fila > .sic-logo .pia-cabecera-anuncio {
+		margin-left: auto;
+	}
+}
+
+.sic-cabecera__fila > .sic-buscador {
+	flex: 1 1 100%;
+}
+
+/* ---- Anuncio lateral fijo (2.5.5) ---------------------------------------------------------------
+ * El hueco «lateral» (300×600) acompaña la lectura: al bajar se queda en pantalla hasta que la
+ * columna de contenido termina. Para que `sticky` tenga recorrido, la barra lateral se estira hasta el
+ * alto de la columna (el padre la deja del alto de su contenido). Solo en escritorio: en una columna
+ * el anuncio fijo taparía el contenido. */
+@media (min-width: 992px) {
+	.sic-con-lateral > .sic-lateral {
+		align-self: stretch;
+	}
+
+	.sic-lateral .sic-widget:has(.pia-espacio-publicitario--caja) {
+		position: sticky;
+		top: var(--sic-sp-4);
+	}
+}
+
+/* ---- Cuadrículas de notas siempre con las filas llenas (2.5.6) -----------------------------------
+ * Con auto-fill el número de columnas depende del ancho y una fila podía quedar con huecos (3 notas en
+ * 2 columnas). Ahora son 2 columnas y, si el número de notas es impar, la última ocupa la fila entera
+ * con la imagen a un lado y el texto al otro. Las secundarias del hero (una columna estrecha) se quedan
+ * como están. En móvil es una sola columna: no hay huecos que llenar. */
+@media (min-width: 700px) {
+	.wp-block-query.is-style-sic-media:not(.pia-secundarias) .wp-block-post-template.is-layout-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.wp-block-query.is-style-sic-media:not(.pia-secundarias) .wp-block-post-template > li.wp-block-post:last-child:nth-child(odd) {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: var(--sic-sp-5);
+		align-items: start;
+	}
+
+	.wp-block-query.is-style-sic-media:not(.pia-secundarias) .wp-block-post-template > li.wp-block-post:last-child:nth-child(odd) > .wp-block-post-featured-image {
+		grid-column: 1;
+		grid-row: 1 / span 5;
+	}
+
+	.wp-block-query.is-style-sic-media:not(.pia-secundarias) .wp-block-post-template > li.wp-block-post:last-child:nth-child(odd) > :not(.wp-block-post-featured-image) {
+		grid-column: 2;
+	}
+}
+
+/* ---- Sin migas de pan visibles (2.5.7) ---------------------------------------------------------------
+ * Se ocultan en todas las páginas. No se quitan del HTML: los datos estructurados BreadcrumbList de
+ * sic-seo (lo que Google usa) siguen intactos y solo desaparece la franja visible. */
+.sic-migas {
+	display: none;
+}
+
+/* ---- Anuncio lateral al ancho de la columna (2.5.8) ----------------------------------------------------
+ * La pieza «lateral» es de 300 px y la columna mide 370: quedaba más angosta que los widgets de arriba.
+ * En escritorio ocupa todo el ancho de la columna conservando la proporción de la pieza (300x600 -> 1:2,
+ * es decir 370x740). La altura reservada sube a 740 px para que al cargar la imagen no salte el diseño.
+ * En móvil la columna cae bajo el contenido y se mantiene la pieza de 300x250. */
+@media (min-width: 992px) {
+	.sic-lateral .pia-espacio-publicitario--caja,
+	.sic-lateral .sic-ads--lateral {
+		max-width: none;
+	}
+
+	.sic-lateral .sic-ads--lateral {
+		--sic-ads-alto: 740px;
+	}
+
+	.sic-lateral .sic-ads--lateral .sic-ads__img {
+		width: 100%;
+		height: auto;
+	}
+}
+
+/* Avatar de la firma: el icono de marca sobre su propio fondo, recortado en círculo (2.6.0). */
+.sic-autor__avatar {
+	background: var(--pia-negro);
+	object-fit: cover;
+}
+
+/* ---- Menú principal en una sola fila (2.6.4) ----
+ * En escritorio los ocho ítems caben en una línea: sin salto, chevron más angosto y holguras menores. */
+@media (min-width: 901px) {
+	.sic-nav__lista {
+		flex-wrap: nowrap;
+		gap: var(--sic-sp-1);
+		justify-content: space-between;
+	}
+
+	.sic-nav__lista > li > a {
+		white-space: nowrap;
+		padding-inline: var(--sic-sp-3);
+	}
+
+	.sic-nav__lista .sic-nav__subtoggle {
+		min-width: 24px;
+		margin-inline-start: -0.35rem;
+	}
+}
+
+

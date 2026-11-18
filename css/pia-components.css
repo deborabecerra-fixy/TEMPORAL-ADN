@@ -1,0 +1,203 @@
+/*
+ * PIA — Componentes propios del sistema visual (docs/01-sistema-visual.md)
+ * ==========================================================================
+ * C2 .pia-dato · C3 .pia-dato-dia · C4 espacios publicitarios · C5 .pia-en-vivo
+ * Consume solo tokens de pia-brand-tokens.css. Cero valores literales de color.
+ * Independiente del tema: ningún selector de Jannah aquí.
+ *
+ * Los bloques editoriales de la nota (Por qué te importa · Qué sigue ·
+ * Fuentes · badge breaking) viven en style.css porque dependen de
+ * .entry-content, que es de Jannah.
+ */
+
+/* ---- C2 — Dato inline en sumario ----
+ * Hereda el color del párrafo y se marca con un subrayado cian. Un color
+ * distinto dentro del texto dependía de que el lector supiera qué significaba;
+ * el subrayado se entiende sin manual y sobrevive a la captura de pantalla. */
+.pia-dato,
+.pia-dato-inline {
+	color: inherit;
+	border-bottom: 2px solid var(--pia-cian);
+	font-weight: 700;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums lining-nums;
+	font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
+/* ---- C3 — El dato del día ----
+ * Vitrina del Radar de modelos en portada. La emite [pia_dato_dia] (plugin
+ * primicia-radar). Todo el bloque es un enlace a la ficha del modelo, donde
+ * vive la fuente y la fecha de verificación.
+ *
+ * Regla dura: sin FUENTE y FECHA DE VERIFICACIÓN el componente no se
+ * renderiza. Una cifra sin respaldo en la portada es el riesgo reputacional
+ * que el Radar existe para evitar. */
+.pia-dato-dia {
+	display: block;
+	border: var(--pia-borde-dato-dia) solid var(--pia-cian);
+	border-radius: var(--pia-radio-borde);
+	background: var(--pia-superficie);
+	box-shadow: var(--pia-glow);
+	padding: var(--pia-sp-5) var(--pia-sp-4);
+	text-align: center;
+	text-decoration: none;
+	transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.pia-dato-dia:hover,
+.pia-dato-dia:focus {
+	text-decoration: none;
+	outline-offset: 2px;
+	box-shadow: var(--pia-glow-fuerte);
+	transform: translateY(-2px);
+}
+
+.pia-dato-dia__antetitulo {
+	display: block;
+	font-family: var(--pia-font-titular);
+	font-size: var(--pia-fs-md);
+	font-weight: 700;
+	color: var(--pia-blanco);
+	margin: 0 0 var(--pia-sp-3);
+}
+
+.pia-dato-dia__cifra,
+.pia-dato-dia__valor {
+	display: block;
+	font-family: var(--pia-font-titular);
+	font-size: clamp(var(--pia-fs-xl), 6vw + 1rem, var(--pia-fs-3xl));
+	font-weight: var(--pia-cifra-wght);
+	line-height: 1.05;
+	color: var(--pia-cian);
+	margin: 0 0 var(--pia-sp-3);
+	font-variant-numeric: tabular-nums lining-nums;
+	font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
+.pia-dato-dia__contexto {
+	display: block;
+	font-family: var(--pia-font-cuerpo);
+	font-size: var(--pia-fs-sm);
+	color: var(--pia-tech-texto-suave);
+	margin: 0;
+}
+
+/* La procedencia: FUENTE · VERIFICADO. Tercera pata de la firma del dato. */
+.pia-dato-dia__referencia {
+	display: block;
+	font-family: var(--pia-font-cuerpo);
+	font-size: var(--pia-fs-xs);
+	color: var(--pia-tech-texto-suave);
+	margin-block-start: var(--pia-sp-2);
+	font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
+/* ---- C4 — Espacios publicitarios ----
+ * Mientras no haya código de anuncio, el espacio queda reservado con la
+ * etiqueta "PUBLICIDAD" (functions.php lo rellena con el anuncio de casa).
+ * Uso: <div class="pia-espacio-publicitario">…código…</div>
+ * Variante sidebar (300x250 / 300x600): clase pia-espacio-publicitario--caja */
+.pia-espacio-publicitario,
+.pia-franja-publicitaria {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 90px;
+	margin: var(--pia-sp-5) 0;
+	background: var(--pia-gris-superficie);
+	border: 1px dashed var(--pia-gris-borde);
+	border-radius: var(--pia-radio-borde);
+	position: relative;
+	overflow: hidden;
+}
+
+.pia-espacio-publicitario::before,
+.pia-franja-publicitaria::before {
+	content: 'PUBLICIDAD';
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--pia-font-cuerpo);
+	font-size: var(--pia-fs-xs);
+	letter-spacing: 0.2em;
+	color: var(--pia-gris-texto);
+	z-index: 0;
+}
+
+.pia-espacio-publicitario > *,
+.pia-franja-publicitaria > * {
+	position: relative;
+	z-index: 1;
+}
+
+.pia-espacio-publicitario--caja {
+	min-height: 250px;
+	max-width: 300px;
+	margin-inline: auto;
+}
+
+.pia-espacio-publicitario img,
+.pia-espacio-publicitario iframe,
+.pia-franja-publicitaria img,
+.pia-franja-publicitaria iframe {
+	max-width: 100%;
+	height: auto;
+}
+
+@media (max-width: 640px) {
+	.pia-espacio-publicitario,
+	.pia-franja-publicitaria {
+		min-height: 60px;
+		margin: var(--pia-sp-4) 0;
+	}
+
+	.pia-dato-dia {
+		padding: var(--pia-sp-4) var(--pia-sp-3);
+	}
+}
+
+/* ---- C5 — Indicador EN VIVO ----
+ * Para coberturas en directo (keynotes, lanzamientos). Uso:
+ *   <span class="pia-en-vivo">EN VIVO</span>
+ *   <span class="pia-en-vivo pia-en-vivo--apagado">…</span> → se oculta
+ * Un "EN VIVO" permanente sin transmisión desgasta la credibilidad. Va en
+ * ámbar porque es urgencia, no decoración. */
+.pia-en-vivo {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--pia-sp-1);
+	color: var(--pia-ambar);
+	font-family: var(--pia-font-titular);
+	font-size: var(--pia-fs-xs);
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.pia-en-vivo::before {
+	content: '';
+	width: 0.5em;
+	height: 0.5em;
+	border-radius: 50%;
+	background: var(--pia-ambar);
+	box-shadow: 0 0 8px var(--pia-ambar);
+	animation: pia-pulso 1.6s ease-in-out infinite;
+}
+
+.pia-en-vivo--apagado {
+	display: none;
+}
+
+@keyframes pia-pulso {
+	0%   { opacity: 1; transform: scale(1); }
+	50%  { opacity: 0.35; transform: scale(0.8); }
+	100% { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.pia-en-vivo::before {
+		animation: none;
+	}
+}

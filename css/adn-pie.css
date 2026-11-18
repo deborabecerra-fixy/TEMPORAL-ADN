@@ -1,0 +1,187 @@
+/* =====================================================================
+ * ADN Empresarial — Footer editorial
+ * Dos columnas: identidad (logotipo vertical + lema) a la izquierda y
+ * «Explorar» (seis categorías en dos columnas de tres) a la derecha.
+ * Abajo, filete de bajo contraste, copyright con año automático y
+ * «Una mirada desde Latinoamérica».
+ * ================================================================== */
+.adn-pie {
+	background: var(--pia-negro);
+	background-image: none;
+	color: var(--pia-marfil);
+	border-top: 1px solid var(--pia-gris-borde);
+}
+
+/* Filete superior heredado: más fino y de bajo contraste. */
+.adn-pie::before {
+	height: 1px;
+	opacity: 0.35;
+	box-shadow: none;
+}
+
+.adn-pie__contenedor {
+	max-width: var(--sic-ancho-contenedor, 1200px);
+	margin: 0 auto;
+	padding: 48px var(--sic-sp-4, 1rem) 24px;
+}
+
+.adn-pie__columnas {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 64px;
+	align-items: start;
+	padding-bottom: 36px;
+}
+
+/* El tema pone un filete lima a la izquierda de todo enlace del pie: aquí no. */
+.adn-pie a {
+	border-left: 0;
+	border-radius: 0;
+	text-decoration: none;
+}
+
+/* ---------- Identidad: logotipo + lema ---------- */
+.adn-pie__logo {
+	display: inline-block;
+	line-height: 0;
+}
+
+.adn-pie__logo img {
+	display: block;
+	width: 200px;
+	max-width: 100%;
+	height: auto;
+	aspect-ratio: 335 / 129;
+}
+
+.adn-pie__lema {
+	max-width: 26ch;
+	margin: 22px 0 0;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 1.1875rem;
+	font-weight: 500;
+	line-height: 1.35;
+	letter-spacing: -0.015em;
+	text-wrap: balance;
+}
+
+/* Las iniciales que dan nombre a la marca, en lima. */
+.adn-pie__inicial {
+	color: var(--pia-cian);
+}
+
+/* ---------- Explorar ---------- */
+.adn-pie__explorar {
+	min-width: 0;
+}
+
+.adn-pie__titulo {
+	margin: 0 0 14px;
+	color: var(--pia-marfil);
+	font-family: var(--pia-font-titular);
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+/* Dos columnas de tres: se llena de arriba hacia abajo, columna por columna. */
+.adn-pie__lista {
+	display: grid;
+	grid-template-columns: repeat(2, max-content);
+	grid-template-rows: repeat(3, auto);
+	grid-auto-flow: column;
+	gap: 10px 48px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.adn-pie .adn-pie__lista a {
+	color: var(--pia-tech-texto-suave);
+	font-family: var(--pia-font-titular);
+	font-size: 0.9375rem;
+	font-weight: 500;
+	transition: color 160ms ease;
+}
+
+.adn-pie .adn-pie__lista a:hover,
+.adn-pie .adn-pie__lista a:focus-visible {
+	color: var(--pia-cian);
+}
+
+/* ---------- Franja inferior ---------- */
+.adn-pie__base {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px 24px;
+	padding-top: 20px;
+	border-top: 1px solid var(--pia-gris-borde);
+	color: var(--pia-gris-texto);
+	font-family: var(--pia-font-cuerpo);
+	font-size: 0.75rem;
+}
+
+.adn-pie__base p {
+	margin: 0;
+}
+
+.adn-pie__mirada {
+	font-family: var(--pia-font-titular);
+	font-size: 0.6875rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+/* ---------- Celular: una sola columna ---------- */
+@media (max-width: 599px) {
+	.adn-pie__contenedor {
+		padding-top: 36px;
+	}
+
+	.adn-pie__columnas {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 32px;
+		padding-bottom: 28px;
+	}
+
+	.adn-pie__logo img {
+		width: 170px;
+	}
+
+	.adn-pie__lema {
+		margin-top: 18px;
+		font-size: 1.0625rem;
+	}
+
+	/* Mismas dos columnas, cada una al ancho de su texto (si no entra,
+	 * el texto se parte en lugar de desbordar). */
+	.adn-pie__lista {
+		grid-template-columns: auto auto;
+		justify-content: start;
+		gap: 10px 28px;
+	}
+
+	.adn-pie__base {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+/* Pantallas muy angostas: una sola columna para no partir los nombres. */
+@media (max-width: 359px) {
+	.adn-pie__lista {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: none;
+		grid-auto-flow: row;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.adn-pie .adn-pie__lista a {
+		transition: none;
+	}
+}
