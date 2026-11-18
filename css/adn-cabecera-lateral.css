@@ -1033,3 +1033,134 @@ html body .sic-lateral .sic-ads.sic-ads--lateral .adn-ads-flotante::after {
 		display: none;
 	}
 }
+
+/* =====================================================================
+ * Disposición móvil (hasta 767 px) — js/adn-movil.js
+ *   1. Publicidad arriba: el anuncio del header va en una franja al
+ *      comienzo de la página (.adn-movil-tope).
+ *   2. Header fijo: queda pegado arriba al bajar, solo con logo + menú.
+ *   3. Publicidad abajo: el anuncio del pie queda anclado al borde inferior,
+ *      con una pestaña para esconderlo (se desliza hacia abajo y deja solo
+ *      la pestaña a la vista).
+ * Sin JS no cambia nada (todo depende de html.adn-movil-activo).
+ * ================================================================== */
+/* La pestaña solo existe en el anuncio anclado (celular). */
+.adn-anclado__pestana {
+	display: none;
+}
+
+@media (max-width: 767px) {
+	/* ---------- 1. Franja superior ---------- */
+	.adn-movil-tope {
+		position: relative;
+		z-index: 1;
+		padding: 8px 16px 10px;
+		background: var(--pia-negro);
+	}
+
+	.adn-movil-tope .pia-cabecera-anuncio {
+		width: 100%;
+		margin: 0;
+	}
+
+	/* ---------- 2. Header fijo ---------- */
+	html.adn-movil-activo body #theme-header.sic-cabecera {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+	}
+
+	/* Sin el anuncio adentro, el header es una sola fila (logo | menú). */
+	html.adn-movil-activo .sic-cabecera__fila {
+		grid-template-areas: 'marca menu';
+		row-gap: 0;
+	}
+
+	/* ---------- 3. Publicidad anclada abajo ---------- */
+	html body #pia-ad-footer.adn-anclado {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 45;
+		max-width: none;
+		margin: 0;
+		padding: 14px 16px calc(8px + env(safe-area-inset-bottom, 0px));
+		border-top: 1px solid var(--pia-gris-borde);
+		background: color-mix(in srgb, var(--pia-negro) 96%, transparent);
+		opacity: 1;
+		transform: none;
+		transition: transform 250ms ease-out;
+	}
+
+	/* Sin la franja reservada para el rótulo: la etiqueta «Publicidad» se
+	 * apoya en el borde de la creatividad, como en el resto de los banners. */
+	html body #pia-ad-footer.adn-anclado .sic-ads.sic-ads--pie {
+		--sic-ads-rotulo-alto: 0px;
+		margin: 0 auto;
+		padding-top: 0;
+	}
+
+	/* Escondido: baja entero; la pestaña (por encima del borde) queda visible. */
+	html body #pia-ad-footer.adn-anclado.is-oculto {
+		transform: translateY(100%);
+		transition-timing-function: ease-in;
+	}
+
+	/* Mientras rueda la página, el contenido final no queda tapado. */
+	html.adn-movil-activo body {
+		padding-bottom: var(--sic-banner-alto, 0px);
+	}
+
+	/* Pestaña: sobresale del borde superior, a la izquierda. */
+	#pia-ad-footer.adn-anclado .adn-anclado__pestana {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		bottom: 100%;
+		left: 12px;
+		width: 52px;
+		height: 28px;
+		margin: 0;
+		padding: 0;
+		border: 1px solid var(--pia-gris-borde);
+		border-bottom: 0;
+		border-radius: 10px 10px 0 0;
+		background: color-mix(in srgb, var(--pia-negro) 96%, transparent);
+		color: var(--pia-marfil);
+		cursor: pointer;
+	}
+
+	/* Área táctil de 44 px sin agrandar la pestaña. */
+	#pia-ad-footer.adn-anclado .adn-anclado__pestana::before {
+		content: '';
+		position: absolute;
+		inset: -10px -4px 0;
+	}
+
+	.adn-anclado__flecha {
+		width: 9px;
+		height: 9px;
+		border-right: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: translateY(-2px) rotate(45deg);
+		transition: transform 250ms ease-out;
+	}
+
+	#pia-ad-footer.is-oculto .adn-anclado__flecha {
+		transform: translateY(2px) rotate(-135deg);
+	}
+
+	#pia-ad-footer.adn-anclado .adn-anclado__pestana:focus-visible {
+		outline: 2px solid var(--pia-cian);
+		outline-offset: 2px;
+	}
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+	html body #pia-ad-footer.adn-anclado,
+	.adn-anclado__flecha {
+		transition: none;
+	}
+}
